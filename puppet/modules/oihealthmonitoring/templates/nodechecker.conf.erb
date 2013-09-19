@@ -1,8 +1,8 @@
-[run]
+[node]
 # Mode can be TEST or RUN
 # Test mode allows generation of nodelist with nodes listening to different ports
 mode = RUN
-#j
+
 # Standard log levels: debug, info, warn, erro
 log_level = debug
 log_file = <%=toas_monitoring_root%>/var/log/nodechecker.log
@@ -10,7 +10,11 @@ udp_port = 11911
 
 # If set to "auto",  will find it from the system
 ip_address = auto
-host_name = auto
+ip_address_public = auto
+instance_id = auto
+cluster_id = auto
+machine_id = auto
+cloud_zone = auto
 
 # Master heartbeat period in seconds
 heartbeat_period = 30
@@ -31,14 +35,10 @@ dead_node_string = has not been updated for
 
 
 [email]
-#subject = TOAS Health Monitoring Notification
-#from = <%=mail_from%>
-#to = <%=default_mail_recepient%>
-#smpt_server = <%=mail_host%>
 subject = TOAS Health Monitoring Notification
-from = k@t.com
-to = v@t.com
-smpt_server = s.com
+from = <%=mail_from%>
+to = <%=default_mail_recepient%>
+smpt_server = <%=mail_host%>
 
 
 [collectd]
