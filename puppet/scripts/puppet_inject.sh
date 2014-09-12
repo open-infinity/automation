@@ -1,12 +1,22 @@
 #!/bin/sh
 
-echo "modifying /etc/hosts"
-echo "131.207.104.140 puppetmaster" >> /etc/hosts
+# Command line arguments
+if [ "$1" != "" ] ; then
+    PUPPETMASTER=$1
+else
+    echo "Usage: puppet_inject.sh <puppetmaster ip address>"
+    exit 1
+fi
 
+# /etc/hosts
+echo "modifying /etc/hosts"
+echo "$PUPPETMASTER puppetmaster" >> /etc/hosts
+
+# /resolv.conf
 echo "modifying /etc/resolv.conf"
 cat > /etc/resolv.conf <<EOF
 domain tieto.com
-nameserver 131.207.104.140
+nameserver $PUPPETMASTER
 EOF
 
 # create our puppet repo
