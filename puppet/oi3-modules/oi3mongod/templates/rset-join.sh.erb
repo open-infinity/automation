@@ -1,0 +1,111 @@
+#!/bin/bash
+
+#
+# Adds a member to replica set or creates a new one, if this is the
+# first node in the set
+#
+
+VARFILE=`mktemp`
+
+echo "Adding node to replica set <%= mongo_replicaset_name %>"
+
+# Wait for the result set contact point to come online
+while : 
+do
+    mongo --quiet <%=mongod_replicaset_node%> >$VARFILE << EOF
+    db.serverStatus()["ok"]    
+EOF
+    OK=`cat $VARFILE`
+    if [ "$OK" -eq "1" ] ; then
+        break
+    fi
+    
+    echo "Waiting for the given replica set node to become online..."
+    sleep 2
+done
+
+# Get name of this node as mongo knows it
+echo "" > $VARFILE
+while : 
+do
+    mongo --quiet localhost:<%=mongod_port%> >$VARFILE << EOF
+    db.serverStatus().host
+EOF
+    LOCAL_MONGOD=`cat $VARFILE`
+    if [ "$LOCAL_MONGOD" != "" ] ; then
+        if [[ ! "$LOCAL_MONGOD" =~ ":" ]] ; then
+            LOCAL_MONGOD=$LOCAL_MONGOD:<%=mongod_port%>
+        fi
+        break
+    fi
+    
+    echo "Waiting for the local mongod to become online..."
+    sleep 2
+done
+echo "Local mongod is known as '$LOCAL_MONGOD'"
+
+# Replica set creation logic
+if [ "<%=mongod_replicaset_node%>" == "$LOCAL_MONGOD" ] ; then
+    # Initialize a new replica set
+    mongo --quiet $LOCAL_MONGOD << EOF
+        print('Initializing replica set');
+        rs.initiate();
+    
+        print('Waiting for completion of replica set initialization');
+        var primary_ready = false;
+        while (!primary_ready) {
+            if (rs.status().members) {
+                rs.status().members.forEach(function(member) {
+                    if (member.name == "$LOCAL_MONGOD") {
+                        if (member.stateStr == 'PRIMARY') {
+                            print('PRIMARY initialization ready.');
+                            primary_ready = true;
+                        }
+                    }
+                });
+            }
+            if (!primary_ready) {
+                print("  ...")
+                var a = sleep(5000);
+            }
+        }
+EOF
+else
+    # Find the primary node using the given contact point in replica set.
+    # In the beginning the contact point should be the primary.
+    echo "Looking for primary"
+    mongo --quiet <%=mongod_replicaset_node%> >$VARFILE << EOF
+    var primary_found = false;
+    while (!primary_found) {
+        rs.status().members.forEach(function(member) {
+            if (member.stateStr == 'PRIMARY') {
+                if (member.name != null) {
+                    print(member.name);
+                    primary_found = true;
+                }
+            }
+        });
+        var a = sleep(2000);
+    }
+EOF
+    MONGOD_PRIMARY=`cat $VARFILE`
+    echo "Found primary '$MONGOD_PRIMARY'"
+    
+    # Join this node to the primary node
+    mongo --quiet $MONGOD_PRIMARY << EOF
+        print("Using the primary to do the actual add...");
+        r = rs.add("$LOCAL_MONGOD");
+        if (r.ok == 1) {
+            print("Successfuly added node $LOCAL_MONGOD to the replica set");
+        } else {
+            print("Error: Failed to add $LOCAL_MONGOD to the replica set: " + r.errmsg);
+            throw { name: 'FatalError', message: "Failed to add $LOCAL_MONGOD to replica set <%= mongo_replicaset_name %>: " + r.errmsg };
+        }
+EOF
+    if [ $? -ne 0 ] ; then
+        exit 1
+    fi
+fi
+
+rm $VARFILE
+
