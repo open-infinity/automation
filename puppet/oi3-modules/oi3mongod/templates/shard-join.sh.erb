@@ -1,11 +1,62 @@
+#!/bin/bash
 
-//
-// Adds the current node to the replica set and if the replica set is full, adds it
-// to the shard, if it's note there already.
-//
+#
+# Adds the current shard to the cluster, if this node is the PRIMARY.
+#
 
-var replicaset_name = <%=replicaset_name%>
-var replicaset_size = <%=replicaset_size%>
+VARFILE=`mktemp`
 
+# Wait until the mongos is up and running
+while : 
+do
+    mongo --quiet <%=mongo_mongos_node%> >$VARFILE << EOF
+    db.serverStatus()["ok"]
+EOF
+    OK=`cat $VARFILE`
+    if [ "$OK" -eq "1" ] ; then
+        break
+    fi
+    
+    echo "Waiting for the mongos to become online successfully..."
+    sleep 2
+done
 
+# Get name of this node as mongo knows it
+echo "" > $VARFILE
+while : 
+do
+    mongo --quiet localhost:<%=mongod_port%> >$VARFILE << EOF
+    db.serverStatus().host
+EOF
+    LOCAL_MONGOD=`cat $VARFILE`
+    if [ "$LOCAL_MONGOD" != "" ] ; then
+        if [[ ! "$LOCAL_MONGOD" =~ ":" ]] ; then
+            LOCAL_MONGOD=$LOCAL_MONGOD:<%=mongod_port%>
+        fi
+        break
+    fi
+    
+    echo "Waiting for the local mongod to become online..."
+    sleep 2
+done
+echo "Local mongod is known as '$LOCAL_MONGOD'"
+
+# Add shard logic
+if [ "<%=mongod_replicaset_node%>" == "$LOCAL_MONGOD" ] ; then
+    # Add shard
+    echo "Adding shard to the cluster"
+    mongo --quiet <%=mongo_mongos_node%> >$VARFILE << EOF
+        r = sh.addShard( "<%=mongo_replicaset_name%>/$LOCAL_MONGOD" );
+        r.ok
+        
+EOF
+    OK=`cat $VARFILE`
+    if [ "$OK" -eq "1" ] ; then
+        echo "Shard adding completed. Remember to run db.runCommand( { enableSharding: <database> } ) for each databases needing sharding."
+    else
+        echo "Adding shard <%=mongo_replicaset_name%> to cluster failed" &>/dev/stderr
+    fi
+fi
+
+rm $VARFILE
 

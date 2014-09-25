@@ -1,30 +1,7 @@
 #
 # MongoDB Database Node
 #
-# expected parameters:
-#
-#   mongo_cluster_type: <'standalone' | 'replicaset' | 'sharded'>
-#       at moment only replicaset is supported
-#
-#   mongo_replicaset_name: <name>
-#       a unique name for the replica set
-#
-#   mongod_replicaset_node: <host:port> 
-#       initial primary node, but later any node in the replica set
-#
-#   mongod_port: <port>
-#       typically 27018 for sharded cluster and 27017 for the others
-#
-#   mongo_storage_smallFiles: <'true' | 'false'>
-#       true saves initial disk space but decreases performance
-#
-#   mongo_security_authorization: <'enabled' | 'disabled'>
-#       enabling auth requires manual configuration at moment
-#
-#   mongo_replicaset_oplogSizeMB: <'default' | size-in-mega-bytes>
-#       http://docs.mongodb.org/manual/core/replica-set-oplog/
-#
-# Either DNS or /etc/hosts based name resolution is expected to work.
+# See our Confluence for more information about the parameters.
 #
 
 class oi3mongod {
@@ -82,6 +59,15 @@ class oi3mongod::config {
         group => "root",
         mode => 0755,
         source => "puppet:///modules/oi3mongod/mongod",
+        require => Class["oi3mongod::install"],
+    }
+
+    file { '/etc/sysconfig/mongod':
+        ensure => present,
+        notify => Service["mongod"],
+        owner => "mongod",
+        group => "mongod",
+        content => template("oi3-oi3mongod/sysconfig-mongod"),
         require => Class["oi3mongod::install"],
     }
 

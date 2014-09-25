@@ -1,30 +1,30 @@
 #!/bin/bash
 
-# mongod - Startup script for mongod
+# mongocfg - Startup script for mongocfg
 
 # chkconfig: 35 86 16
 # description: Mongo is a scalable, document-oriented database.
-# processname: mongod
-# config: /etc/mongod.conf
-# pidfile: /var/run/mongodb/mongod.pid
+# processname: mongocfg
+# config: /etc/mongocfg.conf
+# pidfile: /var/run/mongodb/mongocfg.pid
 
 . /etc/rc.d/init.d/functions
 
-# things from mongod.conf get there by mongod reading it
+# things from mongocfg.conf get there by mongocfg reading it
 
 
 # NOTE: if you change any OPTIONS here, you get what you pay for:
 # this script assumes all options are in the config file.
-CONFIGFILE="/etc/mongod.conf"
+CONFIGFILE="/etc/mongocfg.conf"
 OPTIONS=" -f $CONFIGFILE"
-#OPTIONS=" --fork --port 27018 --rest --replSet rs1 --dbpath /opt/openinfinity/3.1.0/bigdata/data --logappend --logpath /opt/openinfinity/3.1.0/bigdata/log/mongod.log"
-SYSCONFIG="/etc/sysconfig/mongod"
+#OPTIONS=" --fork --port 27018 --rest --replSet rs1 --dbpath /opt/openinfinity/3.1.0/bigdata/data --logappend --logpath /opt/openinfinity/3.1.0/bigdata/log/mongocfg.log"
+SYSCONFIG="/etc/sysconfig/mongocfg"
 
 # FIXME: 1.9.x has a --shutdown flag that parses the config file and
 # shuts down the correct running pid, but that's unavailable in 1.8
 # for now.  This can go away when this script stops supporting 1.8.
-DBPATH="/opt/openinfinity/data/mongod"
-mongod=${MONGOD-/usr/bin/mongod}
+DBPATH="/opt/openinfinity/data/mongocfg"
+mongocfg=${MONGOCFG-/usr/bin/mongod}
 
 MONGO_USER=mongod
 MONGO_GROUP=mongod
@@ -33,20 +33,20 @@ MONGO_GROUP=mongod
 
 start()
 {
-  echo -n $"Starting mongod: "
-  daemon --user "$MONGO_USER" $mongod $OPTIONS
+  echo -n $"Starting mongocfg: "
+  daemon --user "$MONGO_USER" $mongocfg $OPTIONS
   RETVAL=$?
   echo
-  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/mongod
+  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/mongocfg
 }
 
 stop()
 {
-  echo -n $"Stopping mongod: "
+  echo -n $"Stopping mongocfg: "
   killproc -p $DBPATH/mongod.lock -t30 -TERM /usr/bin/mongod
   RETVAL=$?
   echo
-  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/mongod
+  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/mongocfg
 }
 
 restart () {
@@ -68,10 +68,10 @@ case "$1" in
     restart
     ;;
   condrestart)
-    [ -f /var/lock/subsys/mongod ] && restart || :
+    [ -f /var/lock/subsys/mongocfg ] && restart || :
     ;;
   status)
-    status $mongod
+    status $mongocfg
     RETVAL=$?
     ;;
   *)
