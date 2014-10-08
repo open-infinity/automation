@@ -6,10 +6,14 @@
 #
 
 VARFILE=`mktemp`
+DOMAIN=`echo "<%=mongod_replicaset_node%>" | sed -n 's/[^.]*\.//p' | sed "s/:.*//"`
+if [ "x$DOMAIN" != "x" ] ; then
+    DOMAIN=.$DOMAIN
+fi
 
-echo "Adding node to replica set <%= mongo_replicaset_name %>"
+echo "*** Adding node to replica set <%= mongo_replicaset_name %> ***"
 
-# Wait for the result set contact point to come online
+# Wait for the replica set contact point to come online
 while : 
 do
     mongo --quiet <%=mongod_replicaset_node%> >$VARFILE << EOF
@@ -17,10 +21,11 @@ do
 EOF
     OK=`cat $VARFILE`
     if [ "$OK" -eq "1" ] ; then
+        echo "Node <%=mongod_replicaset_node%> is healthy now"
         break
     fi
     
-    echo "Waiting for the given replica set node to become online..."
+    echo "Waiting for <%=mongod_replicaset_node%> (mongod) to become online..."
     sleep 2
 done
 
@@ -33,9 +38,8 @@ do
 EOF
     LOCAL_MONGOD=`cat $VARFILE`
     if [ "$LOCAL_MONGOD" != "" ] ; then
-        if [[ ! "$LOCAL_MONGOD" =~ ":" ]] ; then
-            LOCAL_MONGOD=$LOCAL_MONGOD:<%=mongod_port%>
-        fi
+        LOCAL_MONGOD=`echo "$LOCAL_MONGOD" | sed "s/\..*//" | sed "s/:.*//"`$DOMAIN:<%=mongod_port%>
+        LOCAL_MONGOD_SHORT=`echo "$LOCAL_MONGOD" | sed "s/\..*//" | sed "s/:.*//"`:<%=mongod_port%>
         break
     fi
     
@@ -45,7 +49,9 @@ done
 echo "Local mongod is known as '$LOCAL_MONGOD'"
 
 # Replica set creation logic
-if [ "<%=mongod_replicaset_node%>" == "$LOCAL_MONGOD" ] ; then
+MONGOD_REPLICASET_NODE=`echo "<%=mongod_replicaset_node%>"`
+echo "Replica set node: $MONGOD_REPLICASET_NODE local mongod: $LOCAL_MONGOD"
+if [ "$MONGOD_REPLICASET_NODE" == "$LOCAL_MONGOD" ] ; then
     # Initialize a new replica set
     mongo --quiet $LOCAL_MONGOD << EOF
         print('Initializing replica set');
@@ -56,7 +62,7 @@ if [ "<%=mongod_replicaset_node%>" == "$LOCAL_MONGOD" ] ; then
         while (!primary_ready) {
             if (rs.status().members) {
                 rs.status().members.forEach(function(member) {
-                    if (member.name == "$LOCAL_MONGOD") {
+                    if (member.name == "$LOCAL_MONGOD" || member.name == "$LOCAL_MONGOD_SHORT") {
                         if (member.stateStr == 'PRIMARY') {
                             print('PRIMARY initialization ready.');
                             primary_ready = true;
@@ -88,7 +94,7 @@ else
         var a = sleep(2000);
     }
 EOF
-    MONGOD_PRIMARY=`cat $VARFILE`
+    MONGOD_PRIMARY=`cat $VARFILE | sed "s/\..*//" | sed "s/:.*//"`$DOMAIN:<%=mongod_port%>
     echo "Found primary '$MONGOD_PRIMARY'"
     
     # Join this node to the primary node

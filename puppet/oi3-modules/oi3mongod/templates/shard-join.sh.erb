@@ -5,6 +5,12 @@
 #
 
 VARFILE=`mktemp`
+DOMAIN=`echo "<%=mongod_replicaset_node%>" | sed -n 's/[^.]*\.//p' | sed "s/:.*//"`
+if [ "x$DOMAIN" != "x" ] ; then
+    DOMAIN=.$DOMAIN
+fi
+
+echo "*** Adding replica set <%= mongo_replicaset_name %> to the sharded cluster ***"
 
 # Wait until the mongos is up and running
 while : 
@@ -13,11 +19,11 @@ do
     db.serverStatus()["ok"]
 EOF
     OK=`cat $VARFILE`
-    if [ "$OK" -eq "1" ] ; then
+    if [ "$OK" == "1" ] ; then
         break
     fi
     
-    echo "Waiting for the mongos to become online successfully..."
+    echo "Waiting for the <%=mongo_mongos_node%> (mongos) to become online successfully..."
     sleep 2
 done
 
@@ -30,9 +36,7 @@ do
 EOF
     LOCAL_MONGOD=`cat $VARFILE`
     if [ "$LOCAL_MONGOD" != "" ] ; then
-        if [[ ! "$LOCAL_MONGOD" =~ ":" ]] ; then
-            LOCAL_MONGOD=$LOCAL_MONGOD:<%=mongod_port%>
-        fi
+        LOCAL_MONGOD=`echo "$LOCAL_MONGOD" | sed "s/\..*//" | sed "s/:.*//"`$DOMAIN:<%=mongod_port%>
         break
     fi
     
@@ -42,7 +46,8 @@ done
 echo "Local mongod is known as '$LOCAL_MONGOD'"
 
 # Add shard logic
-if [ "<%=mongod_replicaset_node%>" == "$LOCAL_MONGOD" ] ; then
+MONGOD_REPLICASET_NODE=<%=mongod_replicaset_node%>
+if [ "$MONGOD_REPLICASET_NODE" == "$LOCAL_MONGOD" ] ; then
     # Add shard
     echo "Adding shard to the cluster"
     mongo --quiet <%=mongo_mongos_node%> >$VARFILE << EOF
@@ -51,7 +56,7 @@ if [ "<%=mongod_replicaset_node%>" == "$LOCAL_MONGOD" ] ; then
         
 EOF
     OK=`cat $VARFILE`
-    if [ "$OK" -eq "1" ] ; then
+    if [ "$OK" == "1" ] ; then
         echo "Shard adding completed. Remember to run db.runCommand( { enableSharding: <database> } ) for each databases needing sharding."
     else
         echo "Adding shard <%=mongo_replicaset_name%> to cluster failed" &>/dev/stderr

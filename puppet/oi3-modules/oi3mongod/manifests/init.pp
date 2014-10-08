@@ -19,28 +19,20 @@ class oi3mongod {
     }
 }
 
-class oi3mongod::install {
-    package { ['mongodb-org-server', 'mongodb-org-shell']:
-    }
+class oi3mongod::install inherits oi3mongocommon {
 }
 
 class oi3mongod::config {
     # Directories to be created
     $mongo_directories = [
-        "/opt/openinfinity",
-        "/opt/openinfinity/log",
-        "/opt/openinfinity/log/mongodb",
-        "/opt/openinfinity/data",
         "/opt/openinfinity/data/mongod",
-        "/opt/openinfinity/service",
-        "/opt/openinfinity/service/mongodb",
-        "/opt/openinfinity/service/mongodb/scripts",
     ]
     file { $mongo_directories:
         ensure => "directory",
         owner => 'mongod',
         group => 'mongod',
         mode => 0755,
+        require => Class["oi3mongod::install"],
     }
 
     file { '/etc/mongod.conf':
@@ -67,7 +59,7 @@ class oi3mongod::config {
         notify => Service["mongod"],
         owner => "mongod",
         group => "mongod",
-        content => template("oi3-oi3mongod/sysconfig-mongod"),
+        source => "puppet:///modules/oi3mongod/sysconfig-mongod",
         require => Class["oi3mongod::install"],
     }
 
@@ -76,9 +68,16 @@ class oi3mongod::config {
 class oi3mongod::service {
     service { "mongod":
         ensure => running,
-        hasrestart => true,
         enable => true,
-        require => Class["oi3mongod::config"],
+        hasrestart => true,
+        subscribe => [
+            Package['mongodb-org-server'],
+            File["/opt/openinfinity/log/mongodb"],
+            File["/opt/openinfinity/data/mongod"],
+            File["/etc/mongod.conf"],
+            File["/etc/init.d/mongod"],
+            File["/etc/sysconfig/mongod"],
+        ],
     }
 }
 
@@ -89,7 +88,7 @@ class oi3mongod::replicaset {
         group => "mongod",
         mode => 0755,
         content => template("oi3mongod/rset-join.sh.erb"),
-        require => Class["oi3mongod::service"],
+        require => Service['mongod'],
     }
     
     # Execute the replica set join script.
@@ -97,6 +96,7 @@ class oi3mongod::replicaset {
         command => "/opt/openinfinity/service/mongodb/scripts/rset-join.sh",
         #tries => 2,
         #try_sleep => 60,
+        logoutput => true,
         user => "mongod",
         require => File['/opt/openinfinity/service/mongodb/scripts/rset-join.sh'],
     }
@@ -107,8 +107,9 @@ class oi3mongod::shard {
         ensure => present,
         owner => "mongod",
         group => "mongod",
+        mode => 0755,
         content => template("oi3mongod/shard-join.sh.erb"),
-        require => Class["oi3mongod::service"],
+        require => Exec['rset-join'],
     }
 
     # Execute the shard join script.
@@ -117,13 +118,11 @@ class oi3mongod::shard {
         tries => 3,
         try_sleep => 60,
         user => "mongod",
+        logoutput => true,
         require => [
             File['/opt/openinfinity/service/mongodb/scripts/shard-join.sh'], 
             Exec['rset-join']
         ],
     }
 }
-
-#class oi3mongod::foo {
-#}
 
