@@ -21,8 +21,8 @@ net:
 #    bindIp: 0.0.0.0
     port: <%= mongod_port %>
     
-replication:
 <% if ['replicaset', 'sharded'].include? mongo_cluster_type then %>    
+replication:
     replSetName: <%= mongo_replicaset_name %>
     <% if mongo_replicaset_oplogSizeMB != "default" then %>
     oplogSizeMB: <%= mongo_replicaset_oplogSizeMB %>

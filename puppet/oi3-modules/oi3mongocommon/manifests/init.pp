@@ -20,11 +20,11 @@ class oi3mongocommon {
     
     # Directories to be created
     $mongo_directories = [
-        "/opt/openinfinity",
-        "/opt/openinfinity/log",
+#        "/opt/openinfinity",
+#        "/opt/openinfinity/log",
         "/opt/openinfinity/log/mongodb",
-        "/opt/openinfinity/data",
-        "/opt/openinfinity/service",
+#        "/opt/openinfinity/data",
+#        "/opt/openinfinity/service",
         "/opt/openinfinity/service/mongodb",
         "/opt/openinfinity/service/mongodb/scripts",
     ]
@@ -33,6 +33,11 @@ class oi3mongocommon {
         owner => 'mongod',
         group => 'mongod',
         mode => 0755,
+        require => [
+            File["/opt/openinfinity/log"],     # defined in oi3-basic
+            File["/opt/openinfinity/data"],    # defined in oi3-basic
+            File["/opt/openinfinity/service"], # defined in oi3-basic
+            ],
     }
 }
 
