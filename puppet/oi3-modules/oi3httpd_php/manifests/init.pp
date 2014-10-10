@@ -1,4 +1,8 @@
 
+#
+# Depends on oi3httpd and oi3-basic
+#
+
 class oi3httpd_php {
     require oi3httpd_php::install
     require oi3httpd_php::config
