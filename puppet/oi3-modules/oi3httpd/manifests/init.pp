@@ -1,7 +1,7 @@
 class oi3httpd inherits oi3variables  {
     package { $apacheInstallPackageNames:
-                ensure => installed
-        }
+        ensure => installed
+    }
 
     if ($operatingsystem == 'Ubuntu') {
         exec { '/usr/sbin/a2enmod ssl && /usr/bin/service apache2 restart':
@@ -37,3 +37,4 @@ class oi3httpd inherits oi3variables  {
         require => Package[$apachePackageName]
     }
 }
+
