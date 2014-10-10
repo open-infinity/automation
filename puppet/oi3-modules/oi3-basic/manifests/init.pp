@@ -31,6 +31,30 @@ class oi3-basic::config {
             require => User["oiuser"],
     }
 
+    file {"/opt/openinfinity/data":
+            ensure => directory,
+            owner => 'oiuser',
+            group => 'oiuser',
+            mode => 644,
+            require => [User["oiuser"], File["/opt/openinfinity"]],
+    }
+
+    file {"/opt/openinfinity/log":
+            ensure => directory,
+            owner => 'oiuser',
+            group => 'oiuser',
+            mode => 644,
+            require => [User["oiuser"], File["/opt/openinfinity"]],
+    }
+
+    file {"/opt/openinfinity/service":
+            ensure => directory,
+            owner => 'oiuser',
+            group => 'oiuser',
+            mode => 644,
+            require => [User["oiuser"], File["/opt/openinfinity"]],
+    }
+
     file {"/opt/openinfinity/3.1.0":
             ensure => directory,
             owner => 'oiuser',
