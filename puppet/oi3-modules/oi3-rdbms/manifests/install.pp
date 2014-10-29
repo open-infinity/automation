@@ -5,7 +5,7 @@ class oi3-rdbms::install {
         owner => "mysql",
         group => "mysql",
         mode => 0775,
-        require => file["/opt/openinfinity/3.1.0"],
+        require => File["/opt/openinfinity/3.1.0"],
     }
 
 #   file {"/opt/openinfinity/3.1.0/rdbms/etc":
@@ -21,12 +21,12 @@ class oi3-rdbms::install {
         owner => "mysql",
         group => "mysql",
         mode => 0775,
-        require => file["/opt/openinfinity/3.1.0/rdbms"],
+        require => File["/opt/openinfinity/3.1.0/rdbms"],
     }   
 
     package { "oi3-rdbms":
         ensure => present,
-        require => file['/opt/openinfinity/3.1.0/rdbms/data'],
+        require => File['/opt/openinfinity/3.1.0/rdbms/data'],
     }
 
     user { "mysql":

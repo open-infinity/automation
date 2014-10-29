@@ -1,5 +1,10 @@
-class oi3-activiti-rdbms::config {
-	
+class oi3-activiti-rdbms::config ($rdbms_oi_httpuser_pwd = undef) {
+	if $rdbms_oi_httpuser_pwd == undef {
+		$_rdbms_oi_httpuser_pwd = $::oi_httpuser_pwd
+	}
+	else {
+		$_rdbms_oi_httpuser_pwd = $rdbms_oi_httpuser_pwd
+	}
 	# Directory for activiti schema files
 	file { "/opt/openinfinity/3.1.0/activiti":
 		ensure => directory,
@@ -13,7 +18,7 @@ class oi3-activiti-rdbms::config {
 		ensure => directory,
 		group => "root",
 		owner => "root",
-		require => file["/opt/openinfinity/3.1.0/activiti"],
+		require => File["/opt/openinfinity/3.1.0/activiti"],
 	}
 	
 	# Activiti schema create scripts

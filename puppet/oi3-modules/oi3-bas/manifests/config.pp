@@ -1,4 +1,63 @@
-class oi3-bas::config inherits oi3variables {
+class oi3-bas::config (
+  $bas_multicast_address = undef,
+  $bas_tomcat_monitor_role_pwd = undef,
+  $bas_tomcat_connector_attributes = undef,
+  $bas_tomcat_ajp_connector_attributes = undef,
+  $bas_jvmmem = undef,
+  $bas_jvmperm = undef,
+  $bas_extra_jvm_opts = undef,
+  $bas_extra_catalina_opts = undef
+) inherits oi3variables
+
+{
+  if $bas_multicast_address == undef {
+    $_bas_multicast_address = $::multicastaddress
+  }
+  else {
+    $_bas_multicast_address = $bas_multicast_address
+  }
+  if $bas_tomcat_monitor_role_pwd == undef {
+    $_bas_tomcat_monitor_role_pwd = $::tomcat_monitor_role_pwd
+  }
+  else {
+    $_bas_tomcat_monitor_role_pwd = $bas_tomcat_monitor_role_pwd
+  }
+  if $bas_tomcat_connector_attributes == undef {
+    $_bas_tomcat_connector_attributes = $::tomcat_connector_attributes
+  }
+  else {
+    $_bas_tomcat_connector_attributes = $bas_tomcat_connector_attributes
+  }
+  if $bas_tomcat_ajp_connector_attributes == undef {
+    $_bas_tomcat_ajp_connector_attributes = $::ajp_connector_attributes
+  }
+  else {
+    $_bas_tomcat_ajp_connector_attributes = $bas_tomcat_ajp_connector_attributes
+  }
+  if $bas_jvmmem == undef {
+    $_bas_jvmmem = $::jvmmem
+  }
+  else {
+    $_bas_jvmmem = $bas_jvmmem
+  }
+  if $bas_jvmperm == undef {
+    $_bas_jvmperm = $::jvmperm
+  }
+  else {
+    $_bas_jvmperm = $bas_jvmperm
+  }
+  if $bas_extra_jvm_opts == undef {
+    $_bas_extra_jvm_opts = $::extra_jvm_opts
+  }
+  else {
+    $_bas_extra_jvm_opts = $bas_extra_jvm_opts
+  }
+  if $bas_extra_catalina_opts == undef {
+    $_bas_extra_catalina_opts = $::extra_catalina_opts
+  }
+  else {
+    $_bas_extra_catalina_opts = $bas_extra_catalina_opts
+  }
 
     file { "/opt/openinfinity/3.1.0/tomcat/bin/setenv.sh":
         ensure => present,

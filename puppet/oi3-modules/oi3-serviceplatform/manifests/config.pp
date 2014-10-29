@@ -1,4 +1,104 @@
-class oi3-serviceplatform::config inherits oi3variables {
+class oi3-serviceplatform::config (
+  $bas_multicast_address = undef,
+  $sp_dbaddress = undef,
+  $sp_nodeid = undef,
+  $sp_amq_password = undef,
+  $sp_activiti_password = undef,
+  $sp_oi_dbuser_password = undef,
+  $sp_jvmmem = undef,
+  $sp_jvmperm = undef,
+  $sp_extra_jvm_opts = undef,
+  $sp_extra_catalina_opts = undef,
+  $sp_oi_httpuser_pwd = undef,
+  $bas_tomcat_connector_attributes = undef,
+  $bas_tomcat_ajp_connector_attributes = undef,
+  $bas_tomcat_monitor_role_pw = undef
+) inherits oi3variables {
+
+  if $bas_multicast_address == undef {
+    $_bas_multicast_address = $::multicastaddress
+  }
+  else {
+    $_bas_multicast_address = $bas_multicast_address
+  }
+  if $sp_dbaddress == undef {
+    $_sp_dbaddress = $::dbaddress
+  }
+  else {
+    $_sp_dbaddress = $sp_dbaddress
+  }
+  if $sp_nodeid == undef {
+    $_sp_nodeid = $::nodeid
+  }
+  else {
+    $_sp_nodeid = $sp_nodeid
+  }
+  if $sp_amq_password == undef {
+    $_sp_amq_password = $::amq_password
+  }
+  else {
+    $_sp_amq_password = $sp_amq_password
+  }
+  if $sp_activiti_password == undef {
+   $_sp_activiti_password = $::sp_activiti_password
+  }
+  else {
+    $_sp_activiti_password = $sp_activiti_password
+  }
+  if $sp_oi_dbuser_password == undef {
+    $_sp_oi_dbuser_password = $::oi_dbuser_password
+  }
+  else {
+    $_sp_oi_dbuser_password = $sp_oi_dbuser_password
+  }
+  if $sp_jvmmem == undef {
+    $_sp_jvmmem = $::jvmmem
+  }
+  else {
+    $_sp_jvmmem =  $sp_jvmmem
+  }
+  if $sp_jvmperm == undef {
+    $_sp_jvmperm = $::jvmperm
+  }
+  else {
+    $_sp_jvmperm = $sp_jvmperm
+  }
+  if $sp_extra_jvm_opts == undef {
+    $_sp_extra_jvm_opts = $::extra_jvm_opts
+  }
+  else {
+    $_sp_extra_jvm_opts = $sp_extra_jvm_opts
+  }
+  if $sp_extra_catalina_opts == undef {
+    $_sp_extra_catalina_opts = $::extra_catalina_opts
+  }
+  else {
+    $_sp_extra_catalina_opts = $sp_extra_catalina_opts
+  }
+  if $sp_oi_httpuser_pwd == undef {
+    $_sp_oi_httpuser_pwd = $::oi_httpuser_pwd
+  }
+  else {
+    $_sp_oi_httpuser_pwd = $sp_oi_httpuser_pwd
+  }
+  if $bas_tomcat_connector_attributes == undef {
+    $_bas_tomcat_connector_attributes = $::tomcat_connector_attributes
+  }
+  else {
+     $_bas_tomcat_connector_attributes = $bas_tomcat_connector_attributes
+  }
+  if $bas_tomcat_ajp_connector_attributes == undef {
+    $_bas_tomcat_ajp_connector_attributes = $::ajp_connector_attributes
+  }
+  else {
+    $_bas_tomcat_ajp_connector_attributes = $bas_tomcat_ajp_connector_attributes
+  }
+  if $bas_tomcat_monitor_role_pw == undef {
+    $_bas_tomcat_monitor_role_pw = $::tomcat_monitor_role_pw
+  }
+  else {
+    $_bas_tomcat_monitor_role_pw = $bas_tomcat_monitor_role_pw
+  }  
 
     file { "/opt/openinfinity/3.1.0/tomcat/bin/setenv.sh":
         ensure => present,

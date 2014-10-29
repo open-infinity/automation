@@ -58,7 +58,16 @@ define mountephreal (
     }
 }
 
-class oi3-ebs {
+class oi3-ebs ($ec2 = undef) {
+    if $ec2 == undef {
+      file {"/opt":
+        ensure => directory,
+        owner => "root",
+        group => "root",
+        mode => 755,
+      }
+    }
+    else {
     package { ["parted"]:
         ensure => installed,
     }
@@ -79,6 +88,7 @@ class oi3-ebs {
         mountephreal {"/opt":
             device => 'vda',
         }
+    }
     }
 }
 

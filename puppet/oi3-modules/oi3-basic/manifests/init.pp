@@ -68,7 +68,7 @@ class oi3-basic::config {
             owner => 'oiuser',
             group => 'oiuser',
             mode => 750,
-            require => [user['oiuser'],group['oiuser']]
+            require => [User['oiuser'],Group['oiuser']]
     }
 
     user { "oiuser":
