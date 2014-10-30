@@ -13,7 +13,7 @@ class oi3-oauth-rdbms::config {
 		ensure => directory,
 		group => "root",
 		owner => "root",
-		require => file["/opt/openinfinity/3.1.0/oauth"],
+		require => File["/opt/openinfinity/3.1.0/oauth"],
 	}
 
 	# Oauth schema create scripts
