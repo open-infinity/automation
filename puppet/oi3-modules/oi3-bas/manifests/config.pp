@@ -79,6 +79,16 @@ class oi3-bas::config (
         notify => Service["oi-tomcat"],
     }
 
+    file {"/opt/openinfinity/3.1.0/tomcat/conf/logging.properties":
+	ensure => present,
+	owner => 'oiuser',
+	group => 'oiuser',
+	mode => 0644,
+	source => "puppet:///modules/oi3-bas/logging.properties",
+	require => Class["oi3-bas::install"],
+	notify => Service["oi-tomcat"],
+    }
+
     file {"/opt/openinfinity/3.1.0/tomcat/conf/server.xml":
         ensure => present,
         owner => 'oiuser',
