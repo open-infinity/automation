@@ -10,6 +10,10 @@ class oi3-serviceplatform::config (
   $sp_extra_jvm_opts = undef,
   $sp_extra_catalina_opts = undef,
   $sp_oi_httpuser_pwd = undef,
+
+  $sp_amq_stomp_conn_bindaddr = undef,
+  $sp_amq_jms_conn_bindaddr = undef,
+  
   $bas_tomcat_connector_attributes = undef,
   $bas_tomcat_ajp_connector_attributes = undef,
   $bas_tomcat_monitor_role_pw = undef
@@ -33,14 +37,27 @@ class oi3-serviceplatform::config (
   else {
     $_sp_nodeid = $sp_nodeid
   }
+  
   if $sp_amq_password == undef {
     $_sp_amq_password = $::amq_password
   }
   else {
     $_sp_amq_password = $sp_amq_password
   }
+  if $sp_amq_jms_conn_bindaddr == undef {
+    $_sp_amq_jms_conn_bindaddr = $::amq_jms_conn_bindaddr
+  }
+  else {
+    $_sp_amq_jms_conn_bindaddr = $sp_amq_jms_conn_bindaddr
+  }
+  if $sp_amq_stomp_conn_bindaddr == undef {
+    $_sp_amq_stomp_conn_bindaddr = $::amq_stomp_conn_bindaddr
+  }
+  else {
+    $_sp_amq_stomp_conn_bindaddr = $sp_amq_stomp_conn_bindaddr
+  }
   if $sp_activiti_password == undef {
-   $_sp_activiti_password = $::sp_activiti_password
+   $_sp_activiti_password = $::activiti_password
   }
   else {
     $_sp_activiti_password = $sp_activiti_password
@@ -131,15 +148,45 @@ class oi3-serviceplatform::config (
 
 
     #rights may require change
-    file {"/opt/openinfinity/3.1.0/tomcat/conf/activemq.xml":
-        ensure => present,
+    $activemqxml = '/opt/openinfinity/3.1.0/tomcat/conf/activemq.xml'
+    
+    concat{$activemqxml:
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        content => template("oi3-serviceplatform/activemq.xml.erb"),
-        require => Class["oi3-serviceplatform::install"],
+    }
+    
+    
+    concat::fragment{'amqxml_start':
+	target =>  $activemqxml,
+        content => template("oi3-serviceplatform/frag_start_activemq.xml.erb"),
+	order => '01',
     }
 
+    # concat by undef and def parameters
+  if $_sp_amq_jms_conn_bindaddr != undef {
+	concat::fragment{'amqxml_jmsconnector':
+	  target =>  $activemqxml,
+	  content => template("oi3-serviceplatform/frag_jmsconnector_activemq.xml.erb"),
+	  order => '10',
+	}	  
+  }	  
+  if $_sp_amq_stomp_conn_bindaddr != undef {
+	concat::fragment{'amqxml_stompconnector':
+	  target =>  $activemqxml,
+	  content => template("oi3-serviceplatform/frag_stompconnector_activemq.xml.erb"),
+	  order => '10',
+	}	  
+  }	  
+    
+    
+    concat::fragment{'amqxml_end':
+	target =>  $activemqxml,
+        content => template("oi3-serviceplatform/frag_end_activemq.xml.erb"),
+	order => '15',
+    }
+    
+    
     file {"/opt/data/.mule":
         ensure => directory,
         owner => 'oiuser',
