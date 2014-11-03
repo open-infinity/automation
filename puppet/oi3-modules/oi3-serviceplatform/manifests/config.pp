@@ -303,6 +303,15 @@ class oi3-serviceplatform::config (
         require => Class["oi3-serviceplatform::install"],
     }
 
+    file {"/opt/openinfinity/3.1.0/tomcat/conf/logging.properties":
+        ensure => present,
+        owner => 'oiuser',
+        group => 'oiuser',
+        mode => 0644,
+        source => "puppet:///modules/oi3-bas/logging.properties",
+        require => Class["oi3-serviceplatform::install"],
+    }
+
     # Security Vault configuration
     file {"/opt/openinfinity/3.1.0/tomcat/conf/securityvault.properties":
         ensure => present,
