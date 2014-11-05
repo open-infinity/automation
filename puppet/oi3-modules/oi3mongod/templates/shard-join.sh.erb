@@ -10,7 +10,7 @@ if [ "x$DOMAIN" != "x" ] ; then
     DOMAIN=.$DOMAIN
 fi
 
-echo "*** Adding replica set <%= mongo_replicaset_name %> to the sharded cluster ***"
+echo "*** Adding replica set <%= mongod_replicaset_name %> to the sharded cluster ***"
 
 # Wait until the mongos is up and running
 while : 
@@ -31,12 +31,12 @@ done
 echo "" > $VARFILE
 while : 
 do
-    mongo --quiet localhost:<%=mongod_port%> >$VARFILE << EOF
+    mongo --quiet localhost:<%=_mongod_port%> >$VARFILE << EOF
     db.serverStatus().host
 EOF
     LOCAL_MONGOD=`cat $VARFILE`
     if [ "$LOCAL_MONGOD" != "" ] ; then
-        LOCAL_MONGOD=`echo "$LOCAL_MONGOD" | sed "s/\..*//" | sed "s/:.*//"`$DOMAIN:<%=mongod_port%>
+        LOCAL_MONGOD=`echo "$LOCAL_MONGOD" | sed "s/\..*//" | sed "s/:.*//"`$DOMAIN:<%=_mongod_port%>
         break
     fi
     
@@ -51,7 +51,7 @@ if [ "$MONGOD_REPLICASET_NODE" == "$LOCAL_MONGOD" ] ; then
     # Add shard
     echo "Adding shard to the cluster"
     mongo --quiet <%=mongo_mongos_node%> >$VARFILE << EOF
-        r = sh.addShard( "<%=mongo_replicaset_name%>/$LOCAL_MONGOD" );
+        r = sh.addShard( "<%=mongod_replicaset_name%>/$LOCAL_MONGOD" );
         r.ok
         
 EOF
@@ -59,7 +59,7 @@ EOF
     if [ "$OK" == "1" ] ; then
         echo "Shard adding completed. Remember to run db.runCommand( { enableSharding: <database> } ) for each databases needing sharding."
     else
-        echo "Adding shard <%=mongo_replicaset_name%> to cluster failed" &>/dev/stderr
+        echo "Adding shard <%=mongod_replicaset_name%> to cluster failed" &>/dev/stderr
     fi
 fi
 

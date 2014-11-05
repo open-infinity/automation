@@ -8,24 +8,24 @@ storage:
     dbPath: "/opt/openinfinity/data/mongod"
     journal:
         enabled: true
-    smallFiles: <%= mongo_storage_smallFiles %>
+    smallFiles: <%= _mongo_storage_smallFiles %>
 
 security:
-    authorization: <%= mongo_security_authorization %>
+    authorization: <%= _mongo_security_authorization %>
 
 processManagement:
     fork: true
     pidFilePath: /var/run/mongodb/mongod.pid
 
 net:
+    port: <%= _mongod_port %>
 #    bindIp: 0.0.0.0
-    port: <%= mongod_port %>
     
 <% if ['replicaset', 'sharded'].include? mongo_cluster_type then %>    
 replication:
-    replSetName: <%= mongo_replicaset_name %>
-    <% if mongo_replicaset_oplogSizeMB != "default" then %>
-    oplogSizeMB: <%= mongo_replicaset_oplogSizeMB %>
+    replSetName: <%= mongod_replicaset_name %>
+    <% if _mongod_replicaset_oplogSizeMB != "default" then %>
+    oplogSizeMB: <%= _mongod_replicaset_oplogSizeMB %>
     <% end %>
 <% end %>
 

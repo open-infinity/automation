@@ -11,7 +11,7 @@ if [ "x$DOMAIN" != "x" ] ; then
     DOMAIN=.$DOMAIN
 fi
 
-echo "*** Adding node to replica set <%= mongo_replicaset_name %> ***"
+echo "*** Adding node to replica set <%= mongod_replicaset_name %> ***"
 
 # Wait for the replica set contact point to come online
 while : 
@@ -33,13 +33,13 @@ done
 echo "" > $VARFILE
 while : 
 do
-    mongo --quiet localhost:<%=mongod_port%> >$VARFILE << EOF
+    mongo --quiet localhost:<%=_mongod_port%> >$VARFILE << EOF
     db.serverStatus().host
 EOF
     LOCAL_MONGOD=`cat $VARFILE`
     if [ "$LOCAL_MONGOD" != "" ] ; then
-        LOCAL_MONGOD=`echo "$LOCAL_MONGOD" | sed "s/\..*//" | sed "s/:.*//"`$DOMAIN:<%=mongod_port%>
-        LOCAL_MONGOD_SHORT=`echo "$LOCAL_MONGOD" | sed "s/\..*//" | sed "s/:.*//"`:<%=mongod_port%>
+        LOCAL_MONGOD=`echo "$LOCAL_MONGOD" | sed "s/\..*//" | sed "s/:.*//"`$DOMAIN:<%=_mongod_port%>
+        LOCAL_MONGOD_SHORT=`echo "$LOCAL_MONGOD" | sed "s/\..*//" | sed "s/:.*//"`:<%=_mongod_port%>
         break
     fi
     
@@ -94,7 +94,7 @@ else
         var a = sleep(2000);
     }
 EOF
-    MONGOD_PRIMARY=`cat $VARFILE | sed "s/\..*//" | sed "s/:.*//"`$DOMAIN:<%=mongod_port%>
+    MONGOD_PRIMARY=`cat $VARFILE | sed "s/\..*//" | sed "s/:.*//"`$DOMAIN:<%=_mongod_port%>
     echo "Found primary '$MONGOD_PRIMARY'"
     
     # Join this node to the primary node
@@ -105,7 +105,7 @@ EOF
             print("Successfuly added node $LOCAL_MONGOD to the replica set");
         } else {
             print("Error: Failed to add $LOCAL_MONGOD to the replica set: " + r.errmsg);
-            throw { name: 'FatalError', message: "Failed to add $LOCAL_MONGOD to replica set <%= mongo_replicaset_name %>: " + r.errmsg };
+            throw { name: 'FatalError', message: "Failed to add $LOCAL_MONGOD to replica set <%= mongod_replicaset_name %>: " + r.errmsg };
         }
 EOF
     if [ $? -ne 0 ] ; then

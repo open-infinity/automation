@@ -13,7 +13,7 @@ class oi3mongos {
 class oi3mongos::install inherits oi3mongocommon {
 }
 
-class oi3mongos::config {
+class oi3mongos::config inherits oi3mongos::parameters {
     file { '/etc/mongos.conf':
         ensure => present,
         notify => Service["mongos"],
@@ -56,5 +56,45 @@ class oi3mongos::service {
             File["/etc/sysconfig/mongos"],
         ],
     }
+}
+
+class oi3mongos::parameters (
+	$mongo_cluster_type = $::mongo_cluster_type,
+	$mongos_port = $::mongos_port,
+	$mongo_config_servers = $::mongo_config_servers,
+) {
+	#
+	# Parameter validation and some default values
+	#
+	
+	# mongo_cluster_type
+	if ($mongo_cluster_type == undef) { 
+		fail("Parameter mongo_cluster_type undefined") 
+	}
+	if ($mongo_cluster_type !~ /^(standalone|replicaset|sharded)$/) { 
+		fail("Invalid mongo_cluster_type value '$mongo_cluster_type'") 
+	}
+	if ($mongo_cluster_type != 'sharded') {
+		fail("Mongo routing process (mongos) is needed in a sharded cluster type only.") 
+	}
+		
+	# mongos_port
+	if ($mongos_port == undef) { 
+		$_mongos_port = '27017'
+		notice("Using mongos_port=$_mongos_port") 
+	} else {
+		$_mongos_port = $mongos_port
+	}
+	if ($_mongos_port !~ /^[0-9]+$/) { 
+		fail("Invalid mongos_port value '$mongos_port'") 
+	}
+	
+	# mongo_config_servers
+	if ($mongo_config_servers == undef) { 
+		fail("Parameter mongo_config_servers undefined") 
+	}
+	if ($mongo_config_servers !~ /^([-a-z0-9\.]+|[-a-z0-9\.]+,[-a-z0-9\.]+,[-a-z0-9\.]+)$/) { 
+		fail("Invalid mongo_config_servers value '$mongo_config_servers'") 
+	}
 }
 

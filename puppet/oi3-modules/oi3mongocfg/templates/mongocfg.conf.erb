@@ -8,18 +8,18 @@ storage:
     dbPath: "/opt/openinfinity/data/mongocfg"
     journal:
         enabled: true
-    smallFiles: <%= mongo_storage_smallFiles %>
+    smallFiles: <%= _mongo_storage_smallFiles %>
 
 security:
-    authorization: <%= mongo_security_authorization %>
+    authorization: <%= _mongo_security_authorization %>
 
 processManagement:
     fork: true
     pidFilePath: /var/run/mongodb/mongocfg.pid
 
 net:
+    port: <%= _mongocfg_port %>
 #    bindIp: 0.0.0.0
-    port: <%= mongocfg_port %>
     
 <% if mongo_cluster_type == 'sharded' then %>
 sharding:
