@@ -8,7 +8,7 @@ innodb_autoinc_lock_mode=2
 
 # 2. Optional mysqld settings: your regular InnoDB tuning and such
 datadir=/opt/openinfinity/3.1.0/rdbms/data
-innodb_buffer_pool_size=1G
+innodb_buffer_pool_size=<%= @_rdbms_innodb_buffer_size %>
 innodb_log_file_size=100M
 innodb_file_per_table
 innodb_flush_log_at_trx_commit=2
@@ -17,7 +17,7 @@ innodb_flush_log_at_trx_commit=2
 wsrep_provider=/usr/lib64/galera/libgalera_smm.so
 wsrep_provider_options="gcache.size=1G; gcache.page_size=256"
 wsrep_cluster_address=gcomm://<%= @_galera_cluster_address %>
-wsrep_cluster_name='openinfinity_galera_cluster'
+wsrep_cluster_name='<%= @_galera_cluster_name %>'
 wsrep_node_address='<%= @_galera_node_address %>'
 wsrep_node_name='<%= @_galera_node_name %>'
 wsrep_sst_method=xtrabackup

@@ -1,9 +1,15 @@
-class oi3mariadbgalera ($rdbms_mysql_password = undef, $galera_cluster_address = undef, $galera_node_address = undef, $galera_node_name = undef) inherits oi3variables {
+class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size = undef, $galera_cluster_name = undef, $galera_cluster_address = undef, $galera_node_address = undef, $galera_node_name = undef) inherits oi3variables {
   if $rdbms_mysql_password == undef {
     $_rdbms_mysql_password = $::mysql_password
   }
   else {
     $_rdbms_mysql_password = $rdbms_mysql_password
+  }
+  if $rdbms_innodb_buffer_size == undef {
+    $_rdbms_innodb_buffer_size = $::innodb_buffer_size
+  }
+  else {
+    $_rdbms_innodb_buffer_size = $rdbms_innodb_buffer_size
   }
   if $galera_cluster_address == undef {
     $_galera_cluster_address = $::galera_cluster_address
@@ -22,6 +28,12 @@ class oi3mariadbgalera ($rdbms_mysql_password = undef, $galera_cluster_address =
   }
   else {
     $_galera_node_name = $galera_node_name
+  }
+  if $galera_cluster_name == undef {
+    $_galera_cluster_name = $::galera_cluster_name
+  }
+  else {
+    $_galera_cluster_name = $galera_cluster_name
   }
 
   ensure_resource('user', 'mysql', {
@@ -43,7 +55,7 @@ class oi3mariadbgalera ($rdbms_mysql_password = undef, $galera_cluster_address =
     if ($operatingsystem ==  'CentOS') or ($operatingsystem == 'RedHat') {
     package { "nc":
         ensure => present,
-        before => file["/opt/openinfinity/3.1.0/rdbms"],
+        before => File["/opt/openinfinity/3.1.0/rdbms"],
         }
     }
 
@@ -52,7 +64,7 @@ class oi3mariadbgalera ($rdbms_mysql_password = undef, $galera_cluster_address =
         owner => "mysql",
         group => "mysql",
         mode => 0775,
-        require => file["/opt/openinfinity/3.1.0"],
+        require => File["/opt/openinfinity/3.1.0"],
     } ->
     file {"/opt/openinfinity/3.1.0/rdbms/data":
         ensure => directory,
