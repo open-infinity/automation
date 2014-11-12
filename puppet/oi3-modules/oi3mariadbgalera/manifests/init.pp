@@ -1,6 +1,30 @@
-class oi3mariadbgalera inherits oi3variables {
+class oi3mariadbgalera ($rdbms_mysql_password = undef, $galera_cluster_address = undef, $galera_node_address = undef, $galera_node_name = undef) inherits oi3variables {
+  if $rdbms_mysql_password == undef {
+    $_rdbms_mysql_password = $::mysql_password
+  }
+  else {
+    $_rdbms_mysql_password = $rdbms_mysql_password
+  }
+  if $galera_cluster_address == undef {
+    $_galera_cluster_address = $::galera_cluster_address
+  }
+  else {
+    $_galera_cluster_address = $galera_cluster_address
+  }
+  if $galera_node_address == undef {
+    $_galera_node_address = $::galera_node_address
+  }
+  else {
+    $_galera_node_address = $galera_node_address
+  }
+  if $galera_node_name == undef {
+    $_galera_node_name = $::galera_node_name
+  }
+  else {
+    $_galera_node_name = $galera_node_name
+  }
 
-    ensure_resource('user', 'mysql', {
+  ensure_resource('user', 'mysql', {
         home => "/opt/openinfinity/3.1.0/rdbms/data",
         managehome => false,
         system => true,
@@ -15,7 +39,7 @@ class oi3mariadbgalera inherits oi3variables {
     package { "oi3-mariadb-galera":
         ensure => present,
     }
-    
+
     if ($operatingsystem ==  'CentOS') or ($operatingsystem == 'RedHat') {
     package { "nc":
         ensure => present,
