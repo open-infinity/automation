@@ -1,9 +1,15 @@
-class oi3-basic::config {
+class oi3-basic::config ($toaspathversion = undef) {
 
+  if $toasversion == undef {
+    $_toasversion = $::toaspathversion
+  }
+  else {
+    $_toasversion = $toaspathversion
+  }
     require oi3-ebs
         file {"/etc/logrotate.d/oi-tomcat":
         ensure => present,
-        source => "puppet:///modules/oi3-basic/oi-tomcat.logrotate",
+        content => template("oi3-basic/oi-tomcat.logrotate.erb"),
         owner => "root",
         group => "root",
         mode => 0644,
@@ -55,7 +61,7 @@ class oi3-basic::config {
             require => [User["oiuser"], File["/opt/openinfinity"]],
     }
 
-    file {"/opt/openinfinity/3.1.0":
+    file {"/opt/openinfinity/$_toasversion":
             ensure => directory,
             owner => 'oiuser',
             group => 'oiuser',
@@ -106,6 +112,3 @@ class oi3-basic {
     require oi3-ebs
         include  oi3-basic::install, oi3-basic::config,  oi3-basic::service
 }
-    
-
-
