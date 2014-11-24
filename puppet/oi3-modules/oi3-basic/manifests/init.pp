@@ -1,6 +1,6 @@
 class oi3-basic::config ($toaspathversion = undef) {
 
-  if $toasversion == undef {
+  if $toaspathversion == undef {
     $_toasversion = $::toaspathversion
   }
   else {

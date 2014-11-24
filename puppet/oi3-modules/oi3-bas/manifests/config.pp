@@ -11,7 +11,7 @@ class oi3-bas::config (
 ) inherits oi3variables
 
 {
-  if $toasversion == undef {
+  if $toaspathversion == undef {
     $_toasversion = $::toaspathversion
   }
   else {
@@ -112,7 +112,7 @@ class oi3-bas::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0600,
-        source => "puppet:///modules/oi3-bas/securityvault.properties",
+        content => template("oi3-bas/securityvault.properties.erb"),
         require => Class["oi3-bas::install"],
     }
 
