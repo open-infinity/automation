@@ -16,7 +16,9 @@ class oi3-serviceplatform::config (
   
   $bas_tomcat_connector_attributes = undef,
   $bas_tomcat_ajp_connector_attributes = undef,
-  $bas_tomcat_monitor_role_pw = undef
+  $bas_tomcat_monitor_role_pw = undef,
+
+  $toaspathversion = undef
 ) inherits oi3variables {
 
   if $bas_multicast_address == undef {
@@ -115,9 +117,15 @@ class oi3-serviceplatform::config (
   }
   else {
     $_bas_tomcat_monitor_role_pw = $bas_tomcat_monitor_role_pw
-  }  
+  }
+  if $toaspathversion == undef {
+    $_toaspathversion = $::toaspathversion
+  }
+  else {
+    $_toaspathversion = $toaspathversion
+  }
 
-    file { "/opt/openinfinity/3.1.0/tomcat/bin/setenv.sh":
+    file { "/opt/openinfinity/$_toaspathversion/tomcat/bin/setenv.sh":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
@@ -127,7 +135,7 @@ class oi3-serviceplatform::config (
         notify => Service["oi-tomcat"],
     }
 
-    file {"/opt/openinfinity/3.1.0/tomcat/conf/catalina.properties":
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/conf/catalina.properties":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
@@ -137,7 +145,7 @@ class oi3-serviceplatform::config (
         notify => Service["oi-tomcat"],
     }
 
-    file {"/opt/openinfinity/3.1.0/tomcat/conf/tomcat-users.xml":
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/conf/tomcat-users.xml":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
@@ -148,45 +156,44 @@ class oi3-serviceplatform::config (
 
 
     #rights may require change
-    $activemqxml = '/opt/openinfinity/3.1.0/tomcat/conf/activemq.xml'
-    
+    $activemqxml = "/opt/openinfinity/$_toaspathversion/tomcat/conf/activemq.xml"
+
     concat{$activemqxml:
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
     }
-    
-    
+
+
     concat::fragment{'amqxml_start':
-	target =>  $activemqxml,
-        content => template("oi3-serviceplatform/frag_start_activemq.xml.erb"),
-	order => '01',
+	    target =>  $activemqxml,
+      content => template("oi3-serviceplatform/frag_start_activemq.xml.erb"),
+      order => '01',
     }
 
     # concat by undef and def parameters
-  if $_sp_amq_jms_conn_bindaddr != undef {
-	concat::fragment{'amqxml_jmsconnector':
-	  target =>  $activemqxml,
-	  content => template("oi3-serviceplatform/frag_jmsconnector_activemq.xml.erb"),
-	  order => '10',
-	}	  
-  }	  
-  if $_sp_amq_stomp_conn_bindaddr != undef {
-	concat::fragment{'amqxml_stompconnector':
-	  target =>  $activemqxml,
-	  content => template("oi3-serviceplatform/frag_stompconnector_activemq.xml.erb"),
-	  order => '10',
-	}	  
-  }	  
-    
-    
-    concat::fragment{'amqxml_end':
-	target =>  $activemqxml,
-        content => template("oi3-serviceplatform/frag_end_activemq.xml.erb"),
-	order => '15',
+    if $_sp_amq_jms_conn_bindaddr != undef {
+	    concat::fragment{'amqxml_jmsconnector':
+	      target =>  $activemqxml,
+	      content => template("oi3-serviceplatform/frag_jmsconnector_activemq.xml.erb"),
+	      order => '10',
+	    }
     }
-    
-    
+    if $_sp_amq_stomp_conn_bindaddr != undef {
+	    concat::fragment{'amqxml_stompconnector':
+	    target =>  $activemqxml,
+	    content => template("oi3-serviceplatform/frag_stompconnector_activemq.xml.erb"),
+	    order => '10',
+	  }
+  }
+
+
+    concat::fragment{'amqxml_end':
+	    target =>  $activemqxml,
+      content => template("oi3-serviceplatform/frag_end_activemq.xml.erb"),
+	    order => '15',
+    }
+
     file {"/opt/data/.mule":
         ensure => directory,
         owner => 'oiuser',
@@ -197,7 +204,7 @@ class oi3-serviceplatform::config (
 
     # activity webapp configuration override
 
-    file {"/opt/openinfinity/3.1.0/tomcat/webapps/activiti-explorer2/WEB-INF/classes/db.properties":
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/webapps/activiti-explorer2/WEB-INF/classes/db.properties":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
@@ -206,7 +213,7 @@ class oi3-serviceplatform::config (
         require => Class["oi3-serviceplatform::install"],
     }
 
-    file {"/opt/openinfinity/3.1.0/tomcat/webapps/activiti-rest2/WEB-INF/classes/db.properties":
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/webapps/activiti-rest2/WEB-INF/classes/db.properties":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
@@ -214,56 +221,56 @@ class oi3-serviceplatform::config (
         content => template("oi3-serviceplatform/activiti.db.properties.erb"),
         require => Class["oi3-serviceplatform::install"],
     }
-    
-    file {"/opt/openinfinity/3.1.0/tomcat/webapps/activiti-explorer2/WEB-INF/activiti-standalone-context.xml":
+
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/webapps/activiti-explorer2/WEB-INF/activiti-standalone-context.xml":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        source => "puppet:///modules/oi3-serviceplatform/activiti-explorer-standalone-context.xml",     
+        source => "puppet:///modules/oi3-serviceplatform/activiti-explorer-standalone-context.xml",
         require => Class["oi3-serviceplatform::install"],
     }
-    
-    file {"/opt/openinfinity/3.1.0/tomcat/webapps/activiti-rest2/WEB-INF/classes/activiti-context.xml":
+
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/webapps/activiti-rest2/WEB-INF/classes/activiti-context.xml":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        source => "puppet:///modules/oi3-serviceplatform/activiti-rest-context.xml",        
+        source => "puppet:///modules/oi3-serviceplatform/activiti-rest-context.xml",
         require => Class["oi3-serviceplatform::install"],
     }
-    
-    file {"/opt/openinfinity/3.1.0/tomcat/webapps/activiti-rest2/WEB-INF/web.xml":
+
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/webapps/activiti-rest2/WEB-INF/web.xml":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        source => "puppet:///modules/oi3-serviceplatform/activiti-rest-web.xml",        
+        source => "puppet:///modules/oi3-serviceplatform/activiti-rest-web.xml",
         require => Class["oi3-serviceplatform::install"],
     }
 
     # activemq-web-console webapp configuration override
 
-    file {"/opt/openinfinity/3.1.0/tomcat/webapps/activemq-web-console/WEB-INF/webconsole-embedded.xml":
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/webapps/activemq-web-console/WEB-INF/webconsole-embedded.xml":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        source => "puppet:///modules/oi3-serviceplatform/webconsole-embedded.xml",      
+        source => "puppet:///modules/oi3-serviceplatform/webconsole-embedded.xml",
         require => Class["oi3-serviceplatform::install"],
     }
 
-    file {"/opt/openinfinity/3.1.0/tomcat/webapps/activemq-web-console/WEB-INF/web.xml":
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/webapps/activemq-web-console/WEB-INF/web.xml":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        source => "puppet:///modules/oi3-serviceplatform/amqwebconsole_web.xml",        
+        source => "puppet:///modules/oi3-serviceplatform/amqwebconsole_web.xml",
         require => Class["oi3-serviceplatform::install"],
     }
 
     # oauth webapp configuration override
-    file {"/opt/openinfinity/3.1.0/tomcat/webapps/oauth/WEB-INF/classes/oauth-repository.properties":
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/webapps/oauth/WEB-INF/classes/oauth-repository.properties":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
@@ -293,7 +300,7 @@ class oi3-serviceplatform::config (
 #   }
 
     # ---- From oi3-bas --------------------------------------------------------
-    file {"/opt/openinfinity/3.1.0/tomcat/conf/server.xml":
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/conf/server.xml":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
@@ -303,7 +310,7 @@ class oi3-serviceplatform::config (
         require => Class["oi3-serviceplatform::install"],
     }
 
-    file {"/opt/openinfinity/3.1.0/tomcat/conf/logging.properties":
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/conf/logging.properties":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
@@ -313,7 +320,7 @@ class oi3-serviceplatform::config (
     }
 
     # Security Vault configuration
-    file {"/opt/openinfinity/3.1.0/tomcat/conf/securityvault.properties":
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/conf/securityvault.properties":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
@@ -322,7 +329,7 @@ class oi3-serviceplatform::config (
         require => Class["oi3-serviceplatform::install"],
     }
 
-    file {"/opt/openinfinity/3.1.0/tomcat/conf/context.xml.openinfinity_example":
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/conf/context.xml.openinfinity_example":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
@@ -331,7 +338,7 @@ class oi3-serviceplatform::config (
         require => Class["oi3-serviceplatform::install"],
     }
 
-    file {"/opt/openinfinity/3.1.0/tomcat/conf/hazelcast.xml":
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/conf/hazelcast.xml":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
@@ -349,8 +356,8 @@ class oi3-serviceplatform::config (
         content => template("oi3-bas/oi-tomcat.erb"),
         require => Class["oi3-serviceplatform::install"],
     }
-    
-    file {"/opt/openinfinity/3.1.0/tomcat/conf/jmxremote.password":
+
+    file {"/opt/openinfinity/$_toaspathversion/tomcat/conf/jmxremote.password":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
@@ -358,8 +365,8 @@ class oi3-serviceplatform::config (
         content => template("oi3-bas/jmxremote.password.erb"),
         require => Class["oi3-serviceplatform::install"],
     }
-        
-    file {"/opt/openinfinity/3.1.0/tomcat/conf/jmxremote.access":
+
+    file {"/opt/openinfinity$_toaspathversion//tomcat/conf/jmxremote.access":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
