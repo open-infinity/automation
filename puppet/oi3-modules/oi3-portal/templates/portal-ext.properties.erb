@@ -4,33 +4,33 @@ ehcache.multi.vm.config.location=/ehcache/liferay-multi-vm-clustered.xml
 
 
 cluster.link.enabled=true
-cluster.link.autodetect.address=<%= dbaddress %>:3306
+cluster.link.autodetect.address=<%= @_portal_db_address %>:3306
 lucene.replicate.write=true
 
-multicast.group.address["cluster-link-control"]=<%= multicastaddress %>
+multicast.group.address["cluster-link-control"]=<%= @_portal_multicast_address %>
 multicast.group.port["cluster-link-control"]=54221
 #
 # See the properties "cluster.link.channel.properties.transport.0" and
 # "cluster.link.channel.system.properties".
 #
-multicast.group.address["cluster-link-udp"]=<%= multicastaddress %>
+multicast.group.address["cluster-link-udp"]=<%= @_portal_multicast_address %>
 multicast.group.port["cluster-link-udp"]=54222
 #
 # See the property "cluster.link.channel.system.properties".
 #
-multicast.group.address["cluster-link-mping"]=<%= multicastaddress %>
+multicast.group.address["cluster-link-mping"]=<%= @_portal_multicast_address %>
 multicast.group.port["cluster-link-mping"]=54223
 #
 # See the properties "net.sf.ehcache.configurationResourceName" and
 # "net.sf.ehcache.configurationResourceName.peerProviderProperties".
 #
-multicast.group.address["hibernate"]=<%= multicastaddress %>
+multicast.group.address["hibernate"]=<%= @_portal_multicast_address %>
 multicast.group.port["hibernate"]=54224
 #
 # See the properties "ehcache.multi.vm.config.location" and
 # "ehcache.multi.vm.config.location.peerProviderProperties".
 #
-multicast.group.address["multi-vm"]=<%= multicastaddress %>
+multicast.group.address["multi-vm"]=<%= @_portal_multicast_address %>
 multicast.group.port["multi-vm"]=54225
 
 
@@ -44,6 +44,6 @@ multicast.group.port["multi-vm"]=54225
 #control.panel.layout.regular.theme.id=tap
 
 jdbc.default.driverClassName=com.mysql.jdbc.Driver
-jdbc.default.url=jdbc:mysql://<%= dbaddress %>/lportal?emulateLocators=true&useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false
+jdbc.default.url=jdbc:mysql://<%= @_portal_db_address %>/lportal?emulateLocators=true&useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false
 jdbc.default.username=liferay
-jdbc.default.password=<%= liferay_db_password %>
+jdbc.default.password=<%= @_portal_db_password %>
