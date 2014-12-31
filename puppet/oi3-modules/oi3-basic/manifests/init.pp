@@ -55,6 +55,14 @@ class oi3-basic::config {
             require => [User["oiuser"], File["/opt/openinfinity"]],
     }
 
+    file {"/opt/openinfinity/conf":
+            ensure => directory,
+            owner => 'oiuser',
+            group => 'oiuser',
+            mode => 644,
+            require => [User["oiuser"], File["/opt/openinfinity"]],
+    }
+
     file {"/opt/openinfinity/3.1.0":
             ensure => directory,
             owner => 'oiuser',
@@ -104,7 +112,7 @@ class oi3-basic::install inherits oi3variables {
 
 class oi3-basic {
     require oi3-ebs
-        include  oi3-basic::install, oi3-basic::config,  oi3-basic::service
+    include  oi3-basic::install, oi3-basic::config,  oi3-basic::service
 }
     
 
