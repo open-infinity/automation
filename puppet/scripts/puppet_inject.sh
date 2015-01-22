@@ -59,6 +59,12 @@ puppet agent --server puppetmaster --waitforcert 60 --no-daemonize --test || exi
 echo "Restarting puppet"
 /etc/init.d/puppet start || exit 1
 
+# Disabling CentOS repo, if we are not running under CentOS
+grep "CentOS" /etc/redhat-release >/dev/null
+if [ "$?" -ne "0" ]; then
+	sed -i 's/\enabled=1/enabled=0/g' /etc/yum.repos.d/centos.repo
+fi
+
 # Repo meta data cleaning is needed, because puppet modifies the repo files
 yum -q clean all
 
