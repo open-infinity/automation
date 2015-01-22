@@ -8,6 +8,13 @@ else
     exit 1
 fi
 
+# Ping management node
+ping -q -c 1 $PUPPETMASTER >/dev/null
+if [ "$?" -ne "0" ]; then
+	echo "$PUPPETMASTER doesn't respond to ping"
+	exit 1
+fi
+
 # /etc/hosts
 echo "modifying /etc/hosts"
 echo "$PUPPETMASTER puppetmaster" >> /etc/hosts
@@ -21,16 +28,18 @@ EOF
 
 # create our puppet repo
 
-echo "installing GPG keys and repositories"
-wget -nv http://puppetmaster/cluster_settings/RPM-GPG-KEY-puppetlabs -O /etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs || exit 1
-wget -nv http://puppetmaster/cluster_settings/RPM-GPG-KEY-CentOS-6 -O /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6 || exit 1
-
-echo "configuring puppet repository"
-wget -nv http://puppetmaster/cluster_settings/puppetlabs.repo -O /etc/yum.repos.d/puppetlabs.repo || exit 1
-wget -nv http://puppetmaster/cluster_settings/centos.repo -O /etc/yum.repos.d/centos.repo || exit 1
-
+echo "Configuring toas repository"
 wget -nv http://puppetmaster/cluster_settings/toas.repo -O /etc/yum.repos.d/toas.repo || exit 1
 
+echo "Configuring puppet repository"
+wget -nv http://puppetmaster/cluster_settings/RPM-GPG-KEY-puppetlabs -O /etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs || exit 1
+wget -nv http://puppetmaster/cluster_settings/puppetlabs.repo -O /etc/yum.repos.d/puppetlabs.repo || exit 1
+
+echo "Configuring centos repository"
+wget -nv http://puppetmaster/cluster_settings/RPM-GPG-KEY-CentOS-6 -O /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6 || exit 1
+wget -nv http://puppetmaster/cluster_settings/centos.repo -O /etc/yum.repos.d/centos.repo || exit 1
+
+echo "Cleaning repository cache"
 yum -q clean all
 
 # install puppet
