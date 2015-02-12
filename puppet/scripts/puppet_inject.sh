@@ -53,10 +53,10 @@ HOSTNAME=`hostname` sed -i -e "s/HOSTNAME/${HOSTNAME}/" /etc/puppet/puppet.conf
 
 # Introduce to puppet master
 echo "Introducing puppet agent to master ... manual signing expected on puppetmaster soon"
-puppet agent --server puppetmaster --waitforcert 60 --no-daemonize --test || exit 1
+puppet agent --verbose --server puppetmaster --waitforcert 60 --no-daemonize --test || exit 1
 
 # Restart puppet
-echo "Restarting puppet"
+echo "Starting puppet agent"
 /etc/init.d/puppet start || exit 1
 
 # Disabling CentOS repo, if we are not running under CentOS

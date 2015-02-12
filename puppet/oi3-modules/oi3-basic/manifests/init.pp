@@ -16,12 +16,12 @@ class oi3-basic::config {
             mode => 777,
         }
 
-    file {"/data":
-            ensure => link,
-            target => '/opt/data',
-            force => true,
-            require => File["/opt/data"],
-        }
+#    file {"/data":
+#            ensure => link,
+#            target => '/opt/data',
+#            force => true,
+#            require => File["/opt/data"],
+#        }
 
     file {"/opt/openinfinity":
             ensure => directory,
@@ -48,14 +48,6 @@ class oi3-basic::config {
     }
 
     file {"/opt/openinfinity/service":
-            ensure => directory,
-            owner => 'oiuser',
-            group => 'oiuser',
-            mode => 644,
-            require => [User["oiuser"], File["/opt/openinfinity"]],
-    }
-
-    file {"/opt/openinfinity/conf":
             ensure => directory,
             owner => 'oiuser',
             group => 'oiuser',
@@ -112,7 +104,7 @@ class oi3-basic::install inherits oi3variables {
 
 class oi3-basic {
     require oi3-ebs
-    include  oi3-basic::install, oi3-basic::config,  oi3-basic::service
+        include  oi3-basic::install, oi3-basic::config,  oi3-basic::service
 }
     
 
