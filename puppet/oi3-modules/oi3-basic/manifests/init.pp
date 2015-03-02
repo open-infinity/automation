@@ -6,6 +6,10 @@ class oi3-basic::config ($toaspathversion = undef) {
   else {
     $_toasversion = $toaspathversion
   }
+  if $_toasversion == undef {
+  	fail("Missing toasversion (toaspathversion) variable")
+  }
+
     require oi3-ebs
         file {"/etc/logrotate.d/oi-tomcat":
         ensure => present,
@@ -53,6 +57,14 @@ class oi3-basic::config ($toaspathversion = undef) {
             require => [User["oiuser"], File["/opt/openinfinity"]],
     }
 
+    file {"/opt/openinfinity/conf":
+            ensure => directory,
+            owner => 'oiuser',
+            group => 'oiuser',
+            mode => 644,
+            require => [User["oiuser"], File["/opt/openinfinity"]],
+    }
+
     file {"/opt/openinfinity/service":
             ensure => directory,
             owner => 'oiuser',
@@ -66,7 +78,7 @@ class oi3-basic::config ($toaspathversion = undef) {
             owner => 'oiuser',
             group => 'oiuser',
             mode => 644,
-            require => File["/opt/openinfinity"],
+            require => [User["oiuser"], File["/opt/openinfinity"]],
     }
 
     file {"/home/oiuser":

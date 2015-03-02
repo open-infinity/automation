@@ -19,7 +19,7 @@ class oi3snort::config {
             owner => 'snort',
             group => 'snort',
             mode => 640,
-            require => [File["/opt/openinfinity/conf"]],
+            require => File["/opt/openinfinity/conf"],
     }
 
     file { '/opt/openinfinity/conf/snort/rules-env':
@@ -28,7 +28,7 @@ class oi3snort::config {
         group => "snort",
         mode => 0644,
         content => template("oi3snort/rules-env.erb"),
-        require => [File["/opt/openinfinity/conf/snort"]],
+        require => File["/opt/openinfinity/conf/snort"],
     }
 
     file {"/opt/openinfinity/conf/snort/rules-update.d":
@@ -36,7 +36,7 @@ class oi3snort::config {
             owner => 'snort',
             group => 'snort',
             mode => 640,
-            require => [File["/opt/openinfinity/conf/snort"]],
+            require => File["/opt/openinfinity/conf/snort"],
     }
 
     file { '/etc/snort/openinfinity.conf':
