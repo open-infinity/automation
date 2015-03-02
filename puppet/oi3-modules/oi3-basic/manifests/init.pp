@@ -7,7 +7,7 @@ class oi3-basic::config ($toaspathversion = undef) {
     $_toasversion = $toaspathversion
   }
   if $_toasversion == undef {
-  	fail("Missing toasversion (toaspathversion) variable")
+  	fail("Missing _toasversion (toaspathversion) variable")
   }
 
     require oi3-ebs
@@ -124,3 +124,4 @@ class oi3-basic {
     require oi3-ebs
         include  oi3-basic::install, oi3-basic::config,  oi3-basic::service
 }
+
