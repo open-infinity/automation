@@ -1,0 +1,11 @@
+
+LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
+
+<Proxy balancer://oicluster>
+	<% portal_addresses.each do |portal_address| %>
+	BalancerMember http://<%= portal_address %>:8080
+	<% end %>
+</Proxy>
+ProxyPass / balancer://oicluster/
+ProxyPassReverse / balancer://oicluster/
+

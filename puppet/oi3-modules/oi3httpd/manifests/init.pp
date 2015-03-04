@@ -11,27 +11,7 @@ class oi3httpd inherits oi3variables  {
         }   
     }
 
-    if $::spused {
-        file { "${apacheConfPath}shib.conf.toas":
-            source => "puppet:///modules/oi3httpd/shib.conf",
-            replace => true,
-            owner => "root",
-            group => "root",
-            mode => 0644,
-            require => Package[$apachePackageName],
-        }
-    }
-
-    file { "${apacheConfPath}oi3-proxy.conf.toas":
-        source => "puppet:///modules/oi3httpd/oi3-proxy.conf",
-        replace => true,
-        owner => "root",
-        group => "root",
-        mode => 0644,
-        require => Package[$apachePackageName],
-    }
-
-    service {$apacheServiceName:
+    service { $apacheServiceName:
         ensure => running,
         enable => true,
         require => Package[$apachePackageName]
