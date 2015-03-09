@@ -1,11 +1,12 @@
 
-LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
+LoadModule proxy_ajp_module modules/mod_proxy_ajp.so
 
+# Reverse Proxy
+ProxyPass / balancer://oicluster/ stickysession=JSESSIONID|jsessionid
+ProxyPassReverse / balancer://oicluster/
 <Proxy balancer://oicluster>
 	<% portal_addresses.each do |portal_address| %>
-	BalancerMember http://<%= portal_address %>:8080
+	BalancerMember ajp://<%= portal_address %>:8009
 	<% end %>
 </Proxy>
-ProxyPass / balancer://oicluster/
-ProxyPassReverse / balancer://oicluster/
 
