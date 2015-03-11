@@ -3,6 +3,7 @@ class oi3httpd inherits oi3variables  {
     require oi3-basic
     require oi3httpd::install
     require oi3httpd::config
+    require oi3httpd::config_ssl
     require oi3httpd::service
 }
 
@@ -20,7 +21,7 @@ class oi3httpd::config inherits oi3variables {
         mode => 640,
         require => [ File["/opt/openinfinity/common"], Package[$apachePackageName] ],
     }
-    
+
     file { "/opt/openinfinity/common/httpd/script":
         ensure => directory,
         owner => 'apache',
@@ -28,76 +29,8 @@ class oi3httpd::config inherits oi3variables {
         mode => 640,
         require => File["/opt/openinfinity/common/httpd"],
     }
-
-    file { "/etc/httpd/conf.d/ssl.conf":
-        replace => true,
-        owner => "root",
-        group => "root",
-        mode => 0744,
-        content => template("oi3httpd/ssl.conf.erb"),
-        require => File["/opt/openinfinity/common/httpd"],
-    }
-    
-    if $httpd_sscert {
-        file { "/opt/openinfinity/common/httpd/script/generate-self-signed-certificate.sh":
-            replace => true,
-            owner => "root",
-            group => "root",
-            mode => 0700,
-            content => template("oi3httpd/generate-self-signed-certificate.sh.erb"),
-            require => File["/opt/openinfinity/common/httpd/script"],
-        }
-
-        exec { "generate-self-signed-certificate.sh":
-            command => "/opt/openinfinity/common/httpd/script/generate-self-signed-certificate.sh $httpd_serverkey_password",
-            user => "root",
-            timeout => "3600",
-            notify => Service["$apacheServiceName"],
-            require => File["/opt/openinfinity/common/httpd/script/generate-self-signed-certificate.sh"], 
-        }
-
-#        file { "/etc/":
-#            replace => true,
-#            owner => "apache",
-#            group => "apache",
-#            mode => 0744,
-#            content => template("/opt/openinfinity/common/httpd/generate-self-signed-certificate.sh.erb"),
-#            require => [ File["/opt/openinfinity/common/httpd"],
-#                         Package[$apachePackageName] ],
-#        }
-        
-    } else {
-        file { "/etc/ssl/certs/$httpd_domain_name.crt":
-            replace => true,
-            owner => "apache",
-            group => "apache",
-            mode => 0600,
-            content => template("oi3httpd/ssl-domain.crt.erb"),
-            require => Package[$apachePackageName],
-        }
-        
-        file { "/etc/ssl/keys/server.key":
-            replace => true,
-            owner => "apache",
-            group => "apache",
-            mode => 0600,
-            content => template("oi3httpd/ssl-server.key.erb"),
-            require => Package[$apachePackageName],
-        }
-     
-        file { "/etc/ssl/certs/$httpd_ca_name.crt":
-            replace => true,
-            owner => "apache",
-            group => "apache",
-            mode => 0600,
-            content => template("oi3httpd/ssl-ca.crt.erb"),
-            require => Package[$apachePackageName],
-        }
-     
-    }
-    
 }
-
+    
 class oi3httpd::service inherits oi3variables {
     service { $apacheServiceName:
         ensure => running,
