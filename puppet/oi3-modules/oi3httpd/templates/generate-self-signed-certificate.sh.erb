@@ -1,0 +1,46 @@
+#!/bin/bash -e
+
+# Ensure that we have an empty working directory
+WORKING_DIRECTORY=/tmp/httpd-ssl
+if [ ! -d $WORKING_DIRECTORY ] ; then
+    mkdir -p $WORKING_DIRECTORY
+fi
+cd $WORKING_DIRECTORY && rm -fR *
+
+# Generate a server certificate
+PASS_PHRASE=Siec0Ekoneev1cae
+openssl genrsa -des3 -passout pass:$PASS_PHRASE -out server.key 1024 
+
+# Generate a CSR
+openssl req -new -passin pass:$PASS_PHRASE -key server.key -out server.csr <<EOF
+FI
+Lappeenranta
+Lappeenranta
+Tieto
+
+<%=http_domain_name%>
+support.toas@tieto.com
+
+Tieto Corporation
+EOF
+
+# Generate a RSA key
+cp server.key server.key.orig
+openssl rsa -in server.key.orig -passin pass:$PASS_PHRASE -out server.key
+
+# Generate a self-signed x509 certificate
+openssl x509 -req -days 365 -in server.csr -passin pass:$PASS_PHRASE -signkey server.key -out self-signed.crt
+
+# Copy the keys to an appropriate place
+if [ ! -d /etc/ssl/certs ] ; then
+    mkdir -p /etc/ssl/certs
+fi
+if [ ! -d /etc/ssl/keys ] ; then
+    mkdir -p /etc/ssl/keys
+fi
+cp -p self-signed.crt /etc/ssl/certs/
+cp -p server.key /etc/ssl/keys/
+
+# Cleanup working directory
+cd $WORKING_DIRECTORY && rm -fR *
+
