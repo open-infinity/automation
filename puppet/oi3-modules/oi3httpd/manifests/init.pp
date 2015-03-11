@@ -49,7 +49,7 @@ class oi3httpd::config inherits oi3variables {
         }
 
         exec { "generate-self-signed-certificate.sh":
-            command => "/opt/openinfinity/common/httpd/script/generate-self-signed-certificate.sh",
+            command => "/opt/openinfinity/common/httpd/script/generate-self-signed-certificate.sh $httpd_serverkey_password",
             user => "root",
             timeout => "3600",
             notify => Service["$apacheServiceName"],
@@ -67,7 +67,7 @@ class oi3httpd::config inherits oi3variables {
 #        }
         
     } else {
-        file { "/etc/ssl/certs/$http_domain_name.crt":
+        file { "/etc/ssl/certs/$httpd_domain_name.crt":
             replace => true,
             owner => "apache",
             group => "apache",
@@ -85,7 +85,7 @@ class oi3httpd::config inherits oi3variables {
             require => Package[$apachePackageName],
         }
      
-        file { "/etc/ssl/certs/$http_ca_name.crt":
+        file { "/etc/ssl/certs/$httpd_ca_name.crt":
             replace => true,
             owner => "apache",
             group => "apache",
