@@ -1,0 +1,44 @@
+#!/bin/bash -e
+
+# We are working on Shibboleth-related files
+cd /etc/shibboleth/
+
+# Copy IdP metadata file from IdP server
+scp <%=shibboleth_idp_hostname%>:/opt/shibboleth-idp/metadata/idp-metadata.xml .
+
+# Generate a server certificate
+PASS_PHRASE=server.key
+openssl genrsa -des3 -passin pass:$PASS_PHRASE -out server.key 1024
+
+<% if shibboleth_use_self_signed_certificate %>
+# Generate a CSR
+openssl req -new -key server.key -out server.csr <<EOF
+FI
+Lappeenranta
+Lappeenranta
+Tieto
+
+portaltest
+support.toas@tieto.com
+test
+Tieto Corporation
+EOF
+
+# Generate a RSA key
+cp server.key server.key.orig
+openssl rsa -in server.key.orig -passin pass:$PASS_PHRASE -out server.key
+
+# Generate a self-signed x509 certificate
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out self-signed.crt
+
+# Copy the keys to an appropriate place
+cp -p self-signed.crt /etc/pki/tls/certs/
+cp -p server.key /etc/pki/tls/private/
+<% else %>
+
+<% end %>
+
+# Verify and configure SSL
+cd /etc/httpd/conf.d
+# nano -w ssl.conf
+
