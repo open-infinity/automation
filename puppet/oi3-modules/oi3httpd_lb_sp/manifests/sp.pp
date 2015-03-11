@@ -1,12 +1,12 @@
 
-class oi3httpd_shibboleth::install inherits oi3variables {
+class oi3httpd_sp::install inherits oi3variables {
     package { "shibboleth":
         ensure => installed,
         require => Package["$apachePackageName"],
     }
 }
 
-class oi3httpd_shibboleth::config inherits oi3variables {
+class oi3httpd_sp::config inherits oi3variables {
     # Service Provider (Shibboleth)
     file { "${apacheConfPath}oi3-shibboleth.conf.toas":
         source => "puppet:///modules/oi3httpd_lb_shibboleth/oi3-shibboleth.conf",
