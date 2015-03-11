@@ -69,12 +69,20 @@ class oi3httpd_sp::config inherits oi3variables {
         command => "/opt/openinfinity/common/shibboleth-sp/configure-sp.sh",
         user => "root",
         timeout => "3600",
-        notify => Service["$apacheServiceName"],
+        notify => Service["shibboleth"],
         require => [ 
             File["/opt/openinfinity/common/shibboleth-sp/configure-sp.sh"], 
             Package["shibboleth"] 
         ],
     }
 
+}
+
+class oi3httpd_sp::service inherits oi3variables {
+    service { "shib":
+        ensure => running,
+        enable => true,
+        require => Package["shibboleth"]
+    }
 }
 

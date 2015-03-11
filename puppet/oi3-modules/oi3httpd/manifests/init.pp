@@ -4,6 +4,9 @@ class oi3httpd inherits oi3variables  {
     require oi3httpd::install
     require oi3httpd::config
     require oi3httpd::config_ssl
+	if $::use_lb {
+        require oi3httpd::config_lb
+	}
     require oi3httpd::service
 }
 

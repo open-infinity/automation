@@ -6,8 +6,5 @@ class oi3httpd_lb_shibboleth inherits oi3variables  {
 		require oi3httpd_sp::install
 		require oi3httpd_sp::config
 	}
-	if $::user_loadbalancer {
-		require oi3httpd_lb::config
-	}
 }
 
