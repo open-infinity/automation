@@ -1,4 +1,10 @@
-class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size = undef, $galera_cluster_name = undef, $galera_cluster_address = undef, $galera_node_address = undef, $galera_node_name = undef) inherits oi3variables {
+class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size = undef, $galera_cluster_name = undef, $galera_cluster_address = undef, $galera_node_address = undef, $galera_node_name = undef, $toaspathversion = undef) inherits oi3variables {
+  if $toaspathversion == undef {
+    $_toaspathversion = $::toaspathversion
+  }
+  else {
+    $_toaspathversion = $toaspathversion
+  }	
   if $rdbms_mysql_password == undef {
     $_rdbms_mysql_password = $::mysql_password
   }
@@ -37,7 +43,7 @@ class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size
   }
 
   ensure_resource('user', 'mysql', {
-        home => "/opt/openinfinity/3.1.0/rdbms/data",
+        home => "/opt/openinfinity/$toaspathversion/rdbms/data",
         managehome => false,
         system => true,
         gid => 'mysql',
@@ -55,18 +61,18 @@ class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size
     if ($operatingsystem ==  'CentOS') or ($operatingsystem == 'RedHat') {
     package { "nc":
         ensure => present,
-        before => File["/opt/openinfinity/3.1.0/rdbms"],
+        before => File["/opt/openinfinity/$toaspathversion/rdbms"],
         }
     }
 
-    file {"/opt/openinfinity/3.1.0/rdbms":
+    file {"/opt/openinfinity/$toaspathversion/rdbms":
         ensure => directory,
         owner => "mysql",
         group => "mysql",
         mode => 0775,
-        require => File["/opt/openinfinity/3.1.0"],
+        require => File["/opt/openinfinity/$toaspathversion"],
     } ->
-    file {"/opt/openinfinity/3.1.0/rdbms/data":
+    file {"/opt/openinfinity/$toaspathversion/rdbms/data":
         ensure => directory,
         owner => "mysql",
         group => "mysql",
@@ -94,7 +100,7 @@ class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size
         mode => 0750,
     } ->
     exec {"create-mysql-database":
-        creates => "/opt/openinfinity/3.1.0/rdbms/data/mysql/user.frm",
+        creates => "/opt/openinfinity/$toaspathversion/rdbms/data/mysql/user.frm",
         command => $createMariaDbDatabaseCommand,
     } 
 }
