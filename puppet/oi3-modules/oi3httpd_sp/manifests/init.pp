@@ -59,8 +59,8 @@ class oi3httpd_sp::config inherits oi3variables {
 
     file {"/opt/openinfinity/common/shibboleth-sp":
         ensure => directory,
-        owner => 'snort',
-        group => 'snort',
+        owner => 'root',
+        group => 'root',
         mode => 640,
         require => File["/opt/openinfinity/common"],
     }
@@ -78,17 +78,45 @@ class oi3httpd_sp::config inherits oi3variables {
         command => "/opt/openinfinity/common/shibboleth-sp/configure-sp.sh",
         user => "root",
         timeout => "3600",
-        notify => Service["shibboleth"],
+        notify => Service["shibd"],
         require => [ 
             File["/opt/openinfinity/common/shibboleth-sp/configure-sp.sh"], 
-            Package["shibboleth"] 
+            Package["shibboleth"],
+            File["/root/.ssh/id_rsa"]
         ],
+    }
+
+    file {"/root/.ssh":
+        ensure => directory,
+        owner => 'root',
+        group => 'root',
+        mode => 700,
+    }
+
+    # RSA key for accessing IdP machine
+    file {"/root/.ssh/id_rsa":
+        content => template("oi3httpd_sp/sp/root-id_rsa.erb"),
+        replace => true,
+        owner => 'root',
+        group => 'root',
+        mode => 600,
+        require => File["/root/.ssh"],
+    }
+
+    # RSA key for accessing IdP machine
+    file {"/root/.ssh/id_rsa.pub":
+        content => template("oi3httpd_sp/sp/root-id_rsa.pub.erb"),
+        replace => true,
+        owner => 'root',
+        group => 'root',
+        mode => 600,
+        require => File["/root/.ssh"],
     }
 
 }
 
 class oi3httpd_sp::service inherits oi3variables {
-    service { "shibboleth":
+    service { "shibd":
         ensure => running,
         enable => true,
         require => Package["shibboleth"]
