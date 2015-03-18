@@ -17,7 +17,7 @@ class oi3httpd::config_ssl inherits oi3variables {
         require => [ Package[$apachePackageName] ],
     }
     
-    if $httpd_sscert {
+    if $httpd_selfsigned_certificate {
         file { "/opt/openinfinity/common/httpd/script/generate-self-signed-certificate.sh":
             replace => true,
             owner => "root",

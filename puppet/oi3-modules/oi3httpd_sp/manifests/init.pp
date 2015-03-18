@@ -78,7 +78,6 @@ class oi3httpd_sp::config inherits oi3variables {
         command => "/opt/openinfinity/common/shibboleth-sp/configure-sp.sh",
         user => "root",
         timeout => "3600",
-        notify => Service["shibd"],
         require => [ 
             File["/opt/openinfinity/common/shibboleth-sp/configure-sp.sh"], 
             Package["shibboleth"],
@@ -113,13 +112,35 @@ class oi3httpd_sp::config inherits oi3variables {
         require => File["/root/.ssh"],
     }
 
+    file { "/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh":
+        content => template("oi3httpd_sp/sp/post-configure-sp.sh.erb"),
+        replace => true,
+        owner => "root",
+        group => "root",
+        mode => 0744,
+        require => File["/opt/openinfinity/common/shibboleth-sp"],
+    }
+
+    # This should be run after the configure phase and service (re)start
+    exec { "post-configure-sp.sh":
+        command => "/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh",
+        user => "root",
+        timeout => "3600",
+        require => [ 
+            File["/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh"], 
+            Service["shibd"],
+        ],
+    }
 }
 
 class oi3httpd_sp::service inherits oi3variables {
     service { "shibd":
         ensure => running,
         enable => true,
-        require => Package["shibboleth"]
+        require => [
+            Package["shibboleth"],
+            Exec["configure-sp.sh"],
+        ]
     }
 }
 
