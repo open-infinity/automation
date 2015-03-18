@@ -1,0 +1,35 @@
+global
+        log 127.0.0.1 local2
+        chroot /var/lib/haproxy
+        daemon
+        user haproxy
+        group haproxy
+        pidfile /var/run/haproxy.pid
+
+defaults
+        log     global
+        mode    tcp
+        option  dontlognull
+        option  dontlog-normal
+        retries 3
+        option  redispatch
+
+listen galera_cluster_lb 127.0.0.1:3306
+        mode tcp
+        timeout client 60000ms
+        timeout server 60000ms
+        timeout connect 5000ms
+        balance leastconn
+        option tcpka
+#	requires user to be created in mysql.
+# mysql -u root -p -e "INSERT INTO mysql.user (Host,User) values ('10.0.0.100','haproxy_check'); FLUSH PRIVILEGES;"
+# root@mysql-1# mysql -u root -p -e "GRANT ALL PRIVILEGES ON *.* TO 'haproxy_root'@'10.0.0.100' IDENTIFIED BY 'password' WITH GRANT OPTION; FLUSH PRIVILEGES"
+# ?? MySQL client has to be installed on the HAProxy droplet to test connectivity.
+# see: https://www.digitalocean.com/community/tutorials/how-to-use-haproxy-to-set-up-mysql-load-balancing--3
+#        option mysql-check user haproxy
+	<% i = 1 %>	
+	<% cluster_addresses.each do |cluster_address| %>
+		server node<%= i %> <%= cluster_address %>:3306 check
+	<% i = i +1 %>
+	<% end %>
+
