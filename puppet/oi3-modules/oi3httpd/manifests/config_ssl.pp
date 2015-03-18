@@ -8,6 +8,14 @@ class oi3httpd::config_ssl inherits oi3variables {
         content => template("oi3httpd/ssl/ssl.conf.erb"),
         require => File["/opt/openinfinity/common/httpd"],
     }
+
+    file { [ "/etc/ssl", "/etc/ssl/certs", "/etc/ssl/keys" ]:
+        ensure => directory,
+        owner => 'root',
+        group => 'apache',
+        mode => 760,
+        require => [ Package[$apachePackageName] ],
+    }
     
     if $httpd_sscert {
         file { "/opt/openinfinity/common/httpd/script/generate-self-signed-certificate.sh":
@@ -24,7 +32,7 @@ class oi3httpd::config_ssl inherits oi3variables {
             user => "root",
             timeout => "3600",
             notify => Service["$apacheServiceName"],
-            require => File["/opt/openinfinity/common/httpd/script/generate-self-signed-certificate.sh"], 
+            require => [ File["/etc/ssl/certs"], File["/opt/openinfinity/common/httpd/script/generate-self-signed-certificate.sh"] ], 
         }
 
     } else {
@@ -34,7 +42,7 @@ class oi3httpd::config_ssl inherits oi3variables {
             group => "apache",
             mode => 0600,
             content => template("oi3httpd/ssl/ssl-domain.crt.erb"),
-            require => Package[$apachePackageName],
+            require => File["/etc/ssl/certs"],
         }
         
         file { "/etc/ssl/keys/server.key":
@@ -43,7 +51,7 @@ class oi3httpd::config_ssl inherits oi3variables {
             group => "apache",
             mode => 0600,
             content => template("oi3httpd/ssl/ssl-server.key.erb"),
-            require => Package[$apachePackageName],
+            require => File["/etc/ssl/certs"],
         }
      
         file { "/etc/ssl/certs/$httpd_ca_name.crt":
@@ -52,7 +60,7 @@ class oi3httpd::config_ssl inherits oi3variables {
             group => "apache",
             mode => 0600,
             content => template("oi3httpd/ssl/ssl-ca.crt.erb"),
-            require => Package[$apachePackageName],
+            require => File["/etc/ssl/certs"],
         }
      
     }
