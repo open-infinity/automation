@@ -1,5 +1,5 @@
 class oi3-healthmonitoring::service_collectd {
-	service { "oi3-collectd":
+  service { "collectd":
 		ensure => running,
 		hasrestart => true,
 		enable => true,

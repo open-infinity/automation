@@ -15,8 +15,8 @@ FQDNLookup   true
 #BaseDir     "${prefix}/var/lib/collectd"
 #PIDFile     "${prefix}/var/run/collectd.pid"
 #PluginDir   "${exec_prefix}/lib/collectd"
-TypesDB     "<%=oi_collectd_root%>/share/collectd/types.db"
-TypesDB     "<%=oi_collectd_root%>/share/collectd/types.db.monitoring"
+TypesDB      "<%=oi_hm_home%>collectd/share/collectd/types.db" 
+TypesDB      "<%=oi_hm_home%>collectd/share/collectd/types.db.monitoring"
 
 #----------------------------------------------------------------------------#
 # When enabled, plugins are loaded automatically with the default options    #
@@ -33,11 +33,11 @@ TypesDB     "<%=oi_collectd_root%>/share/collectd/types.db.monitoring"
 #   </LoadPlugin>                                                            #
 #----------------------------------------------------------------------------#
 Interval     10
-Timeout      2
+Timeout      5
 ReadThreads  5
 WriteThreads 5
 
-Include "<%=oi_collectd_root%>/etc/collectd.d/"
+Include "<%=oi_hm_home%>collectd/etc/collectd.d/"
 
 # Limit the size of the write queue. Default is no limit. Setting up a limit is
 # recommended for servers handling a high volume of traffic.
@@ -111,7 +111,7 @@ LoadPlugin interface
 ##LoadPlugin ipmi
 #LoadPlugin ipvs
 #LoadPlugin irq
-#LoadPlugin java
+LoadPlugin java
 ##LoadPlugin libvirt
 LoadPlugin load
 ##LoadPlugin lpar
@@ -124,7 +124,7 @@ LoadPlugin load
 LoadPlugin memory
 ##LoadPlugin modbus
 #LoadPlugin multimeter
-LoadPlugin mysql
+##LoadPlugin mysql
 ##LoadPlugin netapp
 ##LoadPlugin netlink
 #LoadPlugin network
@@ -462,27 +462,27 @@ LoadPlugin rrdtool
 #	IgnoreSelected true
 #</Plugin>
 
-#<Plugin "java">
-#       JVMARG "-Djava.class.path=<%=oi_collectd_root%>/share/collectd/java/collectd-api.jar:<%=oi_collectd_root%>/share/collectd/java/generic-jmx.jar"
-#       LoadPlugin "org.collectd.java.GenericJMX"
-#       <Plugin "GenericJMX">
-#              <MBean "memory">
-#                     ObjectName "java.lang:type=Memory"
-#                    <Value>
-#                          Type "jmx_memory"
-#                            Table true
-#                            Attribute "HeapMemoryUsage"
-#                     </Value>
-#              </MBean>
-#              <Connection>
-#                     User monitorRole
-#                     Password <%=tomcat_monitor_role_pwd%>
-#                     Host "<%=hostname%>"
-#                     ServiceURL "service:jmx:rmi:///jndi/rmi://localhost:<%=tomcat_jmx_port%>/jmxrmi"
-#                     Collect "memory"
-#              </Connection>
-#      </Plugin>
-#</Plugin>
+<Plugin "java">
+       JVMArg "-Djava.class.path=<%=oi_hm_home%>collectd/share/collectd/java/collectd-api.jar:<%=oi_hm_home%>collectd/share/collectd/java/generic-jmx.jar"
+       LoadPlugin "org.collectd.java.GenericJMX"
+       <Plugin "GenericJMX">
+              <MBean "memory">
+                     ObjectName "java.lang:type=Memory"
+                     <Value>
+                            Type "jmx_memory"
+                            Table true
+                            Attribute "HeapMemoryUsage"
+                     </Value>
+              </MBean>
+              <Connection>
+                     User monitorRole
+                     Password <%=tomcat_monitor_role_pwd %> 
+                     Host "<%=fqdn%>"
+                     ServiceURL "service:jmx:rmi:///jndi/rmi://localhost:<%=tomcat_jmx_port%>/jmxrmi"
+                     Collect "memory"
+              </Connection>
+       </Plugin>
+</Plugin>
 
 #<Plugin libvirt>
 #	Connection "xen:///"
@@ -582,14 +582,6 @@ LoadPlugin rrdtool
 #		SlaveNotifications true
 #	</Database>
 #</Plugin>
-
-<Plugin mysql>
-        <Database openinfinity>
-                Host "localhost"
-                User "healthmonitoring"
-                Password <%=rdbms_healthmonitoring_pwd%>
-	</Database>
-</Plugin>
 
 #<Plugin netapp>
 #	<Host "netapp1.example.com">
@@ -908,7 +900,7 @@ LoadPlugin rrdtool
 #</Plugin>
 
 <Plugin rrdtool>
-	DataDir "<%=oi_collectd_root%>/var/lib/collectd/rrd"
+	DataDir "rrd"
 	CreateFilesAsync true
 	CacheTimeout 0
 	CacheFlush   10
