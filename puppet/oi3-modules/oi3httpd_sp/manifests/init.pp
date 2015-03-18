@@ -78,6 +78,7 @@ class oi3httpd_sp::config inherits oi3variables {
         command => "/opt/openinfinity/common/shibboleth-sp/configure-sp.sh",
         user => "root",
         timeout => "3600",
+        logoutput => true,
         require => [ 
             File["/opt/openinfinity/common/shibboleth-sp/configure-sp.sh"], 
             Package["shibboleth"],
@@ -126,6 +127,7 @@ class oi3httpd_sp::config inherits oi3variables {
         command => "/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh",
         user => "root",
         timeout => "3600",
+        logoutput => true,
         require => [ 
             File["/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh"], 
             Service["shibd"],

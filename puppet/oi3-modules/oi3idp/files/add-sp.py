@@ -62,7 +62,7 @@ elem.setAttribute('xsi:type', 'metadata:FilesystemMetadataProvider')
 elem.setAttribute('metadataFile', sp_filename)
 dom.lastChild.appendChild(elem)
 f = file(relying_party_out_filename, "w")
-f.write(dom.toprettyxml())
+f.write(dom.toxml())
 f.close()
 
 # Restart the service
