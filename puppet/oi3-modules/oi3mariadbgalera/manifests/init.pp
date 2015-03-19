@@ -1,4 +1,7 @@
 class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size = undef, $galera_cluster_name = undef, $galera_cluster_address = undef, $galera_node_address = undef, $galera_node_name = undef, $toaspathversion = undef) inherits oi3variables {
+	
+  $bas_cluster_addresses = parsejson($bas_cluster_addresses_array)
+
   if $toaspathversion == undef {
     $_toaspathversion = $::toaspathversion
   }
