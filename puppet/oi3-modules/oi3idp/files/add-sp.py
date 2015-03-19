@@ -12,6 +12,9 @@
 # The only dependency of this file is python2, which is installed in most of modern 
 # Linux distros anyway.
 #
+# In the future, if IdP is clustered, this script has to be improved, to support 
+# several IdP nodes and also up-scaling.
+#
 
 import sys
 import os
