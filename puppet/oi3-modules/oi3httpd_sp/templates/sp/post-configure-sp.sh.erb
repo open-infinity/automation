@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+SSH_OPTIONS='-q -o BatchMode=yes -o StrictHostKeyChecking=no'
+
+echo "Running /opt/openinfinity/common/shibboleth-idp/add-sp.py on <%=shibboleth_idp_hostname%>"
+ssh $SSH_OPTIONS <%=shibboleth_idp_hostname%> "/opt/openinfinity/common/shibboleth-idp/add-sp.py -i <%=shibboleth_sp_id%> -u \"<%=shibboleth_sp_metadata_url%>\" &>/var/log/add-sp.py.log </dev/null"
+

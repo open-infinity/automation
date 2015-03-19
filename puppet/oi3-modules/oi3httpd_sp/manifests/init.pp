@@ -1,4 +1,8 @@
 
+#
+# Service Provider configuration for httpd
+#
+
 class oi3httpd_sp inherits oi3variables  {
 	require oi3-basic
 	require oi3httpd
