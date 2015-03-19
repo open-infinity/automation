@@ -43,7 +43,7 @@ class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size
   }
 
   ensure_resource('user', 'mysql', {
-        home => "/opt/openinfinity/$toaspathversion/rdbms/data",
+        home => "/opt/openinfinity/$_toaspathversion/rdbms/data",
         managehome => false,
         system => true,
         gid => 'mysql',
@@ -62,26 +62,26 @@ class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size
 #    if ($operatingsystem ==  'CentOS') or ($operatingsystem == 'RedHat') {
 #       package { "socat":
 #        ensure => present,
-#        before => File["/opt/openinfinity/$toaspathversion/rdbms"],
+#        before => File["/opt/openinfinity/$_toaspathversion/rdbms"],
 #       }
 #    }
 
 	file { "/opt/openinfinity/current":
 	   ensure => 'link',
-	   target => "/opt/openinfinity/$toaspathversion/",
-	   require => File["/opt/openinfinity/$toaspathversion"],	   
+	   target => "/opt/openinfinity/$toaspathversion",
+	   require => File["/opt/openinfinity/$_toaspathversion"],	   
 	   owner => "oiuser",
 	   group => "oiuser",
 	}
 	
-    file {"/opt/openinfinity/$toaspathversion/rdbms":
+    file {"/opt/openinfinity/$_toaspathversion/rdbms":
         ensure => directory,
         owner => "mysql",
         group => "mysql",
         mode => 0775,
-        require => File["/opt/openinfinity/$toaspathversion"],
+        require => File["/opt/openinfinity/$_toaspathversion"],
     } ->
-    file {"/opt/openinfinity/$toaspathversion/rdbms/data":
+    file {"/opt/openinfinity/$_toaspathversion/rdbms/data":
         ensure => directory,
         owner => "mysql",
         group => "mysql",
