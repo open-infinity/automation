@@ -68,9 +68,12 @@ class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size
 
 	file { "/opt/openinfinity/current":
 	   ensure => 'link',
-	   target => "/opt/openinfinity/$toaspathversion",
+	   target => "/opt/openinfinity/$toaspathversion/",
 	   require => File["/opt/openinfinity/$toaspathversion"],	   
+	   owner => "oiuser",
+	   group => "oiuser",
 	}
+	
     file {"/opt/openinfinity/$toaspathversion/rdbms":
         ensure => directory,
         owner => "mysql",
