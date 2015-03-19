@@ -109,7 +109,7 @@ class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size
         mode => 0750,
     } ->
     exec {"create-mysql-database":
-        creates => "/opt/openinfinity/$toaspathversion/rdbms/data/mysql/user.frm",
+        creates => "/opt/openinfinity/$_toaspathversion/rdbms/data/mysql/user.frm",
         command => $createMariaDbDatabaseCommand,
     } 
 }
