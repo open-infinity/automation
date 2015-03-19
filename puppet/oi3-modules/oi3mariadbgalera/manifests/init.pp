@@ -58,13 +58,18 @@ class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size
         ensure => present,
     }
 
-    if ($operatingsystem ==  'CentOS') or ($operatingsystem == 'RedHat') {
-    package { "nc":
-        ensure => present,
-        before => File["/opt/openinfinity/$toaspathversion/rdbms"],
-        }
-    }
+# required in meta package now. left if debian problems  
+#    if ($operatingsystem ==  'CentOS') or ($operatingsystem == 'RedHat') {
+#       package { "socat":
+#        ensure => present,
+#        before => File["/opt/openinfinity/$toaspathversion/rdbms"],
+#       }
+#    }
 
+	file { "/opt/openinfinity/current":
+	   ensure => 'link',
+	   target => "/opt/openinfinity/$toaspathversion",
+	}
     file {"/opt/openinfinity/$toaspathversion/rdbms":
         ensure => directory,
         owner => "mysql",
