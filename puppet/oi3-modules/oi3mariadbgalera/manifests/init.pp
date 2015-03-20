@@ -1,7 +1,16 @@
-class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size = undef, $galera_cluster_name = undef, $galera_cluster_address = undef, $galera_node_address = undef, $galera_node_name = undef, $toaspathversion = undef) inherits oi3variables {
-	
+class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size = undef, $galera_cluster_name = undef, $galera_cluster_address = undef, $galera_node_address = undef, $galera_node_name = undef, $toaspathversion = undef,$runningNumber = undef) inherits oi3variables {
+
+  #include oi3mariadbgalera::service
+
+
   $bas_cluster_addresses = parsejson($bas_cluster_addresses_array)
 
+  if $runningNumber == undef {
+    $_memberid = $::runningNumber
+  }
+  else {
+    $_memberid = $runningNumber
+  }	
   if $toaspathversion == undef {
     $_toaspathversion = $::toaspathversion
   }
@@ -44,7 +53,7 @@ class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size
   else {
     $_galera_cluster_name = $galera_cluster_name
   }
-
+  
   ensure_resource('user', 'mysql', {
         home => "/opt/openinfinity/$_toaspathversion/rdbms/data",
         managehome => false,
