@@ -21,7 +21,7 @@ class oi3httpd_sp::install inherits oi3variables {
 
 class oi3httpd_sp::config inherits oi3variables {
     # Service Provider (Shibboleth)
-    file { "${apacheConfPath}oi3-shibboleth.conf.toas":
+    file { "${apacheConfPath}oi3-shibboleth.conf":
         source => "puppet:///modules/oi3httpd_sp/oi3-shibboleth.conf",
         replace => true,
         owner => "root",
@@ -31,7 +31,7 @@ class oi3httpd_sp::config inherits oi3variables {
         require => Package[$apachePackageName],
     }
 
-    file { "${apacheConfPath}oi3-shibboleth-proxy.conf.toas":
+    file { "${apacheConfPath}oi3-shibboleth-proxy.conf":
         source => "puppet:///modules/oi3httpd_sp/oi3-shibboleth-proxy.conf",
         replace => true,
         owner => "root",
