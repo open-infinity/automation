@@ -66,27 +66,39 @@ elem.setAttribute('id', options.sp_id) # 'SPMetadata')
 elem.setAttribute('xsi:type', 'metadata:FilesystemMetadataProvider')
 elem.setAttribute('metadataFile', sp_filename)
 mp_found = False
+sp_found = False
 for rootnode in dom.childNodes:
     if rootnode.nodeName == "rp:RelyingPartyGroup":
         for rpnodes in rootnode.childNodes:
             if rpnodes.nodeName == "metadata:MetadataProvider": # the chaining provider
-                rpnodes.appendChild(elem)
                 mp_found = True
+                
+                # Check that the element doesn't exist already
+                for rp2nodes in rpnodes.childNodes:
+                    if rp2nodes.nodeName == "metadata:MetadataProvider":
+                        if rp2nodes.getAttribute('id') == options.sp_id:
+                            sys.stdout.write("Service Provider %s was found in relying-party.xml already\n" % (options.sp_id))
+                            sp_found = True
+
+                # Add element
+                if not sp_found:
+                    rpnodes.appendChild(elem)
 if not mp_found:
-    sys.stderr.write("Expected chaining metadata provider not found in XML!")
+    sys.stderr.write("Expected chaining metadata provider not found in XML!\n")
     sys.exit(1)
 
-f = file(relying_party_out_filename, "w")
-f.write(dom.toxml())
-f.close()
+if not sp_found:
+    f = file(relying_party_out_filename, "w")
+    f.write(dom.toxml())
+    f.close()
 
-# Restart the service
-print("Restarting jetty service")
-os.system("/etc/init.d/jetty stop")
-time.sleep(2) # as stop seems to return too quickly sometimes, we better use a hack
-if 0 != os.system("/etc/init.d/jetty start"):
-    sys.stderr.write("Failed to restart the service\n")
-    sys.exit(1)
+    # Restart the service
+    print("Restarting jetty service")
+    os.system("/etc/init.d/jetty stop")
+    time.sleep(2) # as stop seems to return too quickly sometimes, we better use a hack
+    if 0 != os.system("/etc/init.d/jetty start"):
+        sys.stderr.write("Failed to restart the service\n")
+        sys.exit(1)
 
 # Success
 print("All done.")
