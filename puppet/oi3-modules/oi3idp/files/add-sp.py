@@ -87,6 +87,7 @@ if not mp_found:
     sys.stderr.write("Expected chaining metadata provider not found in XML!\n")
     sys.exit(1)
 
+# If SP was already found in relying-party.xml there is no need to restart Jetty
 if not sp_found:
     f = file(relying_party_out_filename, "w")
     f.write(dom.toxml())
@@ -100,6 +101,9 @@ if not sp_found:
         sys.stderr.write("Failed to restart the service\n")
         sys.exit(1)
 
-# Success
-print("All done.")
+    # Success
+    print("All done.")
+else:
+    # We did nothing but that's also valid
+    print("No changes made.")
 
