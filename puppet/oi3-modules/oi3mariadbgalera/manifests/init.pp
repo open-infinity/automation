@@ -123,5 +123,49 @@ class oi3mariadbgalera ($rdbms_mysql_password = undef, $rdbms_innodb_buffer_size
     exec {"create-mysql-database":
         creates => "/opt/openinfinity/$_toaspathversion/rdbms/data/mysql/user.frm",
         command => $createMariaDbDatabaseCommand,
+        before  => File["/opt/openinfinity/$_toaspathversion/rdbms/initiated.flag"],
+    } ->
+    file { "/opt/openinfinity/$_toaspathversion/rdbms/initiated.flag":
+      ensure => present,
+      content => "Initiated",
+      owner => "root",
+      group => "root",
+      mode => 0640,
+    } 
+  if $_memberid == 1 {
+    
+    # for debug output on the puppet master
+    notice("First node acting as cluster initiator.")
+
+    exec {"start-mysql-newcluster":
+      creates   => "/opt/openinfinity/$_toaspathversion/rdbms/firststart.flag",
+      command   => "/etc/init.d/mysql start --wsrep-new-cluster",
+      user      => "root",
+      logoutput => true,
+      before    => File["/opt/openinfinity/$_toaspathversion/rdbms/firststart.flag"],
+      require   => File["/opt/openinfinity/$_toaspathversion/rdbms/initiated.flag"],
+    }
+
+  } else {
+
+    # for debug output on the puppet master
+        notice("Cluster member node, dependent of cluster initiator.")
+
+    exec {"start-mysql-clustermember":
+        creates   => "/opt/openinfinity/$_toaspathversion/rdbms/firststart.flag",
+        command   => "/etc/init.d/mysql start",
+        user      => "root",
+        logoutput => true,
+        before    => File["/opt/openinfinity/$_toaspathversion/rdbms/firststart.flag"],
+        require   => File["/opt/openinfinity/$_toaspathversion/rdbms/initiated.flag"],
+    }
+
+  }
+    file { "/opt/openinfinity/$_toaspathversion/rdbms/firststart.flag":
+      ensure => present,
+      content => "Started",
+      owner => "root",
+      group => "root",
+      mode => 0640,
     } 
 }
