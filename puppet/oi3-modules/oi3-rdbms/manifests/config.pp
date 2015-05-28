@@ -1,11 +1,16 @@
-
-class oi3-rdbms::config ($toaspathversion = undef) inherits oi3variables {
+class oi3-rdbms::config ($toaspathversion = undef, $rdbms_innodb_buffer_size = undef) inherits oi3variables {
 
   if $toaspathversion == undef {
     $_toaspathversion = $::toaspathversion
   }
   else {
     $_toaspathversion = $toaspathversion
+  }
+  if $rdbms_innodb_buffer_size == undef {
+    $_rdbms_innodb_buffer_size = $::innodb_buffer_size
+  }
+  else {
+    $_rdbms_innodb_buffer_size = $rdbms_innodb_buffer_size
   }
 
     file { '/rdbms_conf':

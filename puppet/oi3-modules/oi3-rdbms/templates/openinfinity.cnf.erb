@@ -2,4 +2,7 @@
 [mysqld]
 
 datadir = /opt/openinfinity/<%= @_toaspathversion %>/rdbms/data/
+default_storage_engine=innodb
+innodb_buffer_pool_size=<%= @_rdbms_innodb_buffer_size %>
+innodb_file_per_table
 
