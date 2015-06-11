@@ -20,5 +20,10 @@ class oi3idp::params {
 
 	# Dynamic
 	$idp_hostname="${::hostname}${dot}${::domain}"
-        $idp_keystore_password = fqdn_rand_string(20, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890~!@#$%^*_-')
+    $idp_keystore_password = fqdn_rand_string(20, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890~!@#$%^*_-')
+
+    # Should be from Hiera
+	$platform_name='idp'
+	$idp_shibboleth_version='2.4.0'
+	$platform_version='1.0'
 }
