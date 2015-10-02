@@ -1,14 +1,17 @@
-/*class oi3idp {
-	exec { "Selfsigned certificate for Idp":
-		path => "/usr/bin:/bin",
-		command => "/etc/puppet/modules/oi3idp/files/create_certs.sh to.be.configured /opt/shibboleth-idp password",
-		creates => "/opt/shibboleth-idp/credentials/idp.jks",
-	}
+class oi3idp {
+        include oi3idp::install
+        include oi3idp::config
 }
+/*
+ensure_resource('package', 'java-1.7.0-openjdk', {
+                ensure => present,
+        })
+
+        ensure_resource('package', 'java-1.7.0-openjdk-devel', {
+                ensure => present,
+        })
+
+        package { "oi3-idp":
+                ensure => present,
+        }
 */
-
-package { ["java-1.7.0-openjdk", "oi3-jetty"]:
-	ensure => present,
-	require => Class["oi3-basic"],
-}
-
