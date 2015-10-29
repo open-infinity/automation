@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+SSH_OPTIONS='-q -o BatchMode=yes -o StrictHostKeyChecking=no'
+
+# We are working on Shibboleth-related files
+cd /etc/shibboleth/
+
+# Copy IdP metadata file from IdP server
+scp $SSH_OPTIONS <%=shibboleth_idp_hostname%>:/opt/shibboleth-idp/metadata/idp-metadata.xml .
+
+# TODO: attribute-map.xml ?
+
+# TODO: /etc/hosts ?
+

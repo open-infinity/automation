@@ -1,4 +1,10 @@
-class oi3-activiti-rdbms::service ($rdbms_activiti_password = undef, $rdbms_mysql_password = undef) {
+class oi3-activiti-rdbms::service ($toaspathversion = undef, $rdbms_activiti_password = undef, $rdbms_mysql_password = undef) {
+  if $toaspathversion == undef {
+    $_toaspathversion = $::toaspathversion
+  }
+  else {
+    $_toaspathversion = $toaspathversion
+  }
 	if $rdbms_activiti_password == undef {
 		$_rdbms_activiti_password = $::activiti_password
 	}
@@ -15,7 +21,7 @@ class oi3-activiti-rdbms::service ($rdbms_activiti_password = undef, $rdbms_mysq
 	exec { "oi3-create-activiti-db-and-schema":
                 unless => "/usr/bin/mysql -uroot -p${_rdbms_mysql_password} activiti",
                 command => "/usr/bin/mysql -uroot -p${_rdbms_mysql_password} -e \"create database activiti; grant all privileges on activiti.* to
-                        'activiti'@'%' identified by '${_rdbms_activiti_password}'; flush privileges; use activiti;  source /opt/openinfinity/3.1.0/activiti/dbschema/activiti.mysql.create.engine.sql; source /opt/openinfinity/3.1.0/activiti/dbschema/activiti.mysql.create.history.sql; source /opt/openinfinity/3.1.0/activiti/dbschema/activiti.mysql.create.identity.sql; source /opt/openinfinity/3.1.0/activiti/dbschema/activiti.mysql.add.oiuser.sql;\"",
+                        'activiti'@'%' identified by '${_rdbms_activiti_password}'; flush privileges; use activiti;  source /opt/openinfinity/$_toaspathversion/activiti/dbschema/activiti.mysql.create.engine.sql; source /opt/openinfinity/$_toaspathversion/activiti/dbschema/activiti.mysql.create.history.sql; source /opt/openinfinity/$_toaspathversion/activiti/dbschema/activiti.mysql.create.identity.sql; source /opt/openinfinity/$_toaspathversion/activiti/dbschema/activiti.mysql.add.oiuser.sql;\"",
 		require => Class["oi3-activiti-rdbms::config"],
       }
 	

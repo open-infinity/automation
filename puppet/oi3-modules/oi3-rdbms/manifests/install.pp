@@ -1,11 +1,18 @@
-class oi3-rdbms::install {
+class oi3-rdbms::install ($toaspathversion = undef) {
 
-    file {"/opt/openinfinity/3.1.0/rdbms":
+  if $toaspathversion == undef {
+    $_toaspathversion = $::toaspathversion
+  }
+  else {
+    $_toaspathversion = $toaspathversion
+  }
+
+    file {"/opt/openinfinity/$_toaspathversion/rdbms":
         ensure => directory,
         owner => "mysql",
         group => "mysql",
         mode => 0775,
-        require => File["/opt/openinfinity/3.1.0"],
+        require => File["/opt/openinfinity/$_toaspathversion"],
     }
 
 #   file {"/opt/openinfinity/3.1.0/rdbms/etc":
@@ -16,17 +23,17 @@ class oi3-rdbms::install {
 #                require => file["/opt/openinfinity/3.1.0/rdbms"],
 #        }
 
-    file {"/opt/openinfinity/3.1.0/rdbms/data":
+    file {"/opt/openinfinity/$_toaspathversion/rdbms/data":
         ensure => directory,
         owner => "mysql",
         group => "mysql",
         mode => 0775,
-        require => File["/opt/openinfinity/3.1.0/rdbms"],
-    }   
+        require => File["/opt/openinfinity/$_toaspathversion/rdbms"],
+    }
 
     package { "oi3-rdbms":
         ensure => present,
-        require => File['/opt/openinfinity/3.1.0/rdbms/data'],
+        require => File["/opt/openinfinity/$_toaspathversion/rdbms/data"],
     }
 
     user { "mysql":

@@ -1,13 +1,4 @@
-/opt/openinfinity/3.1.0/tomcat/logs/catalina.out { 
-        copytruncate 
-        daily 
-        rotate 14 
-        compress 
-        missingok 
-        size 5M 
-}
-
-/opt/openinfinity/3.1.0/tomcat/logs/catalina.log {
+/opt/openinfinity/<%= @_toasversion %>/tomcat/logs/catalina.out { 
         copytruncate
         daily
         rotate 14
@@ -16,7 +7,7 @@
         size 5M
 }
 
-/opt/openinfinity/3.1.0/tomcat/logs/host-manager.log {
+/opt/openinfinity/<%= @_toasversion %>/tomcat/logs/catalina.log {
         copytruncate
         daily
         rotate 14
@@ -25,7 +16,7 @@
         size 5M
 }
 
-/opt/openinfinity/3.1.0/tomcat/logs/localhost.log {
+/opt/openinfinity/<%= @_toasversion %>/tomcat/logs/host-manager.log {
         copytruncate
         daily
         rotate 14
@@ -34,7 +25,7 @@
         size 5M
 }
 
-/opt/openinfinity/3.1.0/tomcat/logs/manager.log {
+/opt/openinfinity/<%= @_toasversion %>/tomcat/logs/localhost.log {
         copytruncate
         daily
         rotate 14
@@ -43,7 +34,16 @@
         size 5M
 }
 
-/opt/openinfinity/3.1.0/tomcat/logs/localhost_access_log.txt {
+/opt/openinfinity/<%= @_toasversion %>/tomcat/logs/manager.log {
+        copytruncate
+        daily
+        rotate 14
+        compress
+        missingok
+        size 5M
+}
+
+/opt/openinfinity/<%= @_toasversion %>/tomcat/logs/localhost_access_log.txt {
         copytruncate
         daily
         rotate 14
