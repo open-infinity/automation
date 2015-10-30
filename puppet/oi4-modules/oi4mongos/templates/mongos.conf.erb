@@ -1,0 +1,20 @@
+systemLog:
+    destination: file
+    path: "/opt/openinfinity/log/mongodb/mongos.log"
+    quiet: true
+    logAppend: true
+
+processManagement:
+    fork: true
+    pidFilePath: /var/run/mongodb/mongos.pid
+
+net:
+    port: <%= _mongos_port %>
+#    bindIp: 0.0.0.0
+    
+<% if mongo_cluster_type == 'sharded' then %>
+sharding:
+#    clusterRole: shardsvr
+    configDB: <%= mongo_config_servers %>
+<% end %>
+
