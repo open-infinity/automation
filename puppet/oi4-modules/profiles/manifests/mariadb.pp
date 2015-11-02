@@ -2,6 +2,8 @@ class profiles::mariadb {
   $mariadb_root_password = hiera('toas::mariadb::root_password')
   $mariadb_backup_password = hiera('toas::mariadb::backup_user_password')
   $user_mysqld_options = hiera('toas::mariadb::mysqld_variables')
+  $portal_user_password = hiera('toas::mariadb::portal_user_password', undef)
+  
 
   include common
   include 'stdlib'
@@ -95,5 +97,14 @@ class profiles::mariadb {
     mysql_group             => 'mysql',
     users                   => $users,
     grants                  => $grants,
+  }
+
+  if $portal_user_password {
+    mysql::db { 'lportal':
+      user     => 'liferay',
+      password => $portal_user_password,
+      host     => '%',
+      grant    => ['ALL'],
+    }
   }
 }

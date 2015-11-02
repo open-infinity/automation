@@ -38,6 +38,14 @@ class common {
     require => [User["oiuser"], File["/opt/openinfinity"]],
   }
 
+  file {"/opt/openinfinity/lib":
+    ensure  => directory,
+    owner   => 'oiuser',
+    group   => 'oiuser',
+    mode    => 644,
+    require => [User["oiuser"], File["/opt/openinfinity"]],
+  }
+
   file {"/opt/openinfinity/common":
     ensure  => directory,
     owner   => 'oiuser',
