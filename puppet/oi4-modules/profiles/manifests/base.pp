@@ -1,12 +1,14 @@
-class common {
+class profiles::base {
+  $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
+
   file {"/opt":
     ensure => directory,
     owner  => "root",
     group  => "root",
     mode   => 755,
   }
-  
-  file {"/opt/openinfinity":
+
+  file {"$oi_home":
     ensure  => directory,
     owner   => 'oiuser',
     group   => 'oiuser',
@@ -14,44 +16,44 @@ class common {
     require => [User["oiuser"], File["/opt"]],
   }
 
-  file {"/opt/openinfinity/data":
+  file {"$oi_home/data":
     ensure  => directory,
     owner   => 'oiuser',
     group   => 'oiuser',
     mode    => 644,
-    require => [User["oiuser"], File["/opt/openinfinity"]],
+    require => [User["oiuser"], File["$oi_home"]],
   }
 
-  file {"/opt/openinfinity/log":
+  file {"$oi_home/log":
     ensure  => directory,
     owner   => 'oiuser',
     group   => 'oiuser',
     mode    => 644,
-    require => [User["oiuser"], File["/opt/openinfinity"]],
+    require => [User["oiuser"], File["$oi_home"]],
   }
 
-  file {"/opt/openinfinity/conf":
+  file {"$oi_home/conf":
     ensure  => directory,
     owner   => 'oiuser',
     group   => 'oiuser',
     mode    => 644,
-    require => [User["oiuser"], File["/opt/openinfinity"]],
+    require => [User["oiuser"], File["$oi_home"]],
   }
 
-  file {"/opt/openinfinity/lib":
+  file {"$oi_home/lib":
     ensure  => directory,
     owner   => 'oiuser',
     group   => 'oiuser',
     mode    => 644,
-    require => [User["oiuser"], File["/opt/openinfinity"]],
+    require => [User["oiuser"], File["$oi_home"]],
   }
 
-  file {"/opt/openinfinity/common":
+  file {"$oi_home/common":
     ensure  => directory,
     owner   => 'oiuser',
     group   => 'oiuser',
     mode    => 644,
-    require => [User["oiuser"], File["/opt/openinfinity"]],
+    require => [User["oiuser"], File["$oi_home"]],
   }
 
   file {"/home/oiuser":
@@ -61,7 +63,6 @@ class common {
     mode    => 750,
     require => [User['oiuser'],Group['oiuser']]
   }
-
   user { "oiuser":
     ensure     => present,
     comment    => "Open Infinity user",
@@ -74,4 +75,9 @@ class common {
   group {"oiuser":
     ensure => present,
   }
+  class {'selinux':
+    mode => 'permissive'
+  }
+  class {'users': }
+  class {'repos': }
 }
