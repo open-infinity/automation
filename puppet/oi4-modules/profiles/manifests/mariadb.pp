@@ -3,29 +3,29 @@ class profiles::mariadb {
   $mariadb_backup_password = hiera('toas::mariadb::backup_user_password')
   $user_mysqld_options = hiera('toas::mariadb::mysqld_variables')
   $portal_user_password = hiera('toas::mariadb::portal_user_password', undef)
-  
+  $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
 
   include 'stdlib'
 
   $local_mysqld_options = {
-      'datadir'                 => '/opt/openinfinity/data/rdbms',
-      'log_error'               => '/opt/openinfinity/log/rdbms/rdbms_error.log',
+      'datadir'                 => "$oi_home/data/rdbms",
+      'log_error'               => "$oi_home/log/rdbms/rdbms_error.log",
       'slow_query_log'          => '',
-      'slow_query_log_file'     => '/opt/openinfinity/log/rdbms/rdbms_slow_query.log',
-      'general_log_file'        => '/opt/openinfinity/log/rdbms/rdbms_general_query.log',
+      'slow_query_log_file'     => "$oi_home/log/rdbms/rdbms_slow_query.log",
+      'general_log_file'        => "$oi_home/log/rdbms/rdbms_general_query.log",
       'log_output'              => 'FILE',
-      'pid-file'                => '/opt/openinfinity/data/rdbms/mysqld.pid',
-      'socket'                  => '/opt/openinfinity/data/rdbms/mysql.sock',
+      'pid-file'                => "$oi_home/data/rdbms/mysqld.pid",
+      'socket'                  => "$oi_home/data/rdbms/mysql.sock",
       'bind-address'            => '0.0.0.0',
   }
 
   $local_mysqld_safe_options = {
-      'log-error' => '/opt/openinfinity/log/rdbms/rdbms_error.log',
-      'socket'    => '/opt/openinfinity/data/rdbms/mysql.sock',
-      'pid-file'  => '/opt/openinfinity/data/rdbms/mysqld.pid',
+      'log-error' => "$oi_home/log/rdbms/rdbms_error.log",
+      'socket'    => "$oi_home/data/rdbms/mysql.sock",
+      'pid-file'  => "$oi_home/data/rdbms/mysqld.pid",
   }
   $local_client_options = {
-      'socket' => '/opt/openinfinity/data/rdbms/mysql.sock',
+      'socket' => "$oi_home/data/rdbms/mysql.sock",
   }
 
   $mysqld_options = merge($user_mysqld_options, $local_mysqld_options)
@@ -67,19 +67,19 @@ class profiles::mariadb {
     gid     => 'mysql',
     shell   => '/bin/false',
   }->
-  file {'/opt/openinfinity/data/rdbms':
+  file {"$oi_home/data/rdbms":
     ensure => directory,
     owner  => 'mysql',
     group  => 'mysql',
     mode   => 0775,
-    require => File['/opt/openinfinity/data'],
+    require => File["$oi_home/data"],
   }->
-  file {'/opt/openinfinity/log/rdbms':
+  file {"$oi_home/log/rdbms":
     ensure  => directory,
     owner   => 'mysql',
     group   => 'mysql',
     mode    => 0775,
-    require => File['/opt/openinfinity/data'],
+    require => File["$oi_home/data"],
   }->
   file {'/var/run/mysql':
     ensure => directory,
