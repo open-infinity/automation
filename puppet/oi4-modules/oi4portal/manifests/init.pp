@@ -2,7 +2,6 @@ class oi4portal::install  {
 
 	package { ["java-1.8.0-openjdk", "oi4-connectorj", "oi4-liferay", "oi4-core", "oi4-tomcat", "oi4-secvault", "oi4-hazelcast"]:
 		ensure => present,
-		require => Class["common"],
 	}
 #	package { ["oi3-bas"]:
 
@@ -12,7 +11,6 @@ class oi4portal::install  {
                 owner => 'oiuser',
                 group => 'oiuser',
                 mode => 0755,
-                require => Class["common"],
         }
 
 #	package { ["oi-theme-2.0.0-1"]:
@@ -163,7 +161,6 @@ class oi4portal::service {
 }
 
 class oi4portal {
-	require common
 	include oi4portal::install
 	include oi4portal::config
 	include oi4portal::service
