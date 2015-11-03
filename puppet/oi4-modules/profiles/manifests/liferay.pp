@@ -8,7 +8,6 @@ class profiles::liferay {
   $extra_catalina_opts = hiera('toas::portal::extra_catalina_opts', undef)
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
 
-  include common
   file {"$oi_home/log/tomcat":
     ensure  => 'directory',
     owner   => 'oiuser',

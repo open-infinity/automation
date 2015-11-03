@@ -5,7 +5,6 @@ class profiles::mariadb {
   $portal_user_password = hiera('toas::mariadb::portal_user_password', undef)
   
 
-  include common
   include 'stdlib'
 
   $local_mysqld_options = {
