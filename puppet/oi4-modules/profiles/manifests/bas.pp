@@ -14,7 +14,13 @@ class profiles::bas {
     manage_user         => false,
     manage_group        => false,
   }
-
+  file {"$oi_home/log/tomcat":
+    ensure  => 'directory',
+    owner   => 'oiuser',
+    group   => 'oiuser',
+    mode    => 755,
+    require => [User["oiuser"], File["$oi_home/log"]],
+  }->
   class {'oi4bas::install':
   }->
   class {'oi4bas::config':
