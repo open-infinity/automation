@@ -1,5 +1,6 @@
 class profiles::galeracluster {
   $galera_root_password = hiera('toas::galera::root_password')
+  $galera_status_password = hiera('toas::galera::status_user_password')
   $galera_master = hiera('toas::galera::master_address')
   $galera_servers = hiera('toas::galera::server_list')
   $user_mysqld_options = hiera('toas::galera::mysqld_variables')
@@ -43,6 +44,7 @@ class profiles::galeracluster {
     configure_repo     => false,
     configure_firewall => false,
     root_password      => $galera_root_password,
+    status_password    => $galera_status_password,
   }
 
 }
