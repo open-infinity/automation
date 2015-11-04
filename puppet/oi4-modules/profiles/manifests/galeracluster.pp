@@ -66,8 +66,8 @@ class profiles::galeracluster {
     mode   => 0775,
   }->
   class { 'galera':
-    galera_servers     => $galeraServers,
-    galera_master      => $galera_servers,
+    galera_servers     => $galera_servers,
+    galera_master      => $galera_master,
     vendor_type        => 'mariadb',
     override_options   => $override_options,
     configure_repo     => false,
