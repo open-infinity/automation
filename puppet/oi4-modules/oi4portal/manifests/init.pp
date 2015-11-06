@@ -28,7 +28,8 @@ class oi4portal::config (
   $portal_jvmmem = undef,
   $portal_jvmperm = undef,
   $portal_extra_jvm_opts = undef,
-  $portal_extra_catalina_opts = undef
+  $portal_extra_catalina_opts = undef,
+  $oi_home = '/opt/openinfinity'
 )
 
 {
@@ -37,6 +38,16 @@ class oi4portal::config (
 		command => "/bin/chown -R oiuser:oiuser /opt/openinfinity/",
 		require => Class["oi4portal::install"],
 	}
+
+  file { "$oi_home/tomcat/bin/setenv.sh":
+    ensure => present,
+    owner => 'oiuser',
+    group => 'oiuser',
+    mode => 0755,
+    content => template("oi4portal/setenv.sh.erb"),
+    require => Class["oi4portal::install"],
+    notify => Service["oi-tomcat"],
+  }
 
 	file {"/opt/openinfinity/tomcat/webapps/ROOT/WEB-INF/classes/portal-ext.properties":
 		ensure => present,
@@ -145,10 +156,6 @@ class oi4portal::config (
     content => template("oi4portal/portal-setup-wizard.properties.erb"),
 		require   => Class["oi4portal::install"],
 	}
-#  file { "/opt/openinfinity/3.1.0/oi-core-libs/deps/ehcache-core-2.6.6.jar":
-#    ensure  => absent,
-#                require => Class["oi3-portal::install"],
-#  }
 }
 
 class oi4portal::service {
