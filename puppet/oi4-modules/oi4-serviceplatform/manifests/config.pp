@@ -24,8 +24,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0755,
-        content => template("oi3-serviceplatform/setenv.sh.erb"),
-        require => Class["oi3-serviceplatform::install"],
+        content => template("oi4-serviceplatform/setenv.sh.erb"),
+        require => Class["oi4-serviceplatform::install"],
         notify => Service["oi-tomcat"],
     }
 
@@ -34,8 +34,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0600,
-        source => "puppet:///modules/oi3-serviceplatform/catalina.properties",
-        require => Class["oi3-serviceplatform::install"],
+        source => "puppet:///modules/oi4-serviceplatform/catalina.properties",
+        require => Class["oi4-serviceplatform::install"],
         notify => Service["oi-tomcat"],
     }
 
@@ -44,8 +44,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        content => template("oi3-serviceplatform/tomcat-users.xml.erb"),
-        require => Class["oi3-serviceplatform::install"],
+        content => template("oi4-serviceplatform/tomcat-users.xml.erb"),
+        require => Class["oi4-serviceplatform::install"],
     }
 
 
@@ -61,7 +61,7 @@ class oi4-serviceplatform::config (
 
     concat::fragment{'amqxml_start':
 	    target =>  $activemqxml,
-      content => template("oi3-serviceplatform/frag_start_activemq.xml.erb"),
+      content => template("oi4-serviceplatform/frag_start_activemq.xml.erb"),
       order => '01',
     }
 
@@ -69,14 +69,14 @@ class oi4-serviceplatform::config (
     if $_sp_amq_jms_conn_bindaddr != undef {
 	    concat::fragment{'amqxml_jmsconnector':
 	      target =>  $activemqxml,
-	      content => template("oi3-serviceplatform/frag_jmsconnector_activemq.xml.erb"),
+	      content => template("oi4-serviceplatform/frag_jmsconnector_activemq.xml.erb"),
 	      order => '10',
 	    }
     }
     if $_sp_amq_stomp_conn_bindaddr != undef {
 	    concat::fragment{'amqxml_stompconnector':
 	    target =>  $activemqxml,
-	    content => template("oi3-serviceplatform/frag_stompconnector_activemq.xml.erb"),
+	    content => template("oi4-serviceplatform/frag_stompconnector_activemq.xml.erb"),
 	    order => '10',
 	  }
   }
@@ -84,7 +84,7 @@ class oi4-serviceplatform::config (
 
     concat::fragment{'amqxml_end':
 	    target =>  $activemqxml,
-      content => template("oi3-serviceplatform/frag_end_activemq.xml.erb"),
+      content => template("oi4-serviceplatform/frag_end_activemq.xml.erb"),
 	    order => '15',
     }
 
@@ -93,7 +93,7 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        require => Class["oi3-serviceplatform::install"],
+        require => Class["oi4-serviceplatform::install"],
     }
 
     # activity webapp configuration override
@@ -103,8 +103,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        content => template("oi3-serviceplatform/activiti.db.properties.erb"),
-        require => Class["oi3-serviceplatform::install"],
+        content => template("oi4-serviceplatform/activiti.db.properties.erb"),
+        require => Class["oi4-serviceplatform::install"],
     }
 
     file {"/opt/openinfinity/tomcat/webapps/activiti-rest2/WEB-INF/classes/db.properties":
@@ -112,8 +112,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        content => template("oi3-serviceplatform/activiti.db.properties.erb"),
-        require => Class["oi3-serviceplatform::install"],
+        content => template("oi4-serviceplatform/activiti.db.properties.erb"),
+        require => Class["oi4-serviceplatform::install"],
     }
 
     file {"/opt/openinfinity/tomcat/webapps/activiti-explorer2/WEB-INF/activiti-standalone-context.xml":
@@ -121,8 +121,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        source => "puppet:///modules/oi3-serviceplatform/activiti-explorer-standalone-context.xml",
-        require => Class["oi3-serviceplatform::install"],
+        source => "puppet:///modules/oi4-serviceplatform/activiti-explorer-standalone-context.xml",
+        require => Class["oi4-serviceplatform::install"],
     }
 
     file {"/opt/openinfinity/tomcat/webapps/activiti-rest2/WEB-INF/classes/activiti-context.xml":
@@ -130,8 +130,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        source => "puppet:///modules/oi3-serviceplatform/activiti-rest-context.xml",
-        require => Class["oi3-serviceplatform::install"],
+        source => "puppet:///modules/oi4-serviceplatform/activiti-rest-context.xml",
+        require => Class["oi4-serviceplatform::install"],
     }
 
     file {"/opt/openinfinity/tomcat/webapps/activiti-rest2/WEB-INF/web.xml":
@@ -139,8 +139,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        source => "puppet:///modules/oi3-serviceplatform/activiti-rest-web.xml",
-        require => Class["oi3-serviceplatform::install"],
+        source => "puppet:///modules/oi4-serviceplatform/activiti-rest-web.xml",
+        require => Class["oi4-serviceplatform::install"],
     }
 
     # activemq-web-console webapp configuration override
@@ -150,8 +150,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        source => "puppet:///modules/oi3-serviceplatform/webconsole-embedded.xml",
-        require => Class["oi3-serviceplatform::install"],
+        source => "puppet:///modules/oi4-serviceplatform/webconsole-embedded.xml",
+        require => Class["oi4-serviceplatform::install"],
     }
 
     file {"/opt/openinfinity/tomcat/webapps/activemq-web-console/WEB-INF/web.xml":
@@ -159,8 +159,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        source => "puppet:///modules/oi3-serviceplatform/amqwebconsole_web.xml",
-        require => Class["oi3-serviceplatform::install"],
+        source => "puppet:///modules/oi4-serviceplatform/amqwebconsole_web.xml",
+        require => Class["oi4-serviceplatform::install"],
     }
 
     # oauth webapp configuration override
@@ -169,8 +169,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        content => template("oi3-serviceplatform/oauth-repository.properties.erb"),
-        require => Class["oi3-serviceplatform::install"],
+        content => template("oi4-serviceplatform/oauth-repository.properties.erb"),
+        require => Class["oi4-serviceplatform::install"],
     }
 
 #    # ActiveMQ web console credentials
@@ -179,8 +179,8 @@ class oi4-serviceplatform::config (
 #       owner => 'oiuser',
 #       group => 'oiuser',
 #       mode => 0600,
-#       content => template("oi3-serviceplatform/credentials.properties.erb"),
-#       require => Class["oi3-serviceplatform::install"],
+#       content => template("oi4-serviceplatform/credentials.properties.erb"),
+#       require => Class["oi4-serviceplatform::install"],
 #   }
 
 #   # ActiveMQ SiteMesh dependency file
@@ -189,19 +189,19 @@ class oi4-serviceplatform::config (
 #       owner => 'oiuser',
 #       group => 'oiuser',
 #       mode => 0600,
-#       content => template("oi3-serviceplatform/decorators.xml.erb"),
-#       require => Class["oi3-serviceplatform::install"],
+#       content => template("oi4-serviceplatform/decorators.xml.erb"),
+#       require => Class["oi4-serviceplatform::install"],
 #   }
 
-    # ---- From oi3-bas --------------------------------------------------------
+    # ---- From oi4-bas --------------------------------------------------------
     file {"/opt/openinfinity/tomcat/conf/server.xml":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0600,
-        #source => "puppet:///modules/oi3-bas/server.xml",
-        content => template("oi3-bas/server.xml.erb"),
-        require => Class["oi3-serviceplatform::install"],
+        #source => "puppet:///modules/oi4-bas/server.xml",
+        content => template("oi4-bas/server.xml.erb"),
+        require => Class["oi4-serviceplatform::install"],
     }
 
     file {"/opt/openinfinity/tomcat/conf/logging.properties":
@@ -209,8 +209,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        source => "puppet:///modules/oi3-bas/logging.properties",
-        require => Class["oi3-serviceplatform::install"],
+        source => "puppet:///modules/oi4-bas/logging.properties",
+        require => Class["oi4-serviceplatform::install"],
     }
 
     # Security Vault configuration
@@ -219,8 +219,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0600,
-        source => "puppet:///modules/oi3-bas/securityvault.properties",
-        require => Class["oi3-serviceplatform::install"],
+        source => "puppet:///modules/oi4-bas/securityvault.properties",
+        require => Class["oi4-serviceplatform::install"],
     }
 
     file {"/opt/openinfinity/tomcat/conf/context.xml.openinfinity_example":
@@ -228,8 +228,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0600,
-        source => "puppet:///modules/oi3-bas/context.xml",
-        require => Class["oi3-serviceplatform::install"],
+        source => "puppet:///modules/oi4-bas/context.xml",
+        require => Class["oi4-serviceplatform::install"],
     }
 
     file {"/opt/openinfinity/tomcat/conf/hazelcast.xml":
@@ -237,8 +237,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0600,
-        content => template("oi3-bas/hazelcast.xml.erb"),
-        require => Class["oi3-serviceplatform::install"],
+        content => template("oi4-bas/hazelcast.xml.erb"),
+        require => Class["oi4-serviceplatform::install"],
     }
 
     file {"/etc/init.d/oi-tomcat":
@@ -246,9 +246,9 @@ class oi4-serviceplatform::config (
         owner => 'root',
         group => 'root',
         mode => 0755,
-        #source => "puppet:///modules/oi3-bas/oi-tomcat",
-        content => template("oi3-bas/oi-tomcat.erb"),
-        require => Class["oi3-serviceplatform::install"],
+        #source => "puppet:///modules/oi4-bas/oi-tomcat",
+        content => template("oi4-bas/oi-tomcat.erb"),
+        require => Class["oi4-serviceplatform::install"],
     }
 
     file {"/opt/openinfinity/tomcat/conf/jmxremote.password":
@@ -256,8 +256,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0600,
-        content => template("oi3-bas/jmxremote.password.erb"),
-        require => Class["oi3-serviceplatform::install"],
+        content => template("oi4-bas/jmxremote.password.erb"),
+        require => Class["oi4-serviceplatform::install"],
     }
 
     file {"/opt/openinfinity/tomcat/conf/jmxremote.access":
@@ -265,8 +265,8 @@ class oi4-serviceplatform::config (
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        source => "puppet:///modules/oi3-bas/jmxremote.access",
-        require => Class["oi3-serviceplatform::install"],
+        source => "puppet:///modules/oi4-bas/jmxremote.access",
+        require => Class["oi4-serviceplatform::install"],
     }
 
     # Try ensure, that the supported Java is chosen
