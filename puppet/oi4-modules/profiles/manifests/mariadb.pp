@@ -122,15 +122,16 @@ class profiles::mariadb {
   
   if $activemq_user_password {
 	if $nodeids {
-		$nodeids.each | $index, $value | {
-         	  mysql::db { 'toasamq${value}':
+		define amqdbcreate ($dbname = $title, $activemq_user_password) {
+         	  mysql::db { 'toasamq${dbname}':
 			  user     => 'activemq',
 			  password => $activemq_user_password,
 			  host     => '%',
 			  grant    => ['ALL'],
-			}
+			  }		
 		}
 	}
+	amqdbcreate {$nodeids: activemq_user_password => $activemq_user_password}
   }
   
 }
