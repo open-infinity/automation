@@ -256,14 +256,14 @@ class oi4-serviceplatform::config (
 #        require => Class["oi4-serviceplatform::install"],
 #    }
 
-    file {"/opt/openinfinity/tomcat/conf/jmxremote.access":
-        ensure => present,
-        owner => 'oiuser',
-        group => 'oiuser',
-        mode => 0644,
-        source => "puppet:///modules/oi4-bas/jmxremote.access",
-        require => Class["oi4-serviceplatform::install"],
-    }
+#    file {"/opt/openinfinity/tomcat/conf/jmxremote.access":
+#        ensure => present,
+#        owner => 'oiuser',
+#        group => 'oiuser',
+#        mode => 0644,
+#        source => "puppet:///modules/oi4-bas/jmxremote.access",
+#        require => Class["oi4-serviceplatform::install"],
+#    }
 
     # Try ensure, that the supported Java is chosen
 #        exec { "choose-java":
