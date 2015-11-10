@@ -1,23 +1,19 @@
 class oi4bas::config (
   $bas_multicast_address = undef,
   $bas_tomcat_monitor_role_pwd = undef,
-  $bas_jvmmem = undef,
-  $bas_jvmperm = undef,
-  $bas_extra_jvm_opts = undef,
-  $bas_extra_catalina_opts = undef,
   $oi_home = '/opt/openinfinity',
 ) 
 
 {
-  file { "$oi_home/tomcat/bin/setenv.sh":
-    ensure => present,
-    owner => 'oiuser',
-    group => 'oiuser',
-    mode => 0755,
-    content => template("oi4bas/setenv.sh.erb"),
-    require => Class["oi4bas::install"],
-    notify => Service["oi-tomcat"],
-  }
+  #  file { "$oi_home/tomcat/bin/setenv.sh":
+  #  ensure => present,
+  #  owner => 'oiuser',
+  #  group => 'oiuser',
+  #  mode => 0755,
+  #  content => template("oi4bas/setenv.sh.erb"),
+  #  require => Class["oi4bas::install"],
+  #  notify => Service["oi-tomcat"],
+  #}
 
   file {"$oi_home/tomcat/conf/catalina.properties":
     ensure => present,
