@@ -5,15 +5,6 @@ class oi4bas::config (
 ) 
 
 {
-  #  file { "$oi_home/tomcat/bin/setenv.sh":
-  #  ensure => present,
-  #  owner => 'oiuser',
-  #  group => 'oiuser',
-  #  mode => 0755,
-  #  content => template("oi4bas/setenv.sh.erb"),
-  #  require => Class["oi4bas::install"],
-  #  notify => Service["oi-tomcat"],
-  #}
 
   file {"$oi_home/tomcat/conf/catalina.properties":
     ensure => present,
