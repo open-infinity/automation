@@ -28,7 +28,6 @@ class {'oi4-serviceplatform::install':
 	  sp_oi_httpuser_pwd => $sp_oi_httpuser_pwd,
 	  sp_amq_stomp_conn_bindaddr =>  $sp_amq_stomp_conn_bindaddr ,
 	  sp_amq_jms_conn_bindaddr =>  $sp_amq_jms_conn_bindaddr,
-	  bas_tomcat_monitor_role_pw => $bas_tomcat_monitor_role_pw 
   }->
   class {'oi4-serviceplatform::service':
   }
