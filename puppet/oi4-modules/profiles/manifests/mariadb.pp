@@ -4,7 +4,9 @@ class profiles::mariadb {
   $user_mysqld_options = hiera('toas::mariadb::mysqld_variables')
   $portal_user_password = hiera('toas::mariadb::portal_user_password', undef)
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
-
+  $activiti_user_password = hiera('toas::rdbms::activiti::pw', undef)
+  $activemq_user_password = hiera('toas::rdms::activemq:pw', undef)
+  $nodeids = hiera('toas::cluster::nodeids', undef)
   include 'stdlib'
 
   $local_mysqld_options = {
@@ -38,7 +40,7 @@ class profiles::mariadb {
   
 
   $users = {
-    'backup@localhost'         => {
+    'backup@local'         => {
       ensure                   => 'present',
       max_connections_per_hour => '0',
       max_queries_per_hour     => '0',
@@ -106,4 +108,29 @@ class profiles::mariadb {
       grant    => ['ALL'],
     }
   }
+  
+  if $activiti_user_password {
+  
+	 mysql::db { 'activiti':
+      user     => 'activiti',
+      password => $activiti_user_password,
+      host     => '%',
+      grant    => ['ALL'],
+	  sql	   => 'puppet:///modules/oi4-mariadb/activiti.mysql.create.sql'
+    }
+  }
+  
+  if $activemq_user_password {
+	if $nodeids {
+		$nodeids.each | Integer $index, String $value | {
+         	  mysql::db { 'toasamq${value}':
+			  user     => 'activemq',
+			  password => $activemq_user_password,
+			  host     => '%',
+			  grant    => ['ALL'],
+			}
+		}
+	}
+  }
+  
 }

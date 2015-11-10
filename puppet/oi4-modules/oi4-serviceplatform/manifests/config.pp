@@ -10,13 +10,8 @@ class oi4-serviceplatform::config (
   $sp_extra_jvm_opts = undef,
   $sp_extra_catalina_opts = undef,
   $sp_oi_httpuser_pwd = undef,
-
   $sp_amq_stomp_conn_bindaddr = undef,
   $sp_amq_jms_conn_bindaddr = undef,
-  
-  $bas_tomcat_connector_attributes = undef,
-  $bas_tomcat_ajp_connector_attributes = undef,
-  $bas_tomcat_monitor_role_pw = undef,
 ) 
  {
     file { "/opt/openinfinity/tomcat/bin/setenv.sh":
@@ -66,14 +61,14 @@ class oi4-serviceplatform::config (
     }
 
     # concat by undef and def parameters
-    if $_sp_amq_jms_conn_bindaddr != undef {
+    if $sp_amq_jms_conn_bindaddr != undef {
 	    concat::fragment{'amqxml_jmsconnector':
 	      target =>  $activemqxml,
 	      content => template("oi4-serviceplatform/frag_jmsconnector_activemq.xml.erb"),
 	      order => '10',
 	    }
     }
-    if $_sp_amq_stomp_conn_bindaddr != undef {
+    if $sp_amq_stomp_conn_bindaddr != undef {
 	    concat::fragment{'amqxml_stompconnector':
 	    target =>  $activemqxml,
 	    content => template("oi4-serviceplatform/frag_stompconnector_activemq.xml.erb"),
