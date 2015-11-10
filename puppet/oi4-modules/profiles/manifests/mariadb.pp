@@ -116,7 +116,7 @@ class profiles::mariadb {
       password => $activiti_user_password,
       host     => '%',
       grant    => ['ALL'],
-	  sql	   => 'puppet:///modules/oi4-mariadb/activiti.mysql.create.sql'
+	  sql	   => 'puppet:///modules/profiles/activiti.mysql.create.sql'
     }
   }
   
