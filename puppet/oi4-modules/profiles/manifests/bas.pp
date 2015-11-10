@@ -26,10 +26,6 @@ class profiles::bas {
   class {'oi4bas::config':
     bas_multicast_address       => $multicast_address,
     bas_tomcat_monitor_role_pwd => $tomcat_monitor_role_password,
-    bas_jvmmem                  => $jvm_mem,
-    bas_jvmperm                 => $jvm_perm,
-    bas_extra_jvm_opts          => $extra_jvm_opts,
-    bas_extra_catalina_opts     => $extra_catalina_opts,
   }->
   tomcat::config::server::valve { 'securityvault-valve':
     class_name    => 'org.openinfinity.sso.valve.AttributeBasedSecurityVaultValve',
