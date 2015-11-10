@@ -16,11 +16,11 @@ class oi4-serviceplatform::config (
 
 {
 
-	tomcat::setenv::entry {"MULE_HOME": {
+	tomcat::setenv::entry {"MULE_HOME": 
 		value => "/opt/data"
 	}
 
-	tomcat::setenv::entry {"MULE_OPTS": {
+	tomcat::setenv::entry {"MULE_OPTS": 
 		value => "-Dmule.workingDirectory=/opt/data/.mule"
 	}
 	
@@ -34,7 +34,7 @@ class oi4-serviceplatform::config (
 #        source => "puppet:///modules/oi4-serviceplatform/catalina.properties",
 #        require => Class["oi4-serviceplatform::install"],
 #        notify => Service["oi-tomcat"],
-    }
+#    }
 
     file {"/opt/openinfinity/tomcat/conf/tomcat-users.xml":
         ensure => present,
