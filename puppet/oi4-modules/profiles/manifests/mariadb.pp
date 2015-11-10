@@ -122,7 +122,7 @@ class profiles::mariadb {
   
   if $activemq_user_password {
 	if $nodeids {
-		$nodeids.each | Integer $index, String $value | {
+		$nodeids.each | $index, $value | {
          	  mysql::db { 'toasamq${value}':
 			  user     => 'activemq',
 			  password => $activemq_user_password,
