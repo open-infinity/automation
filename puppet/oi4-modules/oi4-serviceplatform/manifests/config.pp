@@ -16,11 +16,11 @@ class oi4-serviceplatform::config (
 
 {
 
-	tomcat::setenv::entry {"MULE_HOME": 
+	tomcat::setenv::entry {"MULE_HOME": {
 		value => "/opt/data"
 	}
 
-	tomcat::setenv::entry {"MULE_OPTS": 
+	tomcat::setenv::entry {"MULE_OPTS": {
 		value => "-Dmule.workingDirectory=/opt/data/.mule"
 	}
 	
