@@ -13,25 +13,27 @@ class oi4-serviceplatform::config (
   $sp_amq_stomp_conn_bindaddr = undef,
   $sp_amq_jms_conn_bindaddr = undef,
 ) 
- {
-    file { "/opt/openinfinity/tomcat/bin/setenv.sh":
-        ensure => present,
-        owner => 'oiuser',
-        group => 'oiuser',
-        mode => 0755,
-        content => template("oi4-serviceplatform/setenv.sh.erb"),
-        require => Class["oi4-serviceplatform::install"],
-        notify => Service["oi-tomcat"],
-    }
 
-    file {"/opt/openinfinity/tomcat/conf/catalina.properties":
-        ensure => present,
-        owner => 'oiuser',
-        group => 'oiuser',
-        mode => 0600,
-        source => "puppet:///modules/oi4-serviceplatform/catalina.properties",
-        require => Class["oi4-serviceplatform::install"],
-        notify => Service["oi-tomcat"],
+{
+
+	tomcat::setenv::entry {"MULE_HOME": 
+		value => "/opt/data"
+	}
+
+	tomcat::setenv::entry {"MULE_OPTS": 
+		value => "-Dmule.workingDirectory=/opt/data/.mule"
+	}
+	
+	
+#	-- Configured in bas module
+#    file {"/opt/openinfinity/tomcat/conf/catalina.properties":
+#        ensure => present,
+#        owner => 'oiuser',
+#        group => 'oiuser',
+#        mode => 0600,
+#        source => "puppet:///modules/oi4-serviceplatform/catalina.properties",
+#        require => Class["oi4-serviceplatform::install"],
+#        notify => Service["oi-tomcat"],
     }
 
     file {"/opt/openinfinity/tomcat/conf/tomcat-users.xml":
@@ -46,7 +48,6 @@ class oi4-serviceplatform::config (
 
     #rights may require change
     $activemqxml = "/opt/openinfinity/tomcat/conf/activemq.xml"
-
     concat{$activemqxml:
         owner => 'oiuser',
         group => 'oiuser',
@@ -189,71 +190,71 @@ class oi4-serviceplatform::config (
 #   }
 
     # ---- From oi4-bas --------------------------------------------------------
-    file {"/opt/openinfinity/tomcat/conf/server.xml":
-        ensure => present,
-        owner => 'oiuser',
-        group => 'oiuser',
-        mode => 0600,
-        #source => "puppet:///modules/oi4-bas/server.xml",
-        content => template("oi4-bas/server.xml.erb"),
-        require => Class["oi4-serviceplatform::install"],
-    }
+#    file {"/opt/openinfinity/tomcat/conf/server.xml":
+#        ensure => present,
+#        owner => 'oiuser',
+#        group => 'oiuser',
+#        mode => 0600,
+#        #source => "puppet:///modules/oi4-bas/server.xml",
+#        content => template("oi4-bas/server.xml.erb"),
+#        require => Class["oi4-serviceplatform::install"],
+#    }
 
-    file {"/opt/openinfinity/tomcat/conf/logging.properties":
-        ensure => present,
-        owner => 'oiuser',
-        group => 'oiuser',
-        mode => 0644,
-        source => "puppet:///modules/oi4-bas/logging.properties",
-        require => Class["oi4-serviceplatform::install"],
-    }
+#    file {"/opt/openinfinity/tomcat/conf/logging.properties":
+ #       ensure => present,
+ #       owner => 'oiuser',
+ #       group => 'oiuser',
+ #       mode => 0644,
+ #       source => "puppet:///modules/oi4-bas/logging.properties",
+ #       require => Class["oi4-serviceplatform::install"],
+ #   }
 
     # Security Vault configuration
-    file {"/opt/openinfinity/tomcat/conf/securityvault.properties":
-        ensure => present,
-        owner => 'oiuser',
-        group => 'oiuser',
-        mode => 0600,
-        source => "puppet:///modules/oi4-bas/securityvault.properties",
-        require => Class["oi4-serviceplatform::install"],
-    }
+#    file {"/opt/openinfinity/tomcat/conf/securityvault.properties":
+#        ensure => present,
+#        owner => 'oiuser',
+#        group => 'oiuser',
+#        mode => 0600,
+#        source => "puppet:///modules/oi4-bas/securityvault.properties",
+#        require => Class["oi4-serviceplatform::install"],
+#    }
 
-    file {"/opt/openinfinity/tomcat/conf/context.xml.openinfinity_example":
-        ensure => present,
-        owner => 'oiuser',
-        group => 'oiuser',
-        mode => 0600,
-        source => "puppet:///modules/oi4-bas/context.xml",
-        require => Class["oi4-serviceplatform::install"],
-    }
+#    file {"/opt/openinfinity/tomcat/conf/context.xml.openinfinity_example":
+#        ensure => present,
+#       owner => 'oiuser',
+#        group => 'oiuser',
+#        mode => 0600,
+##        source => "puppet:///modules/oi4-bas/context.xml",
+#        require => Class["oi4-serviceplatform::install"],
+#    }
 
-    file {"/opt/openinfinity/tomcat/conf/hazelcast.xml":
-        ensure => present,
-        owner => 'oiuser',
-        group => 'oiuser',
-        mode => 0600,
-        content => template("oi4-bas/hazelcast.xml.erb"),
-        require => Class["oi4-serviceplatform::install"],
-    }
+#    file {"/opt/openinfinity/tomcat/conf/hazelcast.xml":
+#        ensure => present,
+#        owner => 'oiuser',
+#        group => 'oiuser',
+#        mode => 0600,
+#        content => template("oi4-bas/hazelcast.xml.erb"),
+#        require => Class["oi4-serviceplatform::install"],
+#    }
 
-    file {"/etc/init.d/oi-tomcat":
-        ensure => present,
-        owner => 'root',
-        group => 'root',
-        mode => 0755,
-        #source => "puppet:///modules/oi4-bas/oi-tomcat",
-        content => template("oi4-bas/oi-tomcat.erb"),
-        require => Class["oi4-serviceplatform::install"],
-    }
-
-    file {"/opt/openinfinity/tomcat/conf/jmxremote.password":
-        ensure => present,
-        owner => 'oiuser',
-        group => 'oiuser',
-        mode => 0600,
-        content => template("oi4-bas/jmxremote.password.erb"),
-        require => Class["oi4-serviceplatform::install"],
-    }
+#    file {"/etc/init.d/oi-tomcat":
+#        ensure => present,
+#        owner => 'root',
+#        group => 'root',
+#        mode => 0755,
+#        #source => "puppet:///modules/oi4-bas/oi-tomcat",
+#        content => template("oi4-bas/oi-tomcat.erb"),
+#        require => Class["oi4-serviceplatform::install"],
+#    }
+#
+##    file {"/opt/openinfinity/tomcat/conf/jmxremote.password":
+#        ensure => present,
+#        owner => 'oiuser',
+###        group => 'oiuser',
+#        mode => 0600,
+#        content => template("oi4-bas/jmxremote.password.erb"),
+#        require => Class["oi4-serviceplatform::install"],
+#    }
 
     file {"/opt/openinfinity/tomcat/conf/jmxremote.access":
         ensure => present,
@@ -265,11 +266,11 @@ class oi4-serviceplatform::config (
     }
 
     # Try ensure, that the supported Java is chosen
-        exec { "choose-java":
-        path => "/",
-        command => "${alternativesPath} --install /usr/bin/java java ${javaHome}/bin/java 190000",
-        unless => "${alternativesPath} --display java | /bin/grep 'link currently points to ${javaHome}/bin/java'",
-        require => Package[$javaPackageName],
-    }
+#        exec { "choose-java":
+#        path => "/",
+#        command => "${alternativesPath} --install /usr/bin/java java ${javaHome}/bin/java 190000",
+#        unless => "${alternativesPath} --display java | /bin/grep 'link currently points to ${javaHome}/bin/java'",
+#        require => Package[$javaPackageName],
+#    }
 }
 
