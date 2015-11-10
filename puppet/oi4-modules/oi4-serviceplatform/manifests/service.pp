@@ -1,4 +1,4 @@
-class oi4-serviceplatform::service inherits oi4-bas::service {
+class oi4-serviceplatform::service {
 
         service ["oi-tomcat"] {
                 ensure => running,
