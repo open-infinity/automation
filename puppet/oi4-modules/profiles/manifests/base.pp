@@ -8,6 +8,13 @@ class profiles::base {
     mode   => 755,
   }
 
+  file {"/opt/data":
+    ensure => directory,
+	owner => 'root',
+	group => 'root',
+	mode => 777,
+  }
+  
   file {"$oi_home":
     ensure  => directory,
     owner   => 'oiuser',
