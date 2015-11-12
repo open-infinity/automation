@@ -30,7 +30,6 @@ class profiles::bas {
   }->
   class {'oi4bas::service':
   }
-  tomcat::config::server
 
   tomcat::config::server::valve { 'securityvault-valve':
     class_name    => 'org.openinfinity.sso.valve.AttributeBasedSecurityVaultValve',
