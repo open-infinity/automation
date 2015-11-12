@@ -12,7 +12,8 @@ class profiles::serviceplatform {
   $sp_amq_stomp_conn_bindaddr =  hiera('toas::sp::amq_stomp_conn_bindaddr', undef)
   $sp_amq_jms_conn_bindaddr =  hiera('toas::sp::amq_jms_conn_bindaddr', undef)
   $activemq_password = hiera('toas::rdms::activemq::pw')
-notice("Running Service Platform task")
+
+notify {"Running Service Platform task":}
 class {'oi4-serviceplatform::install':
   }->
   class {'oi4-serviceplatform::config': 
