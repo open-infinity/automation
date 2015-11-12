@@ -13,13 +13,14 @@ class profiles::bas {
     group               => 'oiuser',
     manage_user         => false,
     manage_group        => false,
+	catalina_home		=> "${oi_home}/tomcat",
   }
   file {"$oi_home/log/tomcat":
     ensure  => 'directory',
     owner   => 'oiuser',
     group   => 'oiuser',
     mode    => 755,
-    require => [User["oiuser"], File["$oi_home/log"]],
+    require => [User["oiuser"], File["${oi_home}/log"]],
   }->
   class {'oi4bas::install':
   }->
@@ -29,10 +30,10 @@ class profiles::bas {
   }->
   class {'oi4bas::service':
   }
-  
+  tomcat::config::server
+
   tomcat::config::server::valve { 'securityvault-valve':
     class_name    => 'org.openinfinity.sso.valve.AttributeBasedSecurityVaultValve',
-    catalina_base => "$oi_home/tomcat",
   }
   tomcat::setenv::entry { 'catalina_out':
     param => 'CATALINA_OUT',
