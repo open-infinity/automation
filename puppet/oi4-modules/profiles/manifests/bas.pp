@@ -6,7 +6,6 @@ class profiles::bas {
   $jvm_mem = hiera('toas::bas::jvm_mem')
   $jvm_perm = hiera('toas::bas:jvm_perm')
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
-  $bas_as_base_module = hiera("toas::bas:basemodule")
 
   class { 'tomcat':
     install_from_source => false,
@@ -28,11 +27,8 @@ class profiles::bas {
   class {'oi4bas::config':
     bas_multicast_address       => $multicast_address,
     bas_tomcat_monitor_role_pwd => $tomcat_monitor_role_password,
-  }
-  
-  if ( ! $bas_as_base_module)
-	  class {'oi4bas::service': }
-  }
+  }->
+  class {'oi4bas::service': }
   
   tomcat::config::server::valve { 'securityvault-valve':
     class_name    => 'org.openinfinity.sso.valve.AttributeBasedSecurityVaultValve',
