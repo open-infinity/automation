@@ -1,6 +1,16 @@
 class profiles::base {
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
 
+  file { "$oi_home/tomcat/bin/setenv.sh":
+    ensure => present,
+    owner => 'oiuser',
+    group => 'oiuser',
+    mode => 0755,
+    content => template("oi4bas/setenv.sh.erb"),
+    require => Class["oi4bas::install"],
+    notify => Service["oi-tomcat"],
+  }
+  
   file {"/opt":
     ensure => directory,
     owner  => "root",
