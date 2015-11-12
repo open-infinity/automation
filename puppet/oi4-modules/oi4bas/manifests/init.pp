@@ -1,6 +1,6 @@
 class oi4bas {
-        include oi3-bas::install
-        include oi3-bas::config
-        include oi3-bas::service
+        include oi4-bas::install
+        include oi4-bas::config
+        include oi4-bas::service
 }
 

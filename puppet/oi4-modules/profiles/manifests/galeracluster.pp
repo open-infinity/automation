@@ -36,9 +36,38 @@ class profiles::galeracluster {
     'client'      => $local_client_options,
   }
 
+  group { 'mysql':
+    ensure => present,
+  }->
+  user { 'mysql':
+    ensure  => present,
+    comment => 'MariaDB user',
+    gid     => 'mysql',
+    shell   => '/bin/false',
+  }->
+  file {"$oi_home/data/rdbms":
+    ensure => directory,
+    owner  => 'mysql',
+    group  => 'mysql',
+    mode   => 0775,
+    require => File["$oi_home/data"],
+  }->
+  file {"$oi_home/log/rdbms":
+    ensure  => directory,
+    owner   => 'mysql',
+    group   => 'mysql',
+    mode    => 0775,
+    require => File["$oi_home/data"],
+  }->
+  file {'/var/run/mysql':
+    ensure => directory,
+    owner  => 'mysql',
+    group  => 'mysql',
+    mode   => 0775,
+  }->
   class { 'galera':
-    galera_servers     => $galeraServers,
-    galera_master      => $galera_servers,
+    galera_servers     => $galera_servers,
+    galera_master      => $galera_master,
     vendor_type        => 'mariadb',
     override_options   => $override_options,
     configure_repo     => false,

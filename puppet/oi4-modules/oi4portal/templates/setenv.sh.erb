@@ -2,12 +2,12 @@ OI_HOME=<%= @oi_home %>
 TOMCAT_CONF_PATH="$OI_HOME/tomcat/conf"
 
 CLASS_LOADER_OPTS=-Dorg.apache.catalina.loader.WebappClassLoader.ENABLE_CLEAR_REFERENCES=false
-JVM_MEMORY_OPTS="-Xmx<%= @bas_jvmmem %>m -XX:MaxPermSize=<%= @bas_jvmperm %>m"
+JVM_MEMORY_OPTS="-Xmx<%= @portal_jvmmem %>m -XX:MaxPermSize=<%= @portal_jvmperm %>m"
 JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=65329 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.password.file=$TOMCAT_CONF_PATH/jmxremote.password -Dcom.sun.management.jmxremote.access.file=$TOMCAT_CONF_PATH/jmxremote.access"
 SECURITY_VAULT_OPTS="-Dsecurity.vault.properties.file=$TOMCAT_CONF_PATH/securityvault.properties"
 
-EXTRA_JVM_OPS="<%= @bas_extra_jvm_opts %>"
-EXTRA_CATALINA_OPS="<%= @bas_extra_catalina_opts %>"
+EXTRA_JVM_OPS="<%= @portal_extra_jvm_opts %>"
+EXTRA_CATALINA_OPS="<%= @portal_extra_catalina_opts %>"
 
 JAVA_OPTS="$JAVA_OPTS $CLASS_LOADER_OPTS -Duser.timezone=EET -Dfile.encoding=UTF8 $JVM_MEMORY_OPTS $SECURITY_VAULT_OPTS $EXTRA_JVM_OPS"
 CATALINA_OPTS="$CATALINA_OPTS $JMX_OPTS $EXTRA_CATALINA_OPS"
