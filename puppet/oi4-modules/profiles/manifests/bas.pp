@@ -36,7 +36,7 @@ class profiles::bas {
   }
   tomcat::setenv::entry { 'catalina_out':
     param => 'CATALINA_OUT',
-    value => "$oi_home/og/tomcat/catalina.out",
+    value => "${oi_home}/og/tomcat/catalina.out",
   }
   tomcat::setenv::entry {'jmx_opts':
     param => 'JMX_OPTS',
