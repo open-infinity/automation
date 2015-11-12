@@ -6,7 +6,6 @@ class profiles::base {
     owner => 'oiuser',
     group => 'oiuser',
     mode => 0755,
-    content => template("oi4bas/setenv.sh.erb"),
     require => Class["oi4bas::install"],
     notify => Service["oi-tomcat"],
   }
