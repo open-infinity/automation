@@ -27,7 +27,7 @@
   </login-config> 
 
   <listener>
-    <listener-class>org.activiti.rest.servlet.ActivitiServletContextListener</listener-class>
+    <listener-class>org.activiti.rest.common.servlet.ActivitiServletContextListener</listener-class>
   </listener>
 
   <!-- Restlet adapter -->
