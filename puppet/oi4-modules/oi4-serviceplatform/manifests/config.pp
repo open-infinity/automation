@@ -121,14 +121,14 @@ class oi4-serviceplatform::config (
         require => Class["oi4-serviceplatform::install"],
     }
 
-    file {"/opt/openinfinity/tomcat/webapps/activiti-rest2/WEB-INF/classes/activiti-context.xml":
-        ensure => present,
-        owner => 'oiuser',
-        group => 'oiuser',
-        mode => 0644,
-        source => "puppet:///modules/oi4-serviceplatform/activiti-rest-context.xml",
-        require => Class["oi4-serviceplatform::install"],
-    }
+    #file {"/opt/openinfinity/tomcat/webapps/activiti-rest2/WEB-INF/classes/activiti-context.xml":
+    #    ensure => present,
+    #    owner => 'oiuser',
+    #    group => 'oiuser',
+    #    mode => 0644,
+    #    source => "puppet:///modules/oi4-serviceplatform/activiti-rest-context.xml",
+    #    require => Class["oi4-serviceplatform::install"],
+    #}
 
     file {"/opt/openinfinity/tomcat/webapps/activiti-rest2/WEB-INF/web.xml":
         ensure => present,
