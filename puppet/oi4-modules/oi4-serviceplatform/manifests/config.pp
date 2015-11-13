@@ -23,6 +23,25 @@ class oi4-serviceplatform::config (
 	tomcat::setenv::entry {"MULE_OPTS": 
 		value => "-Dmule.workingDirectory=/opt/data/.mule"
 	}
+
+	tomcat::setenv::entry {"package.access": 
+		config_file => "${oi_home}/conf/catalina.properties"
+		value => "sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper.,sun.beans."
+	}
+
+	tomcat::setenv::entry {"package.definition": 
+		config_file => "${oi_home}/conf/catalina.properties"
+		value => "sun.,java.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper."
+	}
+	tomcat::setenv::entry {"common.loader": 
+		config_file => "${oi_home}/conf/catalina.properties"
+		value => '${catalina.base}/lib,${catalina.base}/lib/*.jar,${catalina.home}/lib,${catalina.home}/lib/*.jar,${catalina.home}/lib/ext/*.jar,${catalina.home}/lib/oi-core-libs/*.jar,${catalina.home}/lib/oi-core-libs/deps/*.jar,${catalina.home}/lib/oi-hazelcast-libs/*.jar,${catalina.home}/lib/oi-mvcclient-libs/*.jar,${catalina.home}/lib/oi-secvault-libs/*.jar,${catalina.home}/lib/oi-mule-libs/endorsed/*.jar,${catalina.home}/lib/oi-mule-libs/mule/*.jar,${catalina.home}/lib/oi-mule-libs/opt/*.jar,${catalina.home}/lib/oi-activemq-libs/*.jar,${catalina.home}/lib/oi-activemq-libs/opt/*.jar,${catalina.home}/lib/oi-activemq-libs/web/*.jar,${catalina.home}/lib/oi-activemq-libs/camel/*.jar,${catalina.home}/lib/oi-activiti-libs/*.jar,${catalina.home}/lib/oi-activiti-libs/deps/*.jar,${catalina.home}/lib/oi-activiti-libs/mule-module-activiti/*.jar,${catalina.home}/lib/oi-activiti-libs/mule-module-activiti/deps/*.jar,${catalina.home}/lib/springdata-commons-libs/*.jar,${catalina.home}/lib/springdata-commons-libs/deps/*.jar,${catalina.home}/lib/springdata-mongo-libs/*.jar,${catalina.home}/lib/springdata-mongo-libs/deps/*.jar,${catalina.home}/lib/oi-springdatahadoop-libs/spring-data-hadoop-core/*.jar,${catalina.home}/lib/oi-springdatahadoop-libs/spring-data-hadoop-core/deps/*.jar,${catalina.home}/lib/oi-springdatahadoop-libs/spring-data-hadoop/*.jar,${catalina.home}/lib/oi-springdatahadoop-libs/spring-data-hadoop/deps/*.jar,${catalina.home}/lib/oi-springdatahadoop-libs/spring-cascading/*.jar,${catalina.home}/lib/oi-springdatahadoop-libs/spring-cascading/deps/*.jar,${catalina.home}/lib/oi-springdatahadoop-libs/spring-data-hadoop-batch/*.jar,${catalina.home}/lib/oi-springdatahadoop-libs/spring-data-hadoop-batch/deps/*.jar,${catalina.home}/lib/oi-ssocommon-libs/*.jar,${catalina.home}/lib/oi-ssocommon-libs/dependencies/*.jar'
+	}
+
+	tomcat::setenv::entry {"tomcat.util.buf.StringCache.byte.enabled": 
+		config_file => "${oi_home}/conf/catalina.properties"
+		value => "true"
+	}
 	
     file {"/opt/openinfinity/tomcat/conf/tomcat-users.xml":
         ensure => present,
