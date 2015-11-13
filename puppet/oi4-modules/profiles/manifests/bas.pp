@@ -6,7 +6,8 @@ class profiles::bas {
   $jvm_mem = hiera('toas::bas::jvm_mem')
   $jvm_perm = hiera('toas::bas:jvm_perm')
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
-
+  $ignore_catalina_propeties = hiera('toas::bas::ignore_catalina_properties', undef)
+  
   class { 'tomcat':
     install_from_source => false,
     user                => 'oiuser',
@@ -27,6 +28,7 @@ class profiles::bas {
   class {'oi4bas::config':
     bas_multicast_address       => $multicast_address,
     bas_tomcat_monitor_role_pwd => $tomcat_monitor_role_password,
+	ignore_catalina_propeties => $ignore_catalina_propeties
   }->
   class {'oi4bas::service': }
   
