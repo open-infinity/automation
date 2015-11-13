@@ -121,7 +121,7 @@ class profiles::mariadb {
   }
   
   if $activemq_user_password {
-	notify {"NodeIds ${nodeids}"}
+	notify {"NodeIds ${nodeids}":}
 	if $nodeids {
 	  mysql::db { 'toasamq${nodeids[0]}':
 	  user     => 'activemq',
