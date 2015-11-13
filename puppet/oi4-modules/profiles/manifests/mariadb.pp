@@ -5,7 +5,7 @@ class profiles::mariadb {
   $portal_user_password = hiera('toas::mariadb::portal_user_password', undef)
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
   $activiti_user_password = hiera('toas::rdbms::activiti::pw', undef)
-  $activemq_user_password = hiera('toas::rdms::activemq:pw', undef)
+  $activemq_user_password = hiera('toas::rdbms::activemq:pw', undef)
   $nodeids = hiera('toas::cluster::nodeids', undef)
   include 'stdlib'
 
@@ -121,7 +121,6 @@ class profiles::mariadb {
   }
   
   if $activemq_user_password {
-	notify {"NodeIds ${nodeids}":}
 	if $nodeids {
 	  mysql::db { 'toasamq${nodeids[0]}':
 	  user     => 'activemq',
