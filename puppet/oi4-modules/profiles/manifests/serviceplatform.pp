@@ -12,6 +12,8 @@ class profiles::serviceplatform {
   $sp_amq_stomp_conn_bindaddr =  hiera('toas::sp::amq_stomp_conn_bindaddr', undef)
   $sp_amq_jms_conn_bindaddr =  hiera('toas::sp::amq_jms_conn_bindaddr', undef)
   $activemq_password = hiera('toas::rdms::activemq::pw')
+  $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
+
 
 notify {"Running Service Platform task":}
 class {'oi4-serviceplatform::install':
@@ -30,6 +32,7 @@ class {'oi4-serviceplatform::install':
 	  sp_oi_httpuser_pwd => $sp_oi_httpuser_pwd,
 	  sp_amq_stomp_conn_bindaddr =>  $sp_amq_stomp_conn_bindaddr ,
 	  sp_amq_jms_conn_bindaddr =>  $sp_amq_jms_conn_bindaddr,
+	  oi_home => $oi_home
   }->
   class {'oi4-serviceplatform::service':
   }

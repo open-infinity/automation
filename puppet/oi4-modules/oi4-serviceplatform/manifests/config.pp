@@ -12,6 +12,7 @@ class oi4-serviceplatform::config (
   $sp_oi_httpuser_pwd = undef,
   $sp_amq_stomp_conn_bindaddr = undef,
   $sp_amq_jms_conn_bindaddr = undef,
+  $oi_home = undef
 ) 
 
 {
