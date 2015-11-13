@@ -39,6 +39,12 @@ class profiles::bas {
     param => 'CATALINA_OUT',
     value => "${oi_home}/log/tomcat/catalina.out",
   }
+
+  tomcat::setenv::entry {'SECURITY_VAULT_OPTS':
+    param => 'SECURITY_VAULT_OPTS',
+    value => "-Dsecurity.vault.properties.file=/opt/openinfinity/tomcat/conf/securityvault.properties",
+  }
+
   tomcat::setenv::entry {'jmx_opts':
     param => 'JMX_OPTS',
     value => "\"-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=65329 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.password.file=$oi_home/tomcat/conf/jmxremote.password -Dcom.sun.management.jmxremote.access.file=$oi_home/tomcat/conf/jmxremote.access\"",
