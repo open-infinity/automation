@@ -12,9 +12,21 @@ class oi4-serviceplatform::config (
   $sp_oi_httpuser_pwd = undef,
   $sp_amq_stomp_conn_bindaddr = undef,
   $sp_amq_jms_conn_bindaddr = undef,
+  $oi_home = undef,
 ) 
 
 {
+
+  file {"$oi_home/tomcat/conf/catalina.properties":
+    ensure => present,
+    owner => 'oiuser',
+    group => 'oiuser',
+    mode => 0600,
+    source => "puppet:///modules/oi4-serviceplatform/catalina.properties",
+    require => Class["oi4-serviceplatform::install"],
+    notify => Service["oi-tomcat"],
+  }
+
 
 	tomcat::setenv::entry {"MULE_HOME": 
 		value => "/opt/data"
