@@ -14,8 +14,6 @@ class profiles::serviceplatform {
   $activemq_password = hiera('toas::rdms::activemq::pw')
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
 
-
-notify {"Running Service Platform task":}
 class {'oi4-serviceplatform::install':
   }->
   class {'oi4-serviceplatform::config': 
