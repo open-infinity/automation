@@ -4,6 +4,7 @@ class oi4bas::service {
         ensure => running,
         hasrestart => true,
         enable => true,
+		hasstatus => false,
         require => Class["oi4bas::config"],
     }
 }
