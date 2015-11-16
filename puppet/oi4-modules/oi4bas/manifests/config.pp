@@ -2,9 +2,11 @@ class oi4bas::config (
   $bas_multicast_address = undef,
   $bas_tomcat_monitor_role_pwd = undef,
   $oi_home = '/opt/openinfinity',
+  $ignore_catalina_propeties = undef,
 ) 
 
 {
+if ! $ignore_catalina_propeties {
 
   file {"$oi_home/tomcat/conf/catalina.properties":
     ensure => present,
@@ -15,7 +17,7 @@ class oi4bas::config (
     require => Class["oi4bas::install"],
     notify => Service["oi-tomcat"],
   }
-
+}
 
   # Security Vault configuration
   file {"$oi_home/tomcat/conf/securityvault.properties":

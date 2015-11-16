@@ -6,41 +6,48 @@ class profiles::bas {
   $jvm_mem = hiera('toas::bas::jvm_mem')
   $jvm_perm = hiera('toas::bas:jvm_perm')
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
-
+  $ignore_catalina_propeties = hiera('toas::bas::ignore_catalina_properties', undef)
+  
   class { 'tomcat':
     install_from_source => false,
     user                => 'oiuser',
     group               => 'oiuser',
     manage_user         => false,
     manage_group        => false,
+	catalina_home		=> "${oi_home}/tomcat",
   }
   file {"$oi_home/log/tomcat":
     ensure  => 'directory',
     owner   => 'oiuser',
     group   => 'oiuser',
     mode    => 755,
-    require => [User["oiuser"], File["$oi_home/log"]],
+    require => [User["oiuser"], File["${oi_home}/log"]],
   }->
   class {'oi4bas::install':
   }->
   class {'oi4bas::config':
     bas_multicast_address       => $multicast_address,
     bas_tomcat_monitor_role_pwd => $tomcat_monitor_role_password,
+	ignore_catalina_propeties => $ignore_catalina_propeties
   }->
-  class {'oi4bas::service':
-  }
+  class {'oi4bas::service': }
   
   tomcat::config::server::valve { 'securityvault-valve':
     class_name    => 'org.openinfinity.sso.valve.AttributeBasedSecurityVaultValve',
-    catalina_base => "$oi_home/tomcat",
   }
   tomcat::setenv::entry { 'catalina_out':
     param => 'CATALINA_OUT',
-    value => "${oi_home}/og/tomcat/catalina.out",
+    value => "${oi_home}/log/tomcat/catalina.out",
   }
+
+  tomcat::setenv::entry {'SECURITY_VAULT_OPTS':
+    param => 'SECURITY_VAULT_OPTS',
+    value => "-Dsecurity.vault.properties.file=/opt/openinfinity/tomcat/conf/securityvault.properties",
+  }
+
   tomcat::setenv::entry {'jmx_opts':
     param => 'JMX_OPTS',
-    value => "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=65329 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.password.file=$oi_home/tomcat/conf/jmxremote.password -Dcom.sun.management.jmxremote.access.file=$oi_home/tomcat/conf/jmxremote.access",
+    value => "\"-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=65329 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.password.file=$oi_home/tomcat/conf/jmxremote.password -Dcom.sun.management.jmxremote.access.file=$oi_home/tomcat/conf/jmxremote.access\"",
     order => 1,
   }
   tomcat::setenv::entry { 'extra_jvm_opts':
@@ -55,7 +62,7 @@ class profiles::bas {
   }
   tomcat::setenv::entry { 'java_opts':
     param => 'JAVA_OPTS',
-    value => "\$JAVA_OPTS -Dorg.apache.catalina.loader.WebappClassLoader.ENABLE_CLEAR_REFERENCES=false -Duser.timezone=EET -Dfile.encoding=UTF8 -Xmx${jvm_mem}m -XX:MaxPermSize=${jvm_perm}m -Dsecurity.vault.properties.file=$oi_home/tomcat/conf/securityvault.properties \$JMX_OPTS \$EXTRA_JVM_OPTS",
+    value => "\"$JAVA_OPTS -Dorg.apache.catalina.loader.WebappClassLoader.ENABLE_CLEAR_REFERENCES=false -Duser.timezone=EET -Dfile.encoding=UTF8 -Xmx${jvm_mem}m -XX:MaxPermSize=${jvm_perm}m -Dsecurity.vault.properties.file=$oi_home/tomcat/conf/securityvault.properties \$JMX_OPTS \$EXTRA_JVM_OPTS\"",
     order => 10,
   }
   tomcat::setenv::entry { 'catalina_opts':
