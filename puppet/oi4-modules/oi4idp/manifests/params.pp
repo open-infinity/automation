@@ -1,4 +1,4 @@
-class oi3idp::params {
+class oi4idp::params {
         include stdlib
 
 	# Static

@@ -30,5 +30,5 @@ openssl rsa -in $tmp_key -out $key_file -passin pass:$cert_password
 rm -rf $tmp_key $tmp_pkcs12
 
 # TODO: this needs to be changes depending on the script location on the target node  
-/etc/puppet/modules/oi3idp/files/add-cert.py
+/etc/puppet/modules/oi4idp/files/add-cert.py
  
