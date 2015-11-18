@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context docBase="idp.home/war/idp.war"
+         privileged="true"
+         antiResourceLocking="false"
+         swallowOutput="true" />
