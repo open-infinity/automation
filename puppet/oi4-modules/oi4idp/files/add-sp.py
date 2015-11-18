@@ -6,7 +6,7 @@
 # After these steps are done successfully, Jetty (which runs IdP) is restarted.
 # Type ./add-sp.py --help to get information about command line parameters.
 #
-# The script is invoked over ssh by post-configure.sh script of oi3httpd_sp. The
+# The script is invoked over ssh by post-configure.sh script of oi4httpd_sp. The
 # expected location of this script is in directory /opt/openinfinity/common/shibboleth-idp.
 #
 # The only dependency of this file is python2, which is installed in most of modern 

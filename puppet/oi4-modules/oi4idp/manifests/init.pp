@@ -12,7 +12,7 @@ ensure_resource('package', 'java-1.7.0-openjdk', {
                 ensure => present,
         })
 
-        package { "oi3-idp":
+        package { "oi4-idp":
                 ensure => present,
         }
 */

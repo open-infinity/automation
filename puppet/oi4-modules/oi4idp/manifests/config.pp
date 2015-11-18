@@ -20,7 +20,7 @@ $platform_name = "${tomcat::params::platform_name}"
 	$idp_install_path="${io4idp::params::idp_install_path}"
 
 	#idp_path="${platform_home}/idp"
-	#idp_rpm_name='oi3-idp-'
+	#idp_rpm_name='oi4-idp-'
 
 	#$idp_rpm="${idp_rpm_name}${idp_shibboleth_version}"
 	$idp_rpm="${io4idp::params::idp_rpm}"
