@@ -1,4 +1,4 @@
-class profiles::liferay {
+class profiles::idp {
   class {'idp::install': 
   }->
   class {'idp::config':
