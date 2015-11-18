@@ -20,7 +20,7 @@ class apacheds::install{
         require io4idp::params
         include openjdkjava
 
-        $apacheds_rpm="${oi3idp::params::apacheds_rpm}"
+        $apacheds_rpm="${oi4idp::params::apacheds_rpm}"
 
         package { ["${$apacheds_rpm}"]:
                 ensure => installed,
