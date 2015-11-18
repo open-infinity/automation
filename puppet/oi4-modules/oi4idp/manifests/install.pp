@@ -1,4 +1,4 @@
-class oi3idp::install{
+class oi4idp::install{
 	
         #package { ["java-1.7.0-openjdk"]:
         	#ensure => present,

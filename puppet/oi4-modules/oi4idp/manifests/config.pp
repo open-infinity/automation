@@ -1,4 +1,4 @@
-class oi3idp::config {
+class oi4idp::config {
 $platform_name = "${tomcat::params::platform_name}"
 	require oi3idp::params
 	$java_home="${oi3idp::params::java_home}"

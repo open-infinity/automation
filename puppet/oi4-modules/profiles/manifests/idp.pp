@@ -1,8 +1,6 @@
 class profiles::idp {
-  class {'idp::install': 
+  class {'oi4idp::install': 
   }->
-  class {'idp::config':
+  class {'oi4idp::config':
   }->
-  class {'idp::service':
-  }
 }

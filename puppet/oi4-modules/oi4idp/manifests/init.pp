@@ -1,7 +1,7 @@
-class oi3idp {
+class oi4idp {
 		include apacheds::install
-        include oi3idp::install
-        include oi3idp::config
+        include oi4idp::install
+        include oi4idp::config
 }
 /*
 ensure_resource('package', 'java-1.7.0-openjdk', {
