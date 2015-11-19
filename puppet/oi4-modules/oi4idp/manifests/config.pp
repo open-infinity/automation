@@ -1,44 +1,44 @@
 class oi4idp::config {
 $platform_name = "${tomcat::params::platform_name}"
-	require io4idp::params
-	$java_home="${io4idp::params::java_home}"
+	require oi4idp::params
+	$java_home="${oi4idp::params::java_home}"
 	#dot='.'
 	#platform_home_prefix = "/opt/platform/"
 	#platform_home_suffix = "/current"
 	#$platform_home = "${platform_home_prefix}${platform_name}${platform_home_suffix}"
-    $platform_home="${io4idp::params::platform_home}"
+    $platform_home="${oi4idp::params::platform_home}"
 
 	#platform_install_path_prefix='/opt/platform/idp/'
 	#$platform_install_path="${platform_install_path_prefix}${platform_version}"
-	$platform_install_path="${io4idp::params::platform_install_path}"
+	$platform_install_path="${oi4idp::params::platform_install_path}"
   
 	#$idp_shibboleth_idp_dir_prefix='/shibboleth-idp-'
-	$idp_shibboleth_idp_dir_prefix="${io4idp::params::idp_shibboleth_idp_dir_prefix}"
+	$idp_shibboleth_idp_dir_prefix="${oi4idp::params::idp_shibboleth_idp_dir_prefix}"
 
 	#idp_install_path="${platform_install_path}${idp_shibboleth_idp_dir_prefix}${idp_shibboleth_version}"
-	# $idp_install_path="${io4idp::params::}"
-	$idp_install_path="${io4idp::params::idp_install_path}"
+	# $idp_install_path="${oi4idp::params::}"
+	$idp_install_path="${oi4idp::params::idp_install_path}"
 
 	#idp_path="${platform_home}/idp"
 	#idp_rpm_name='oi4-idp-'
 
 	#$idp_rpm="${idp_rpm_name}${idp_shibboleth_version}"
-	$idp_rpm="${io4idp::params::idp_rpm}"
+	$idp_rpm="${oi4idp::params::idp_rpm}"
   
 	#idp_install_script_prefix='/root/shibboleth-idp-'
-	$idp_install_script_prefix="${io4idp::params::idp_install_script_prefix}"
+	$idp_install_script_prefix="${oi4idp::params::idp_install_script_prefix}"
 	#idp_install_script_conf_file='/src/installer/resources/build.xml'
 	#$idp_install_script="${idp_install_script_prefix}${idp_shibboleth_version}${idp_install_script_conf_file}"
-  	$idp_install_script="${io4idp::params::idp_install_script}"
+  	$idp_install_script="${oi4idp::params::idp_install_script}"
 
 	# Local, dynamic
-	$idp_hostname="${io4idp::params::idp_hostname}"
-	$idp_keystore_password= "${io4idp::params::idp_keystore_password}"
+	$idp_hostname="${oi4idp::params::idp_hostname}"
+	$idp_keystore_password= "${oi4idp::params::idp_keystore_password}"
 
     # should be from Hiera
-    $platform_name="${io4idp::params::platform_name}"
-    $idp_shibboleth_version="${io4idp::params::idp_shibboleth_version}"
-    $platform_version="${io4idp::params::platform_version}"
+    $platform_name="${oi4idp::params::platform_name}"
+    $idp_shibboleth_version="${oi4idp::params::idp_shibboleth_version}"
+    $platform_version="${oi4idp::params::platform_version}"
 
 
 	#require openjdkjava
@@ -56,7 +56,7 @@ $platform_name = "${tomcat::params::platform_name}"
 
 	/* Modifies ant configuration file with the one from tempalte*/
 	file { "${idp_install_script}":
-		content => template("io4idp/build.xml.erb"),
+		content => template("oi4idp/build.xml.erb"),
 		ensure => present,
 		replace => true,
 		owner => "root",
@@ -77,7 +77,7 @@ $platform_name = "${tomcat::params::platform_name}"
     } ->
  
     file { "${idp_install_path}":
-		#content => template("io4idp/build.xml.erb"),
+		#content => template("oi4idp/build.xml.erb"),
 		ensure => directory,
         recurse => true,
         #replace => true,
