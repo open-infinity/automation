@@ -133,7 +133,7 @@ class profiles::mariadb {
    } ->
   file { "${oi_home}/activiti/dbschema/activiti.mysql.add.oiuser.sql":
 		ensure => present,
-		content => template("profile/activiti.mysql.add.oiuser.sql.erb")
+		content => template("profiles/activiti.mysql.add.oiuser.sql.erb"),
 		owner => "root",
 		group => "root",
    }
