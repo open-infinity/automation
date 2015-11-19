@@ -1,32 +1,29 @@
 class oi4idp::params {
         include stdlib
 
-	# Should be from Hiera
-	# Static(?)
+	# Static
 	$java_home='/usr/lib/jvm/jre'
 	$dot='.'
-	$platform_home_prefix = hiera('toas::idp::platform_home_prefix')
-	$platform_home_suffix = hiera('toas::idp::platform_home_suffix')
-	$platform_home = hiera('toas::idp::platform_home')
-	$platform_install_path_prefix=hiera('toas::idp::platform_install_path_prefix')
-	$platform_install_path=hiera('toas::idp::platform_install_path')
-	$idp_shibboleth_idp_dir_prefix=hiera('toas::idp::idp_shibboleth_idp_dir_prefix')
-	$idp_install_path=hiera('toas::idp::idp_install_path')
-	$idp_path=hiera('toas::idp::idp_path')
-	$idp_rpm_name=hiera('toas::idp::idp_rpm_name')
-	$idp_rpm=hiera('toas::idp::idp_rpm')
-	$idp_install_script_prefix=hiera('toas::idp::idp_install_script_prefix')
-	$idp_install_script_conf_file=hiera('toas::idp::idp_install_script_conf_file')
-	$idp_install_script=hiera('toas::idp::idp_install_script')
-	$apacheds_rpm=hiera('toas::idp::apacheds_rpm')
+	$platform_home_prefix = "/opt/platform/"
+	$platform_home_suffix = "/current"
+	$platform_home = "${platform_home_prefix}${platform_name}${platform_home_suffix}"
+	$platform_install_path_prefix='/opt/platform/idp/'
+	$platform_install_path="${platform_install_path_prefix}${platform_version}"
+	$idp_shibboleth_idp_dir_prefix='/shibboleth-idp-'
+	$idp_install_path="${platform_install_path}${idp_shibboleth_idp_dir_prefix}${idp_shibboleth_version}"
+	$idp_path="${platform_home}/idp"
+	$idp_rpm_name='oi4-idp-'
+	$idp_rpm="${idp_rpm_name}${idp_shibboleth_version}"
+	$idp_install_script_prefix='/root/shibboleth-idp-'
+	$idp_install_script_conf_file='/src/installer/resources/build.xml'
+	$idp_install_script="${idp_install_script_prefix}${idp_shibboleth_version}${idp_install_script_conf_file}"
 
-	# Dynamic(?)
-	$idp_hostname=hiera('toas::idp::idp_hostname')
-    $idp_keystore_password = hiera('toas::idp::idp_keystore_password')
+	# Dynamic
+	$idp_hostname="${::hostname}${dot}${::domain}"
+    $idp_keystore_password = fqdn_rand_string(20, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890~!@#$%^*_-')
 
-    
+    # Should be from Hiera
 	$platform_name=hiera('toas::idp::platform_name')
-	$idp_shibboleth_version=hiera('toas::idp::idp_shibboleth_version')
 	$platform_version=hiera('toas::idp::platform_version')
 	$apacheds_version=hiera('toas::idp::apacheds_version')
 }
