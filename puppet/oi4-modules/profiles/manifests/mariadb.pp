@@ -5,6 +5,7 @@ class profiles::mariadb {
   $portal_user_password = hiera('toas::mariadb::portal_user_password', undef)
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
   $activiti_user_password = hiera('toas::rdbms::activiti::pw', undef)
+  $activiti_httpuser_pwd = hiera('toas::rdbms::activiti::httpuser_pwd', undef)
   $activemq_user_password = hiera('toas::rdbms::activemq:pw', undef)
   $nodeids = hiera('toas::cluster::nodeids', undef)
   include 'stdlib'
@@ -110,13 +111,13 @@ class profiles::mariadb {
   }
   
   if $activiti_user_password {
-  
+    $add_user_sql = template('profiles/activiti.mysql.add.oiuser.sql.erb')
 	 mysql::db { 'activiti':
       user     => 'activiti',
       password => $activiti_user_password,
       host     => '%',
       grant    => ['ALL'],
-	  sql	   => 'puppet:///modules/profiles/activiti.mysql.create.sql'
+	  sql	   => ['puppet:///modules/profiles/activiti.mysql.create.sql', $add_user_sql]
     }
   }
   
