@@ -36,9 +36,12 @@ $platform_name = "${tomcat::params::platform_name}"
 	$idp_keystore_password= "${oi4idp::params::idp_keystore_password}"
 
     # should be from Hiera
-    $platform_name="${oi4idp::params::platform_name}"
-    $idp_shibboleth_version="${oi4idp::params::idp_shibboleth_version}"
-    $platform_version="${oi4idp::params::platform_version}"
+	$platform_name=hiera('toas::idp::platform_name')
+    #$platform_name="${oi4idp::params::platform_name}"
+    #$idp_shibboleth_version="${oi4idp::params::idp_shibboleth_version}"
+	$idp_shibboleth_version=hiera('oi4idp::params::idp_shibboleth_version')
+    #$platform_version="${oi4idp::params::platform_version}"
+	$platform_version=hiera('oi4idp::params::platform_version')
 
 
 	#require openjdkjava
@@ -54,7 +57,7 @@ $platform_name = "${tomcat::params::platform_name}"
 	# 	ensure => installed,
 	#	} -> 
 
-	/* Modifies ant configuration file with the one from tempalte*/
+	/* Modifies ant configuration file with the one from template*/
 	file { "${idp_install_script}":
 		content => template("oi4idp/build.xml.erb"),
 		ensure => present,

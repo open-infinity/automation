@@ -7,7 +7,7 @@ class oi4idp::install{
         
 	#}
         require oi4idp::params
-        include openjdkjava
+        #include openjdkjava
 
         $idp_rpm="${oi4idp::params::idp_rpm}"
 
@@ -18,7 +18,6 @@ class oi4idp::install{
 
 class apacheds::install{
         require oi4idp::params
-        include openjdkjava
 
         $apacheds_rpm="${oi4idp::params::apacheds_rpm}"
 
