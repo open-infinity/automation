@@ -29,12 +29,12 @@ class profiles::bas {
     bas_multicast_address       => $multicast_address,
     bas_tomcat_monitor_role_pwd => $tomcat_monitor_role_password,
 	ignore_catalina_propeties => $ignore_catalina_propeties
-  }->
-  class {'oi4bas::service': }
+  }
   
   tomcat::config::server::valve { 'securityvault-valve':
     class_name    => 'org.openinfinity.sso.valve.AttributeBasedSecurityVaultValve',
   }
+
   tomcat::setenv::entry { 'catalina_out':
     param => 'CATALINA_OUT',
     value => "${oi_home}/log/tomcat/catalina.out",
@@ -69,6 +69,10 @@ class profiles::bas {
     param => 'CATALINA_OPTS',
     value => '$CATALINA_OPTS $JMX_OPTS $EXTRA_CATALINA_OPTS',
     order => 11,
+  }
+
+  class {'oi4bas::service': 
+	require => Class['oi4bas::config'],
   }
 
 }
