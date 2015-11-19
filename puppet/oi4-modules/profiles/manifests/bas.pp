@@ -21,7 +21,6 @@ class profiles::bas {
     mode    => 755,
     require => [User["oiuser"], File["${oi_home}/log"]],
   }->
-  }->
   class {'oi4bas::install':
   }->
   class {'oi4bas::config':
