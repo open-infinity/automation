@@ -58,7 +58,7 @@ $platform_name = "${tomcat::params::platform_name}"
 	#	} -> 
 
 	/* Modifies ant configuration file with the one from template*/
-	file { "${idp_install_script}":
+	file { "${idp_install_script}":tomcat_group
 		content => template("oi4idp/build.xml.erb"),
 		ensure => present,
 		replace => true,
@@ -85,7 +85,7 @@ $platform_name = "${tomcat::params::platform_name}"
         recurse => true,
         #replace => true,
         owner => "${tomcat::install::tomcat_user}",
-        group => "${tomcat::install::tomcat_group}",
+        #group => "${tomcat::install::tomcat_group}",
         mode => 0644,
     } ->
 
