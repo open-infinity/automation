@@ -136,7 +136,7 @@ class profiles::mariadb {
 		content => template("profiles/activiti.mysql.add.oiuser.sql.erb"),
 		owner => "root",
 		group => "root",
-   }
+   } ->
 
 	 mysql::db { 'activiti':
       user     => 'activiti',
