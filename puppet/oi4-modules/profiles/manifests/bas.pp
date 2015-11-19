@@ -1,10 +1,7 @@
 class profiles::bas {
   $multicast_address = hiera('toas::bas:multicast_address')
   $tomcat_monitor_role_password = hiera('toas::bas::tomcat_monitor_role_password')
-  $extra_jvm_opts = hiera('toas::bas::extra_jvm_opts', undef)
   $extra_catalina_opts = hiera('toas::bas::extra_catalina_opts', undef)
-  $jvm_mem = hiera('toas::bas::jvm_mem')
-  $jvm_perm = hiera('toas::bas:jvm_perm')
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
   $ignore_catalina_propeties = hiera('toas::bas::ignore_catalina_properties', undef)
   
@@ -23,14 +20,24 @@ class profiles::bas {
     mode    => 755,
     require => [User["oiuser"], File["${oi_home}/log"]],
   }->
+  }->
   class {'oi4bas::install':
   }->
   class {'oi4bas::config':
     bas_multicast_address       => $multicast_address,
     bas_tomcat_monitor_role_pwd => $tomcat_monitor_role_password,
 	ignore_catalina_propeties => $ignore_catalina_propeties
+  }->class {'profiles::bas::tomcatconf':
+	oi_home => $oi_home
+  }->class {'oi4bas::service': 
   }
-  
+}
+
+class  profiles::bas::tomcatconf  ( $oi_home = undef ) {
+  $extra_jvm_opts = hiera('toas::bas::extra_jvm_opts', undef)
+  $jvm_mem = hiera('toas::bas::jvm_mem')
+  $jvm_perm = hiera('toas::bas:jvm_perm')
+
   tomcat::config::server::valve { 'securityvault-valve':
     class_name    => 'org.openinfinity.sso.valve.AttributeBasedSecurityVaultValve',
   }
@@ -70,9 +77,4 @@ class profiles::bas {
     value => '$CATALINA_OPTS $JMX_OPTS $EXTRA_CATALINA_OPTS',
     order => 11,
   }
-
-  class {'oi4bas::service': 
-	require => Class['oi4bas::config'],
-  }
-
 }
