@@ -15,6 +15,7 @@ class profiles::serviceplatform {
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
 
 class {'oi4-serviceplatform::install':
+	 require => Class["oi4bas::install"]
   }->
   class {'oi4-serviceplatform::config': 
 	  bas_multicast_address => $bas_multicast_address,
