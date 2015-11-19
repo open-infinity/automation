@@ -5,7 +5,7 @@ class profiles::mariadb {
   $portal_user_password = hiera('toas::mariadb::portal_user_password', undef)
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
   $activiti_user_password = hiera('toas::rdbms::activiti::pw', undef)
-  $activiti_httpuser_pwd = hieara('toas::rdbms::activiti::httpuser_pwd', undef)
+  $activiti_httpuser_pwd = hiera('toas::rdbms::activiti::httpuser_pwd', undef)
   $activemq_user_password = hiera('toas::rdbms::activemq:pw', undef)
   $nodeids = hiera('toas::cluster::nodeids', undef)
   include 'stdlib'
