@@ -76,7 +76,7 @@ $platform_name = "${tomcat::params::platform_name}"
        	cwd         => "${idp_install_script_prefix}${idp_shibboleth_version}",
 		environment => "JAVA_HOME=${java_home}",
 		creates => "$idp_install_path/war/idp.war",
-		require => Class["openjdkjava"],
+		#require => Class["openjdkjava"],
     } ->
  
     file { "${idp_install_path}":
