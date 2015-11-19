@@ -110,13 +110,13 @@ class profiles::mariadb {
   }
   
   if $activiti_user_password {
-  
+    $add_user_sql = template('profiles/activiti.mysql.add.oiuser.sql.erb')
 	 mysql::db { 'activiti':
       user     => 'activiti',
       password => $activiti_user_password,
       host     => '%',
       grant    => ['ALL'],
-	  sql	   => 'puppet:///modules/profiles/activiti.mysql.create.sql'
+	  sql	   => ['puppet:///modules/profiles/activiti.mysql.create.sql', $add_user_sql]
     }
   }
   
