@@ -36,12 +36,12 @@ $platform_name = "${tomcat::params::platform_name}"
 	$idp_keystore_password= "${oi4idp::params::idp_keystore_password}"
 
     # should be from Hiera
-	$platform_name=hiera('toas::idp::platform_name')
+	#$platform_name=hiera('toas::idp::platform_name')
     #$platform_name="${oi4idp::params::platform_name}"
     #$idp_shibboleth_version="${oi4idp::params::idp_shibboleth_version}"
-	$idp_shibboleth_version=hiera('oi4idp::params::idp_shibboleth_version')
+	$idp_shibboleth_version=hiera('toas::idp::idp_shibboleth_version')
     #$platform_version="${oi4idp::params::platform_version}"
-	$platform_version=hiera('oi4idp::params::platform_version')
+	$platform_version=hiera('toas::idp::platform_version')
 
 
 	#require openjdkjava
