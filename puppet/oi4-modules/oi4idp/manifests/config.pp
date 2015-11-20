@@ -67,13 +67,13 @@ $platform_name = "${tomcat::params::platform_name}"
         mode => 0644,
     } ->
         
-    notify{" creates $idp_install_path/war/idp.war":}
+    notice{" creates $idp_install_path/war/idp.war":}
     # ->
 
     /* The original install.sh with modified ant configuration is used for installation */
 	exec { "install_idp":
      	command => "/bin/sh install.sh",
-       	cwd         => "${idp_install_script_prefix}${idp_shibboleth_version}",
+       	cwd         => "${idp_install_script_prefix}",
 		environment => "JAVA_HOME=${java_home}",
 		creates => "$idp_install_path/war/idp.war",
 		#require => Class["openjdkjava"],
