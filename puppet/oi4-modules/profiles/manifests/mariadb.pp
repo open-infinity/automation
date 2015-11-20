@@ -89,7 +89,9 @@ class profiles::mariadb {
     owner  => 'mysql',
     group  => 'mysql',
     mode   => 0775,
-  }->
+  }
+  
+  
   class { '::mysql::server':
     root_password           => $mariadb_root_password,
     remove_default_accounts => true,
@@ -111,14 +113,37 @@ class profiles::mariadb {
   }
   
   if $activiti_user_password {
-    $add_user_sql = template('profiles/activiti.mysql.add.oiuser.sql.erb')
-	$create_activiti_db_sql = file('profiles/activiti.mysql.create.sql')
+  
+   file { "${oi_home}/activiti":
+		ensure => directory,
+		group => "root",
+		owner => "root",
+	}->
+
+  file { "${oi_home}/activiti/dbschema":
+		ensure => directory,
+		group => "root",
+		owner => "root",
+   }->
+  file { "${oi_home}/activiti/dbschema/activiti.mysql.create.sql":
+		ensure => present,
+		source => "puppet:///modules/profiles/activiti.mysql.create.sql",
+		owner => "root",
+		group => "root",
+   } ->
+  file { "${oi_home}/activiti/dbschema/activiti.mysql.add.oiuser.sql":
+		ensure => present,
+		content => template("profiles/activiti.mysql.add.oiuser.sql.erb"),
+		owner => "root",
+		group => "root",
+   } ->
+
 	 mysql::db { 'activiti':
       user     => 'activiti',
       password => $activiti_user_password,
       host     => '%',
       grant    => ['ALL'],
-	  sql	   => [$create_activiti_db_sql, $add_user_sql]
+	  sql	   => ["${oi_home}/activiti/dbschema/activiti.mysql.create.sql", "${oi_home}/activiti/dbschema/activiti.mysql.add.oiuser.sql"]
     }
   }
   
