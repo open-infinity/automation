@@ -63,7 +63,7 @@ $platform_name = "${tomcat::params::platform_name}"
 		ensure => present,
 		replace => true,
 		owner => "root",
-		group => "root" ,
+		group => "root",
         mode => 0644,
     } ->
         
@@ -74,7 +74,7 @@ $platform_name = "${tomcat::params::platform_name}"
 	exec { "install_idp":
      	#command => "/bin/sh install.sh",
 		command => "/bin/sh ${idp_install_home}",
-       	cwd         => "${idp_install_script_prefix}",
+       	cwd         => "${platform_install_path}",
 		environment => "JAVA_HOME=${java_home}",
 		creates => "$idp_install_path/war/idp.war",
 		#require => Class["openjdkjava"],
