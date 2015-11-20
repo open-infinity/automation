@@ -1,5 +1,10 @@
 class oi4idp::params {
         include stdlib
+	# Should be from Hiera
+	$platform_name=hiera('toas::idp::platform_name')
+	$platform_version=hiera('toas::idp::platform_version')
+	$apacheds_version=hiera('toas::idp::apacheds_version')
+	$idp_shibboleth_version=hiera('toas::idp::idp_shibboleth_version')
 
 	# Static
 	$java_home='/usr/lib/jvm/jre'
@@ -22,9 +27,4 @@ class oi4idp::params {
 	$idp_hostname="${::hostname}${dot}${::domain}"
     $idp_keystore_password = fqdn_rand_string(20, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890~!@#$%^*_-')
 
-    # Should be from Hiera
-	$platform_name=hiera('toas::idp::platform_name')
-	$platform_version=hiera('toas::idp::platform_version')
-	$apacheds_version=hiera('toas::idp::apacheds_version')
-	$idp_shibboleth_version=('toas::idp::idp_shibboleth_version')
 }
