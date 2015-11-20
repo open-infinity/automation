@@ -19,10 +19,10 @@ class oi4idp::params {
 	$idp_path="${platform_home}/idp"
 	$idp_rpm_name='oi4-idp-'
 	$idp_rpm="${idp_rpm_name}${idp_shibboleth_version}"
-	$idp_install_script_prefix='/opt/shibboleth-idp/'
+	$idp_install_script_prefix='/opt/shibboleth-idp-config/'
 	$idp_install_script_conf_file='/src/installer/resources/build.xml'
 	#$idp_install_script="${idp_install_script_prefix}${idp_shibboleth_version}${idp_install_script_conf_file}"
-	$idp_install_home="/opt/shibboleth-idp/bin/"
+	$idp_install_home="/opt/shibboleth-idp-config/bin/"
 	$idp_install_script="${idp_install_home}/build.xml"
 
 	
