@@ -67,7 +67,7 @@ $platform_name = "${tomcat::params::platform_name}"
         mode => 0644,
     } ->
         
-    notice{" creates $idp_install_path/war/idp.war":}
+    #notify{" creates $idp_install_path/war/idp.war":}
     # ->
 
     /* The original install.sh with modified ant configuration is used for installation */
