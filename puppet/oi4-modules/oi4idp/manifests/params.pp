@@ -12,7 +12,7 @@ class oi4idp::params {
 	$platform_home_prefix = "/opt/platform/"
 	$platform_home_suffix = "/current"
 	$platform_home = "${platform_home_prefix}${platform_name}${platform_home_suffix}"
-	$platform_install_path_prefix='/opt/shibboleth-idp-test/'
+	$platform_install_path_prefix='/opt/shibboleth-idp/'
 	$platform_install_path="${platform_install_path_prefix}"
 	$idp_shibboleth_idp_dir_prefix='/shibboleth-idp-'
 	$idp_install_path="${platform_install_path}${idp_shibboleth_idp_dir_prefix}${idp_shibboleth_version}"
