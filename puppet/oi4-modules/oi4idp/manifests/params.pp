@@ -21,8 +21,10 @@ class oi4idp::params {
 	$idp_rpm="${idp_rpm_name}${idp_shibboleth_version}"
 	$idp_install_script_prefix='/root/oi4-idp-'
 	$idp_install_script_conf_file='/src/installer/resources/build.xml'
-	$idp_install_script="${idp_install_script_prefix}${idp_shibboleth_version}${idp_install_script_conf_file}"
+	#$idp_install_script="${idp_install_script_prefix}${idp_shibboleth_version}${idp_install_script_conf_file}"
+	$idp_install_script="/opt/shibboleth-idp/bin/build.xml"
 
+	
 	# Dynamic
 	$idp_hostname="${::hostname}${dot}${::domain}"
     $idp_keystore_password = fqdn_rand_string(20, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890~!@#$%^*_-')
