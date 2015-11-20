@@ -72,7 +72,8 @@ $platform_name = "${tomcat::params::platform_name}"
 
     /* The original install.sh with modified ant configuration is used for installation */
 	exec { "install_idp":
-     	command => "/bin/sh install.sh",
+     	#command => "/bin/sh install.sh",
+		command => "/bin/sh ${idp_install_home}",
        	cwd         => "${idp_install_script_prefix}",
 		environment => "JAVA_HOME=${java_home}",
 		creates => "$idp_install_path/war/idp.war",
