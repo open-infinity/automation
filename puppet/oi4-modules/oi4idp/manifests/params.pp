@@ -24,8 +24,6 @@ class oi4idp::params {
 	#$idp_install_script="${idp_install_script_prefix}${idp_shibboleth_version}${idp_install_script_conf_file}"
 	$idp_install_home="/opt/shibboleth-idp/bin/"
 	$idp_install_script="${idp_install_home}/build.xml"
-	$apacheds_rpm="apacheds-2.0.0-M20-x86_64"
-
 	
 	# Dynamic
 	$idp_hostname="${::hostname}${dot}${::domain}"
