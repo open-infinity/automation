@@ -1,5 +1,7 @@
 class oi4idp::install{
 	
+	
+	
         #package { ["java-1.7.0-openjdk"]:
         	#ensure => present,
                 #TODO maybe needed for logrotate ect
@@ -9,6 +11,13 @@ class oi4idp::install{
         require oi4idp::params
         #include openjdkjava
 
+		$apacheds_rpm="${oi4idp::params::apacheds_rpm}"
+		
+        package { ["${$apacheds_rpm}"]:
+                ensure => installed,
+        }
+		
+		
         $idp_rpm="${oi4idp::params::idp_rpm}"
 
 		
@@ -17,7 +26,6 @@ class oi4idp::install{
                 ensure => installed,
         } 
 }
-
 	
 	
 	
