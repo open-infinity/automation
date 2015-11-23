@@ -1,6 +1,8 @@
 class oi4idp {
+		notice {at oi4idp, starging apacheds install:}
 		include apacheds::install
-        include oi4idp::install
+        notice {at oi4idp, intall done starging install:}
+		include oi4idp::install
         include oi4idp::config
 }
 /*
