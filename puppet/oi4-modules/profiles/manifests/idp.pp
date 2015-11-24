@@ -1,5 +1,5 @@
 class profiles::idp {
-  class {'oi4idp::init': 
+  class {'oi4idp': 
   }
   #class {'oi4idp::install': 
   #}->
