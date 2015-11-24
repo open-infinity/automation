@@ -63,17 +63,18 @@ $platform_name = "${tomcat::params::platform_name}"
 		ensure => present,
 		replace => true,
 		owner => "root",
-		group => "root" ,
+		group => "root",
         mode => 0644,
     } ->
         
-    #otify{" creates $idp_install_path/war/idp.war":
+    #notify{" creates $idp_install_path/war/idp.war":}
     # ->
 
     /* The original install.sh with modified ant configuration is used for installation */
 	exec { "install_idp":
-     	command => "/bin/sh install.sh",
-       	cwd         => "${idp_install_script_prefix}${idp_shibboleth_version}",
+     	#command => "/bin/sh install.sh",
+		command => "/bin/sh ${idp_install_home}",
+       	cwd         => "${platform_install_path}",
 		environment => "JAVA_HOME=${java_home}",
 		creates => "$idp_install_path/war/idp.war",
 		#require => Class["openjdkjava"],
@@ -85,7 +86,7 @@ $platform_name = "${tomcat::params::platform_name}"
         recurse => true,
         #replace => true,
         owner => "${tomcat::install::tomcat_user}",
-        group => "${tomcat::install::tomcat_group}",
+        #group => "${tomcat::install::tomcat_group}",
         mode => 0644,
     } ->
 

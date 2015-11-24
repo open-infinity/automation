@@ -1,5 +1,5 @@
 class oi4idp {
-		include apacheds::install
+		notify {"at oi4idp, starging oi4idp install":}
 		include profiles::base
         include oi4idp::install
         include oi4idp::config

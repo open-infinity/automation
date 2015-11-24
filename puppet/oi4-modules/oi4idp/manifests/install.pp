@@ -8,25 +8,21 @@ class oi4idp::install{
 	#}
         require oi4idp::params
         #include openjdkjava
-
-        $idp_rpm="${oi4idp::params::idp_rpm}"
-
-        package { ["${$idp_rpm}"]:
-                ensure => installed,
-        } 
-}
-
-class apacheds::install{
-        require oi4idp::params
-
-        #$apacheds_rpm="${oi4idp::params::apacheds_rpm}"
-		$apacheds_rpm=hiera('toas::idp::apacheds_rpm')
 		
-        package { ["${apacheds_rpm}"]:
+		package { "apacheds":
+			ensure => present,
+		}
+		
+        $idp_rpm="${oi4idp::params::idp_rpm}"
+		
+		package { "oi4-idp":
                 ensure => installed,
-        } 
+        }
+		
+        #package { ["${$idp_rpm}"]:
+        #        ensure => installed,
+        #} 
 }
-
 	
 	
 	
