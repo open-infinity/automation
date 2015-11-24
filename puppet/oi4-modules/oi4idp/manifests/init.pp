@@ -1,5 +1,6 @@
 class oi4idp {
 		include apacheds::install
+		include profiles::base
         include oi4idp::install
         include oi4idp::config
 }
