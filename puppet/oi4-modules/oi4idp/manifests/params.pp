@@ -25,7 +25,7 @@ class oi4idp::params {
 	$idp_install_home="/opt/shibboleth-idp/bin/"
 #	$idp_install_script="${idp_install_home}/build.xml"
 	
-	$idp_install_script_prefix='/root/shibboleth-idp-'
+	$idp_install_script_prefix='/root/shibboleth-idp'
 	$idp_install_script="${idp_install_script_prefix}${idp_install_script_conf_file}"
 
 	
