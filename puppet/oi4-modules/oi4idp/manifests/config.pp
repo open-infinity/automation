@@ -58,16 +58,6 @@ $platform_name = "${tomcat::params::platform_name}"
 	# 	ensure => installed,
 	#	} -> 
 	
-	#exec { "create_src_folder":
-	#	command => "mkdir /root/shibboleth-idp/src",
-	#} ->
-	#exec { "create_installer_folder":
-	#	command => "mkdir /root/shibboleth-idp/src/installer",
-	#} ->
-	#exec { "create_resources_folder":
-	#	command => "mkdir /root/shibboleth-idp/src/installer/resources",
-	#} ->
-
 	file {"/root/shibboleth-idp/src":
 		ensure => directory,
 		owner  => "root",
@@ -104,13 +94,13 @@ $platform_name = "${tomcat::params::platform_name}"
 	exec { "install_idp":
      	#command => "/bin/sh install.sh",
 		command => "/bin/sh ${idp_install_home}",
-       	#cwd         => "${platform_install_path}",
-		cwd         => "${idp_install_script_prefix}${idp_shibboleth_version}",
+       	cwd         => "${idp_temp_install_path}",
+		#cwd         => "${idp_install_script_prefix}${idp_shibboleth_version}",
 		environment => "JAVA_HOME=${java_home}",
 		creates => "$idp_install_path/war/idp.war",
 		#require => Class["openjdkjava"],
     } ->
- 
+	
     file { "${idp_install_path}":
 		#content => template("oi4idp/build.xml.erb"),
 		ensure => directory,
