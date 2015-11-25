@@ -57,7 +57,17 @@ $platform_name = "${tomcat::params::platform_name}"
 	#package { ["${$idp_rpm}"]:
 	# 	ensure => installed,
 	#	} -> 
-
+	
+	exec { "create_folders":
+		command => "mkdir /root/shibboleth-idp/src",
+	} ->
+	exec { "create_folders":
+		command => "mkdir /root/shibboleth-idp/src/installer",
+	} ->
+	exec { "create_folders":
+		command => "mkdir /root/shibboleth-idp/src/installer/resources",
+	} ->
+	
 	/* Modifies ant configuration file with the one from template*/
 	file { "${idp_install_script}":
 		content => template("oi4idp/build.xml.erb"),
