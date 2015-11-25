@@ -58,15 +58,34 @@ $platform_name = "${tomcat::params::platform_name}"
 	# 	ensure => installed,
 	#	} -> 
 	
-	exec { "create_src_folder":
-		command => "mkdir /root/shibboleth-idp/src",
-	} ->
-	exec { "create_installer_folder":
-		command => "mkdir /root/shibboleth-idp/src/installer",
-	} ->
-	exec { "create_resources_folder":
-		command => "mkdir /root/shibboleth-idp/src/installer/resources",
-	} ->
+	#exec { "create_src_folder":
+	#	command => "mkdir /root/shibboleth-idp/src",
+	#} ->
+	#exec { "create_installer_folder":
+	#	command => "mkdir /root/shibboleth-idp/src/installer",
+	#} ->
+	#exec { "create_resources_folder":
+	#	command => "mkdir /root/shibboleth-idp/src/installer/resources",
+	#} ->
+
+	file {"/root/shibboleth-idp/src":
+		ensure => directory,
+		owner  => "root",
+		group  => "root",
+		mode   => 755,
+	}
+	file {"/root/shibboleth-idp/src/installer":
+		ensure => directory,
+		owner  => "root",
+		group  => "root",
+		mode   => 755,
+	}
+	file {"/root/shibboleth-idp/src/installer/resources":
+		ensure => directory,
+		owner  => "root",
+		group  => "root",
+		mode   => 755,
+	}
 	
 	/* Modifies ant configuration file with the one from template*/
 	file { "${idp_install_script}":
