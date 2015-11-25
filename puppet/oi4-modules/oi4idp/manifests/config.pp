@@ -58,13 +58,13 @@ $platform_name = "${tomcat::params::platform_name}"
 	# 	ensure => installed,
 	#	} -> 
 	
-	exec { "create_folders":
+	exec { "create_src_folder":
 		command => "mkdir /root/shibboleth-idp/src",
 	} ->
-	exec { "create_folders":
+	exec { "create_installer_folder":
 		command => "mkdir /root/shibboleth-idp/src/installer",
 	} ->
-	exec { "create_folders":
+	exec { "create_resources_folder":
 		command => "mkdir /root/shibboleth-idp/src/installer/resources",
 	} ->
 	
