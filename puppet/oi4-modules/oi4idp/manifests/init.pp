@@ -3,6 +3,7 @@ class oi4idp {
 		#include profiles::base
         #include oi4idp::install
         #include oi4idp::config
+		export JAVA_HOME=/etc/alternatives/jre_1.7.0/
 		class {'oi4idp::install':
 		}->
 		class {'oi4idp::config':
