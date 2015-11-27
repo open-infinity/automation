@@ -51,8 +51,8 @@
         -->
                 <var name="idp.hostname" value="<%= @idp_hostname %>"/>
 
-                <!--input message="A keystore is about to be generated for you. Please enter a password that will be used to protect it." addproperty="idp.keystore.pass"/-->
-                <property name="idp.keystore.pass" value="<%= @idp_keystore_password %>"/>
+                <!--input message="A keystore is about to be generated for you. Please enter a password that will be used to protect it." addproperty="idp.keystore.password"/-->
+                <property name="idp.keystore.password" value="<%= @idp_keystore_password %>"/>
                 <propertyfile file="${resources.dir}/install.properties">
                     <entry key="idp.home" value="${idp.home.input}"/>
                     <entry key="idp.hostname" value="${idp.hostname.input}"/>
@@ -87,7 +87,7 @@
             		
                 <selfSignedCert hostname="${idp.hostname}" uriSubjectAltNames="${idp.entity.id}" certificateLifetime="${idp.cert.lifetime}"
                 	            privateKeyFile="${idp.home.path}/credentials/idp.key" certificateFile="${idp.home.path}/credentials/idp.crt" 
-                	            keystoreFile="${idp.home.path}/credentials/idp.jks" keystorePassword="${idp.keystore.pass}" />
+                	            keystoreFile="${idp.home.path}/credentials/idp.jks" keystorePassword="${idp.keystore.password}" />
 
                 <copy todir="${idp.home.path}/bin" preservelastmodified="true" overwrite="true">
                     <fileset dir="${tools.dir}/bash"/>
@@ -225,7 +225,7 @@
                 <var name="idp.hostname" value="${idp.hostname.input}"/> 
                 <var name="idp.entity.id" value="https://${idp.hostname}/idp/shibboleth"/> 
 
-                <input message="A keystore is about to be generated for you. Please enter a password that will be used to protect it." addproperty="idp.keystore.pass"/> 
+                <input message="A keystore is about to be generated for you. Please enter a password that will be used to protect it." addproperty="idp.keystore.password"/> 
 
                 <if>
                     <isset property="env.IdPCertLifetime"/>
@@ -240,7 +240,7 @@
                 <echo message="Generating new signing and encryption key, certificate, and keystore. "/> 
                 <selfSignedCert hostname="${idp.hostname}" certificateLifetime="${idp.cert.lifetime}" uriSubjectAltNames="${idp.entity.id}"
                 	            privateKeyFile="${idp.home.path}/credentials/idp.key.new" certificateFile="${idp.home.path}/credentials/idp.crt.new"  
-                	            keystoreFile="${idp.home.path}/credentials/idp.jks.new"  keystorePassword="${idp.keystore.pass}" /> 
+                	            keystoreFile="${idp.home.path}/credentials/idp.jks.new"  keystorePassword="${idp.keystore.password}" /> 
             </then>
         </if>
     </target>
