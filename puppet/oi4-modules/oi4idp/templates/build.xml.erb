@@ -192,6 +192,7 @@
         </copy>
 
 		<!-- create idp.xml to tomcat -->
+		<echo message="idp.xml todir is: ${TOMCAT_CONF_PATH}/Catalina/localhost/}"/> 
 		<copy file="files/idp.xml" todir="${TOMCAT_CONF_PATH}/Catalina/localhost/"/>
 		
         <!-- build the war file -->
