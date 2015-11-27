@@ -92,25 +92,30 @@ $platform_name = "${tomcat::params::platform_name}"
 
     /* The original install.sh with modified ant configuration is used for installation */
 	exec { "install_idp":
-     	#command => "/bin/sh install.sh",
-		command => "/bin/sh ${idp_install_home}",
-       	cwd         => "${idp_temp_install_path}",
-		#cwd         => "${idp_install_script_prefix}${idp_shibboleth_version}",
-		environment => "JAVA_HOME=${java_home}",
-		creates => "$idp_install_path/war/idp.war",
-		#require => Class["openjdkjava"],
+        #command => "/bin/sh install.sh",
+        command => "/root/shibboleth-idp/bin/install.sh",
+
+        # /root/shibboleth-idp/bin/",
+        #       command => "/bin/sh ${idp_install_home}",
+        #cwd         => "${idp_temp_install_path}",
+        #cwd => "/opt/shibboleth-idp/bin/",
+        cwd => "/root/shibboleth-idp/bin/",
+        #cwd         => "${idp_install_script_prefix}${idp_shibboleth_version}",
+        environment => "JAVA_HOME=${java_home}",
+        creates => "$idp_install_path/war/idp.war",
+        #require => Class["openjdkjava"],
     } ->
 	
-    file { "${idp_install_path}":
-		#content => template("oi4idp/build.xml.erb"),
-		ensure => directory,
+   file { "${idp_install_path}":
+        #content => template("oi4idp/build.xml.erb"),
+        ensure => directory,
         recurse => true,
         #replace => true,
-        owner => "${tomcat::install::tomcat_user}",
+        #owner => "${tomcat::install::tomcat_user}",
+        owner => "oiuser",
         #group => "${tomcat::install::tomcat_group}",
         mode => 0644,
-    } ->
-
+    }
 
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
 	#ile { "${platfom_home}/tomcat/endorsed":
@@ -121,11 +126,11 @@ $platform_name = "${tomcat::params::platform_name}"
         # ->
 
 	/* Create link for the idp install dir */
-    file { "idp_link":
+    /*file { "idp_link":
 		path => "${platform_home}/idp",
         ensure => "link",
        	target => "${idp_install_path}",
 		owner => 'teco',
         group => 'teco',
-    } 
+    }*/ 
 }
