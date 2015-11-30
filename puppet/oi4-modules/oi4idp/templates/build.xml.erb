@@ -14,7 +14,11 @@
     <property file="${resources.dir}/install.properties"/>
 	
     <!-- Load ant-contrib tasks -->
-    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<fileset dir="${basedir}/ant.lib/ant-contrib"/>
+		<classpath>
+	</tastdef>
 
     <!-- Load Internet2 ant extensions -->
     <taskdef resource="edu/internet2/middleware/ant/antlib.xml"/>
