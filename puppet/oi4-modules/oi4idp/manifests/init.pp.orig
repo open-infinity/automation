@@ -1,8 +1,4 @@
 class oi4idp {
-	exec { "Install ant contrib":
-		path => "/usr/bin:/bin",
-		command => "/etc/puppet/modules/oi4idp/files/init.sh",
-	}
 	exec { "Selfsigned certificate for Idp":
 		path => "/usr/bin:/bin",
 		command => "/etc/puppet/modules/oi4idp/files/create_certs.sh to.be.configured /opt/shibboleth-idp password",
