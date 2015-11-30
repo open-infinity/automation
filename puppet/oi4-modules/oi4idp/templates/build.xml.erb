@@ -28,8 +28,9 @@
         <!--ut message="Where should the Shibboleth Identity Provider software be installed?" addproperty="idp.home.input" defaultvalue="${idp.home}"/-->
         <!--var name="idp.home" value="Y{idp.home.input}"/-->
         <!-- name="idp.home" value="/opt/teco/platform/idp/2.4"/-->
-        <var name="idp.home" value="<%= @idp_install_path %>"/>
-		<mkdir dir="${idp.home}"/>
+        <mkdir dir="<%= @idp_install_path %>"/>
+		<var name="idp.home" value="<%= @idp_install_path %>"/>
+		
 		
         <pathToAbsolutePath path="${idp.home}" addproperty="idp.home.path"/>
         <pathToUrl path="${idp.home}" addproperty="idp.home.url"/>
