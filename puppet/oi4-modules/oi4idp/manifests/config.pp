@@ -103,7 +103,7 @@ $platform_name = "${tomcat::params::platform_name}"
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
-        source => "puppet:///modules/oi3-idp/idp.xml",
+        source => "puppet:///modules/oi4-idp/idp.xml",
         require => Class["oi3-bas::install"],
     }
 	
