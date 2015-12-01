@@ -59,7 +59,9 @@
 
                 <!--input message="A keystore is about to be generated for you. Please enter a password that will be used to protect it." addproperty="idp.keystore.password"/-->
                 <property name="idp.keystore.password" value="<%= @idp_keystore_password %>"/>
-                <propertyfile file="${resources.dir}/install.properties">
+                
+				<!--<propertyfile file="${resources.dir}/install.properties">-->
+				<propertyfile file="/root/shibboleth-idp/src/installer/resources/install.properties">		
                     <entry key="idp.home" value="${idp.home.input}"/>
                     <entry key="idp.hostname" value="${idp.hostname.input}"/>
                 </propertyfile>
