@@ -1,12 +1,6 @@
 class oi4idp {
 		notify {"at oi4idp, starging oi4idp install":}
 		include profiles::base
-        #include oi4idp::install
-        #include oi4idp::config
-		exec { "Install ant contrib":
-			path => "/usr/bin:/bin",
-			command => "/etc/puppet/modules/oi4idp/files/init.sh",
-		}
 		class {'oi4idp::install':
 		}->
 		class {'oi4idp::config':
