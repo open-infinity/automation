@@ -12,7 +12,7 @@ class oi4idp::install{
 		package { "apacheds":
 			ensure => present,
 		}
-		package { "oi4-tomcat":
+		package { "oi4-bas":
 			ensure => installed,
 		}
         $idp_rpm="${oi4idp::params::idp_rpm}"
