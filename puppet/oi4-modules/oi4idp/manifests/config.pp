@@ -97,7 +97,16 @@ $platform_name = "${tomcat::params::platform_name}"
         #group => "${tomcat::install::tomcat_group}",
         mode => 0644,
     }
-
+	
+	file {"/opt/openinfinity/tomcat/conf/Catalina/localhost/":
+        ensure => present,
+        owner => 'oiuser',
+        group => 'oiuser',
+        mode => 0644,
+        source => "puppet:///modules/oi3-idp/idp.xml",
+        require => Class["oi3-bas::install"],
+    }
+	
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
 	#ile { "${platfom_home}/tomcat/endorsed":
         #       ensure => 'directory',
