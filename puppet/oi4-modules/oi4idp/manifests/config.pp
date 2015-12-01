@@ -104,7 +104,7 @@ $platform_name = "${tomcat::params::platform_name}"
         group => 'oiuser',
         mode => 0644,
         source => "puppet:///modules/oi4-idp/idp.xml",
-        require => Class["oi4-bas::install"],
+        #require => Class["oi4-bas::install"],
     }
 	
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
