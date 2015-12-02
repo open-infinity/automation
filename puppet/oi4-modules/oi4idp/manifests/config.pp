@@ -112,7 +112,7 @@ $platform_name = "${tomcat::params::platform_name}"
 		mode   => 755,
 	}
 	
-	file {"/opt/openinfinity/tomcat/conf/Catalina/localhost/":
+	file {"/opt/openinfinity/tomcat/conf/Catalina/localhost/idp.xml":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
