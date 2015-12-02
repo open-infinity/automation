@@ -7,14 +7,17 @@ class oi4idp::install{
         
 	#}
         require oi4idp::params
-        #include openjdkjava
+        require => Class["oi4bas::install"]
+		#include openjdkjava
 		
 		package { "apacheds":
 			ensure => present,
 		}
-		package { "oi4-bas":
-			ensure => installed,
-		}
+		
+		
+		#package { "oi4-bas":
+		#	ensure => installed,
+		#}
         $idp_rpm="${oi4idp::params::idp_rpm}"
 		
 		package { "oi4-idp":
