@@ -123,13 +123,6 @@ $platform_name = "${tomcat::params::platform_name}"
 		notify => Service["oi-tomcat"]
 	}
 	
-	service {"oi-tomcat":
-		ensure => running,
-		hasrestart => true,
-		enable => true,
-		require => Class["oi-identity-gateway::config"],
-	}
-	
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
 	#ile { "${platfom_home}/tomcat/endorsed":
         #       ensure => 'directory',
