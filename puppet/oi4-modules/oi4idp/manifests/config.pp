@@ -120,9 +120,16 @@ $platform_name = "${tomcat::params::platform_name}"
         mode => 0644,
         source => "puppet:///modules/oi4idp/idp.xml",
 		require => File["/opt/openinfinity/tomcat/conf/Catalina/localhost"],
-    }
+		require => Class["oi-tomcat"],
+		notify => Service["oi-tomcat"]
+	}
 	
-
+	service {"oi-tomcat":
+		ensure => running,
+		hasrestart => true,
+		enable => true,
+		require => Class["oi-identity-gateway::config"],
+	}
 	
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
 	#ile { "${platfom_home}/tomcat/endorsed":
