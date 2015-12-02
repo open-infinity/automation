@@ -110,6 +110,7 @@ $platform_name = "${tomcat::params::platform_name}"
 		owner  => "root",
 		group  => "root",
 		mode   => 755,
+		require => File["/opt/openinfinity/tomcat/conf/Catalina"],
 	}
 	
 	file {"/opt/openinfinity/tomcat/conf/Catalina/localhost/idp.xml":
@@ -118,8 +119,9 @@ $platform_name = "${tomcat::params::platform_name}"
         group => 'oiuser',
         mode => 0644,
         source => "puppet:///modules/oi4-idp/idp.xml",
-        #require => Class["oi4-bas::install"],
+		require => File["/opt/openinfinity/tomcat/conf/Catalina/localhost"],
     }
+	
 	
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
 	#ile { "${platfom_home}/tomcat/endorsed":
