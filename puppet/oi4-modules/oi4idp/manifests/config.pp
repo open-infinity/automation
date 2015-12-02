@@ -98,6 +98,20 @@ $platform_name = "${tomcat::params::platform_name}"
         mode => 0644,
     }
 	
+	file {"/opt/openinfinity/tomcat/conf/Catalina/":
+		ensure => directory,
+		owner  => "root",
+		group  => "root",
+		mode   => 755,
+	}
+	
+	file {"/opt/openinfinity/tomcat/conf/Catalina/localhost/":
+		ensure => directory,
+		owner  => "root",
+		group  => "root",
+		mode   => 755,
+	}
+	
 	file {"/opt/openinfinity/tomcat/conf/Catalina/localhost/":
         ensure => present,
         owner => 'oiuser',
