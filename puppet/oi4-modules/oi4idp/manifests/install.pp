@@ -7,7 +7,6 @@ class oi4idp::install{
         
 	#}
         require oi4idp::params
-
 		#include openjdkjava
 		
 		package { "apacheds":
