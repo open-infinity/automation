@@ -1,7 +1,8 @@
 class oi4idp {
 		notify {"at oi4idp, starging oi4idp install":}
 		include profiles::base
-		require oi4bas::install
+		#require oi4bas::install
+		require oi4serviceplatform::install
 		class {'oi4idp::install':
 		}->
 		class {'oi4idp::config':
