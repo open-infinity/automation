@@ -119,8 +119,7 @@ $platform_name = "${tomcat::params::platform_name}"
         group => 'oiuser',
         mode => 0644,
         source => "puppet:///modules/oi4idp/idp.xml",
-		require => File["/opt/openinfinity/tomcat/conf/Catalina/localhost"],
-		require => Class["oi-tomcat"],
+		require => File["/opt/openinfinity/tomcat/conf/Catalina/localhost"], Class["oi-tomcat"],
 		notify => Service["oi-tomcat"]
 	}
 	
