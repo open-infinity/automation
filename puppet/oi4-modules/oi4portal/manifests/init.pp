@@ -83,7 +83,7 @@ class oi4portal::config (
                 group => 'oiuser',
                 mode => 0755,
                 require => File["/opt/openinfinity/tomcat/conf/Catalina"],
-        }
+    }
 
 	file {"/opt/openinfinity/tomcat/conf/Catalina":
                 ensure => directory,
@@ -91,7 +91,7 @@ class oi4portal::config (
                 group => 'oiuser',
                 mode => 0755,
                 require => Class["oi4portal::install"],
-        }
+    }
 
 	# Security Vault configuration
 	file {"/opt/openinfinity/tomcat/conf/securityvault.properties":
