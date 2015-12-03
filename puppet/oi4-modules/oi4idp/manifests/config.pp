@@ -154,7 +154,7 @@ $platform_name = "${tomcat::params::platform_name}"
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
-        mode => 0644,
+        mode => 0755,
         source => "puppet:///modules/oi4idp/init-tomcat.sh",
 		notify => Service["oi-tomcat"]
 	} ->
