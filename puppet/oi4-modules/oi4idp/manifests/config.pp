@@ -125,6 +125,15 @@ $platform_name = "${tomcat::params::platform_name}"
 		notify => Service["oi-tomcat"]
 	}
 	
+	file {"/opt/shibboleth-idp/webapp/WEB-INF/web.xml":
+        ensure => present,
+        owner => 'oiuser',
+        group => 'oiuser',
+        mode => 0644,
+        source => "puppet:///modules/oi4idp/web.xml",
+		notify => Service["oi-tomcat"]
+	}
+	
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
 	#ile { "${platfom_home}/tomcat/endorsed":
         #       ensure => 'directory',
