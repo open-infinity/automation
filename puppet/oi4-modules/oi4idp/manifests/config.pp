@@ -134,7 +134,7 @@ $platform_name = "${tomcat::params::platform_name}"
 		notify => Service["oi-tomcat"]
 	} ->
 	
-	file {"/opt/openinfinity/tomcat/conf":
+	file {"/opt/openinfinity/tomcat/conf/server.xml":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
@@ -157,7 +157,7 @@ $platform_name = "${tomcat::params::platform_name}"
         mode => 0644,
         source => "puppet:///modules/oi4idp/init-tomcat.sh",
 		notify => Service["oi-tomcat"]
-	}
+	} ->
 	exec { "init-tomcat-for-idp":
         command => "/tmp/init-tomcat.sh",
         #cwd => "/root/shibboleth-idp/bin/",
