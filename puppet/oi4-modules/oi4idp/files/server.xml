@@ -97,7 +97,7 @@
     scheme="https"
     secure="true"
     clientAuth="want"
-    keystoreFile="idp.home/credentials/idp-backchannel.p12"
+    keystoreFile="/opt/shibboleth-idp/credentials/idp-backchannel.p12"
     keystorePass="TOAS"
     keystoreType="PKCS12"
     trustManagerClassName="net.shibboleth.utilities.ssl.TrustAnyCertificate" />
