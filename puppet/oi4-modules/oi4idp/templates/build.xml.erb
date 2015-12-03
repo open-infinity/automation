@@ -47,9 +47,23 @@
 
         The property idp.noprompt will cause a failure rather than a prompt.
     -->
-	<!--<var name="idp.home" value="<%= @idp_install_path %>"/>-->
+	<var name="idp.home" value="<%= @idp_install_path %>"/>
 
+	<!--<var name="idp.src.dir" value="/opt/shibboleth-idp"/>-->
 	<var name="idp.target.dir" value="/opt/shibboleth-idp"/>
+	<var name="idp.host.name" value="<%= @idp_hostname %>"/>
+	<!--<var name="idp.uri.subject.alt.name" value="/opt/shibboleth-idp"/>-->
+	<var name="idp.sealer.password" value="<%= @idp_keystore_password %>"/>
+	<!--<var name="idp.sealer.alias" value="/opt/shibboleth-idp"/>-->
+	<var name="idp.keystore.password" value="<%= @idp_keystore_password %>"/>
+	<!--<var name="idp.scope" value="/opt/shibboleth-idp"/>-->
+	<!--<var name="idp.merge.properties" value="/opt/shibboleth-idp"/>-->
+	<!--<var name="nameid.merge.properties" value="/opt/shibboleth-idp"/>-->
+	<!--<var name="idp.property.file" value="/opt/shibboleth-idp"/>-->
+	<!--<var name="idp.no.tidy" value="/opt/shibboleth-idp"/>-->
+	<!--<var name="idp.jetty.config" value="/opt/shibboleth-idp"/>-->
+	<!--<var name="ldap.merge.properties" value="/opt/shibboleth-idp"/>-->
+	<!--<var name="idp.conf.filemode" value="/opt/shibboleth-idp"/>-->
 	
     <macrodef name="TGT" description="log the invocation of an Ant target">
         <text name="t" description="name of the target being invoked"/>
