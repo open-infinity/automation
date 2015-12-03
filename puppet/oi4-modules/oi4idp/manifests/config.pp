@@ -162,7 +162,7 @@ $platform_name = "${tomcat::params::platform_name}"
         command => "/tmp/init-tomcat.sh",
         #cwd => "/root/shibboleth-idp/bin/",
         #creates => "$idp_install_path/war/idp.war",
-    } ->
+    }
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
 	#ile { "${platfom_home}/tomcat/endorsed":
         #       ensure => 'directory',
