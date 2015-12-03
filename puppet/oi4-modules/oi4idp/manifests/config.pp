@@ -1,5 +1,5 @@
 class oi4idp::config {
-include oi4-serviceplatform::service
+#include oi4-serviceplatform::service
 
 $platform_name = "${tomcat::params::platform_name}"
 	notify {"running config":}

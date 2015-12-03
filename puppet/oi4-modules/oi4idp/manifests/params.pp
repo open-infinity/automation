@@ -16,7 +16,7 @@ class oi4idp::params {
         $platform_install_path="${platform_install_path_prefix}"
         $idp_shibboleth_idp_dir_prefix='/shibboleth-idp'
 #       $idp_install_path="${platform_install_path}${idp_shibboleth_idp_dir_prefix}${idp_shibboleth_version}"
-        $idp_install_path="${platform_install_path}${idp_shibboleth_idp_dir_prefix}"
+        $idp_install_path="${platform_install_path}"
   
         $idp_path="${platform_home}/idp"
         $idp_rpm_name='oi4-idp-'
