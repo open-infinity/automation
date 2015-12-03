@@ -98,14 +98,14 @@ $platform_name = "${tomcat::params::platform_name}"
         owner => "oiuser",
         #group => "${tomcat::install::tomcat_group}",
         mode => 0644,
-    }
+    } ->
 	
 	file {"/opt/openinfinity/tomcat/conf/Catalina/":
 		ensure => directory,
 		owner  => "root",
 		group  => "root",
 		mode   => 755,
-	}
+	} ->
 	
 	file {"/opt/openinfinity/tomcat/conf/Catalina/localhost/":
 		ensure => directory,
@@ -113,7 +113,7 @@ $platform_name = "${tomcat::params::platform_name}"
 		group  => "root",
 		mode   => 755,
 		require => File["/opt/openinfinity/tomcat/conf/Catalina"],
-	}
+	} ->
 	
 	file {"/opt/openinfinity/tomcat/conf/Catalina/localhost/idp.xml":
         ensure => present,
@@ -123,7 +123,7 @@ $platform_name = "${tomcat::params::platform_name}"
         source => "puppet:///modules/oi4idp/idp.xml",
 		require => File["/opt/openinfinity/tomcat/conf/Catalina/localhost"],
 		notify => Service["oi-tomcat"]
-	}
+	} ->
 	
 	file {"/opt/shibboleth-idp/webapp/WEB-INF/web.xml":
         ensure => present,
@@ -132,7 +132,7 @@ $platform_name = "${tomcat::params::platform_name}"
         mode => 0644,
         source => "puppet:///modules/oi4idp/web.xml",
 		notify => Service["oi-tomcat"]
-	}
+	} ->
 	
 	file {"/opt/openinfinity/tomcat/conf":
         ensure => present,
@@ -141,8 +141,28 @@ $platform_name = "${tomcat::params::platform_name}"
         mode => 0644,
         source => "puppet:///modules/oi4idp/server.xml",
 		notify => Service["oi-tomcat"]
-	}
+	} ->
 	
+	file {"/opt/openinfinity/tomcat/lib/opt":
+		ensure => directory,
+		owner  => "root",
+		group  => "root",
+		mode   => 755,
+	} ->
+	
+	file {"/tmp/init-tomcat.sh":
+        ensure => present,
+        owner => 'oiuser',
+        group => 'oiuser',
+        mode => 0644,
+        source => "puppet:///modules/oi4idp/init-tomcat.sh",
+		notify => Service["oi-tomcat"]
+	}
+	exec { "init-tomcat-for-idp":
+        command => "/tmp/init-tomcat.sh",
+        #cwd => "/root/shibboleth-idp/bin/",
+        #creates => "$idp_install_path/war/idp.war",
+    } ->
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
 	#ile { "${platfom_home}/tomcat/endorsed":
         #       ensure => 'directory',
