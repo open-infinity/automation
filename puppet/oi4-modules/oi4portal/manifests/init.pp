@@ -3,7 +3,7 @@ class oi4portal::install  {
 	package { ["java-1.8.0-openjdk", "oi4-connectorj", "oi4-liferay", "oi4-core", "oi4-tomcat", "oi4-secvault", "oi4-hazelcast"]:
 		ensure => present,
 	} 
-#	package { ["oi3-bas"]:
+#	package { ["oi4-bas"]:
 
 
 	file {"/opt/openinfinity/deploy":
