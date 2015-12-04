@@ -131,6 +131,7 @@ class oi4mongod::shard inherits oi4mongod::parameters {
 }
 
 class oi4mongod::parameters (
+	include stdlib
 	$idp_shibboleth_version=hiera('toas::mongod::mongo_cluster_type')
 	$mongod_port=hiera('toas::mongod::mongod_port')
 	$mongo_storage_smallFiles=hiera('toas::mongod::mongo_storage_smallFiles')
