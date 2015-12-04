@@ -131,14 +131,23 @@ class oi4mongod::shard inherits oi4mongod::parameters {
 }
 
 class oi4mongod::parameters (
-	$mongo_cluster_type = $::mongo_cluster_type,
-	$mongod_port = $::mongod_port,
-	$mongo_storage_smallFiles = $::mongo_storage_smallFiles,
-	$mongo_security_authorization = $::mongo_security_authorization,
-	$mongod_replicaset_name = $::mongod_replicaset_name,
-	$mongod_replicaset_oplogSizeMB = $::mongod_replicaset_oplogSizeMB,
-	$mongod_replicaset_node = $::mongod_replicaset_node,
-	$mongo_mongos_node = $::mongo_mongos_node,
+	$idp_shibboleth_version=hiera('toas::mongod::mongo_cluster_type')
+	$mongod_port=hiera('toas::mongod::mongod_port')
+	$mongo_storage_smallFiles=hiera('toas::mongod::mongo_storage_smallFiles')
+	$mongo_security_authorization=hiera('toas::mongod::mongo_security_authorization')
+	$mongod_replicaset_name=hiera('toas::mongod::mongod_replicaset_name')
+	$mongod_replicaset_oplogSizeMB=hiera('toas::mongod::mongod_replicaset_oplogSizeMB')
+	$mongod_replicaset_node=hiera('toas::mongod::mongod_replicaset_node')
+	$mongo_mongos_node=hiera('toas::mongod::mongo_mongos_node')
+	
+	#$mongo_cluster_type = $::mongo_cluster_type,
+	#$mongod_port = $::mongod_port,
+	#$mongo_storage_smallFiles = $::mongo_storage_smallFiles,
+	#$mongo_security_authorization = $::mongo_security_authorization,
+	#$mongod_replicaset_name = $::mongod_replicaset_name,
+	#$mongod_replicaset_oplogSizeMB = $::mongod_replicaset_oplogSizeMB,
+	#$mongod_replicaset_node = $::mongod_replicaset_node,
+	#$mongo_mongos_node = $::mongo_mongos_node,
 ) {
 	#
 	# Parameter validation and some default values
