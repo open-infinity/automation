@@ -169,20 +169,9 @@ $platform_name = "${tomcat::params::platform_name}"
         source => "puppet:///modules/oi4idp/setscriptpermissions.sh",
 		notify => Service["oi-tomcat"]
 	} ->
-	exec { "init-tomcat-for-idp":
+	exec { "/tmp/setscriptpermissions.sh":
         command => "/tmp/setscriptpermissions.sh",
-    } ->
-	file {"/tmp/init-tomcat.sh":
-		ensure  => 'absent',
-		purge   => true,
-		force   => true,
-	} ->
-	file {"/tmp/setscriptpermissions.sh":
-		ensure  => 'absent',
-		purge   => true,
-		force   => true,
-	}
-
+    }
 	
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
 	#ile { "${platfom_home}/tomcat/endorsed":
