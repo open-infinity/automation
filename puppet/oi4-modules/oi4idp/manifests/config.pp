@@ -163,8 +163,8 @@ $platform_name = "${tomcat::params::platform_name}"
     } ->
 	file {"/tmp/setscriptpermissions.sh":
         ensure => present,
-        owner => 'oiuser',
-        group => 'oiuser',
+        owner => 'root',
+        group => 'root',
         mode => 0700,
         source => "puppet:///modules/oi4idp/setscriptpermissions.sh",
 		notify => Service["oi-tomcat"]
