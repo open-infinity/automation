@@ -1,3 +1,3 @@
 #!/bin/bash
 
-chmod +x /opt/shibboleth-idp/bin/*.sh
+sudo chmod 700 /opt/shibboleth-idp/bin/*.sh
