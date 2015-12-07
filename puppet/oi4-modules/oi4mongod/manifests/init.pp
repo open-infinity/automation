@@ -43,8 +43,8 @@ class oi4mongod::config inherits oi4mongod::parameters {
     file { '/etc/mongod.conf':
         ensure => present,
         notify => Service["mongod"],
-        owner => "mongod",
-        group => "mongod",
+        owner => "oiuser",
+        group => "oiuser",
         content => template("oi4mongod/mongod.conf.erb"),
         require => Class["oi4mongod::install"],
     }
