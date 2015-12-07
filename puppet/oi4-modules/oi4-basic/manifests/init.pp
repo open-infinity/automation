@@ -9,14 +9,14 @@ class oi4-basic::config ($toaspathversion = undef) {
   	fail("Missing _toasversion (toaspathversion) variable")
   }
 
-    require oi4-ebs
+   /* require oi4-ebs
         file {"/etc/logrotate.d/oi-tomcat":
         ensure => present,
         content => template("oi4-basic/oi-tomcat.logrotate.erb"),
         owner => "root",
         group => "root",
         mode => 0644,
-    }
+    }*/
 
     file {"/opt/data":
             ensure => directory,
