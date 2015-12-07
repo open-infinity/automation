@@ -136,7 +136,7 @@ class oi4-basic::install inherits oi4variables {
 }
 
 class oi4-basic {
-    require oi4-ebs
+    /*require oi4-ebs*/
     include  oi4-basic::install, oi4-basic::config,  oi4-basic::service
 }
 
