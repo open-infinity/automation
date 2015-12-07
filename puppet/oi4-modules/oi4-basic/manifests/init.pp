@@ -80,14 +80,6 @@ class oi4-basic::config ($toaspathversion = undef) {
             require => [User["oiuser"], File["/opt/openinfinity"]],
     }
 
-    file {"/opt/openinfinity/$_toasversion":
-            ensure => directory,
-            owner => 'oiuser',
-            group => 'oiuser',
-            mode => 644,
-            require => [User["oiuser"], File["/opt/openinfinity"]],
-    }
-
     file {"/home/oiuser":
             ensure => directory,
             owner => 'oiuser',
