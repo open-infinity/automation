@@ -5,9 +5,9 @@ class oi4-basic::config ($toaspathversion = undef) {
   } else {
     $_toasversion = $toaspathversion
   }
-  if $_toasversion == undef {
-  	fail("Missing _toasversion (toaspathversion) variable")
-  }
+  #if $_toasversion == undef {
+  #	fail("Missing _toasversion (toaspathversion) variable")
+  #}
 
    /* require oi4-ebs
         file {"/etc/logrotate.d/oi-tomcat":
