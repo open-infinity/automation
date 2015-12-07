@@ -32,6 +32,18 @@ class oi4mongod::config inherits oi4mongod::parameters {
     $mongo_directories = [
         "/opt/openinfinity/data/mongod",
     ]
+	user { "mongod":
+            ensure => present,
+            comment => "Open Infinity user",
+            gid => "mongod",
+            shell => "/bin/bash",
+            managehome => true,
+            require => Group["mongod"],
+    }
+	group {"mongod":
+            ensure => present,
+    }
+	
     file { $mongo_directories:
         ensure => "directory",
         owner => 'mongod',
@@ -43,8 +55,8 @@ class oi4mongod::config inherits oi4mongod::parameters {
     file { '/etc/mongod.conf':
         ensure => present,
         notify => Service["mongod"],
-        owner => "oiuser",
-        group => "oiuser",
+        owner => "mongod",
+        group => "mongod",
         content => template("oi4mongod/mongod.conf.erb"),
         require => Class["oi4mongod::install"],
     }
