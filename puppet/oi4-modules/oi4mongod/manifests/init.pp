@@ -146,7 +146,7 @@ class oi4mongod::parameters (
 	#
 	
 	include stdlib
-	$idp_shibboleth_version=hiera('toas::mongod::mongo_cluster_type')
+	$mongo_cluster_type=hiera('toas::mongod::mongo_cluster_type')
 	$mongod_port=hiera('toas::mongod::mongod_port')
 	$mongo_storage_smallFiles=hiera('toas::mongod::mongo_storage_smallFiles')
 	$mongo_security_authorization=hiera('toas::mongod::mongo_security_authorization')
