@@ -5,6 +5,7 @@
 #
 
 class oi4mongocfg {
+	require oi4-basic
     require oi4mongocfg::install
     require oi4mongocfg::config
     require oi4mongocfg::service
