@@ -72,10 +72,6 @@ $platform_name = "${tomcat::params::platform_name}"
         
     #notify{" creates $idp_install_path/war/idp.war":}
     # ->
-
-	exec { "setup_ant_extensions":
-		command => "/etc/puppet/modules/oi4idp/files/init.sh",
-	}
 	
     /* The original install.sh with modified ant configuration is used for installation */
 	exec { "install_idp":
