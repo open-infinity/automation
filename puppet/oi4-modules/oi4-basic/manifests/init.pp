@@ -18,12 +18,12 @@ class oi4-basic::config ($toaspathversion = undef) {
         mode => 0644,
     }*/
 
-    file {"/opt/data":
+    /*file {"/opt/data":
             ensure => directory,
             owner => 'root',
             group => 'root',
             mode => 777,
-        }
+        }*/
 
     file {"/data":
             ensure => link,
