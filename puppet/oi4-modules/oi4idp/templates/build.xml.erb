@@ -47,9 +47,16 @@
 
         The property idp.noprompt will cause a failure rather than a prompt.
     -->
+	
+	  <!-- Load ant-contrib tasks -->
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
+    <!-- Load Internet2 ant extensions -->
+    <taskdef resource="edu/internet2/middleware/ant/antlib.xml"/>
+
 	<!--<var name="idp.src.dir" value="/opt/shibboleth-idp"/>-->
 	<var name="idp.target.dir" value="/opt/shibboleth-idp"/>
-	<var name="idp.host.name" value="<%= @idp_hostname %>"/>
+	<var name="idp.host.name" value="<%= @idp_hostname %>"/>	
 	<!--<var name="idp.uri.subject.alt.name" value="/opt/shibboleth-idp"/>-->
 	<var name="idp.sealer.password" value="<%= @idp_keystore_password %>"/>
 	<!--<var name="idp.sealer.alias" value="/opt/shibboleth-idp"/>-->
