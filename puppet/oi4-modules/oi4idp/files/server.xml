@@ -91,7 +91,7 @@
     <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
 
 	<!-- Connector for shibboleth idp -->
-	<Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol" maxThreads="150" SSLEnabled="true" scheme="https" secure="true" clientAuth="want" keystoreFile="/opt/shibboleth-idp/credentials/idp-backchannel.p12" keystorePass="TOAS" keystoreType="PKCS12" trustManagerClassName="net.shibboleth.utilities.ssl.TrustAnyCertificate" />
+	<Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol" maxThreads="150" SSLEnabled="true" scheme="https" secure="true" clientAuth="want" keystoreFile="/opt/shibboleth-idp/credentials/idp-backchannel.p12" keystorePass="X^^fDevVQbg6QS*25Q5E" keystoreType="PKCS12" trustManagerClassName="net.shibboleth.utilities.ssl.TrustAnyCertificate" />
 
     <!-- An Engine represents the entry point (within Catalina) that processes
          every request.  The Engine implementation for Tomcat stand alone
