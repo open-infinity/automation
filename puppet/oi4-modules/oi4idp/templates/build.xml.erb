@@ -112,9 +112,6 @@
 
     <input message="A keystore is about to be generated for you. Please enter a password that will be used to protect it." addproperty="idp.keystore.password"/> 
     
-	
-	<echoproperties/>
-	
     <!--<property name="idp.keystore.password" value="X^^fDevVQbg6QS*25Q5E"/>
     <property name="idp.sealer.password" value="X^^fDevVQbg6QS*25Q5E"/>-->
 
@@ -126,11 +123,10 @@
         </input>
     </target>
 
-	<echo> idp sealer password is now : ${idp.sealer.password} </echo>
-    <echoproperties/>
-	
     <target name="getsealerpassword" if="idp.ask.sealer.password" depends="checkproperties">
-        <TGT>getsealerpassword</TGT>
+		<echo> properties are now : ${idp.sealer.password} </echo>
+		<echoproperties/>
+		<TGT>getsealerpassword</TGT>
         <fail if="idp.noprompt">Input needed, silence demanded</fail>
         <input message="Cookie Encryption Key Password: " addproperty="idp.sealer.password">
             <handler classname="net.shibboleth.idp.installer.ant.PasswordHandler"/>
