@@ -219,7 +219,6 @@
     and error page. This is not a recommended approach and is severely
     limited in functionality as compared to using the IdP's own UI.
     -->
-    <!--
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>Web Login Service</realm-name>
@@ -228,5 +227,4 @@
             <form-error-page>/login-error.jsp</form-error-page>
         </form-login-config>
     </login-config>
-    -->
 </web-app>
