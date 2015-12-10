@@ -76,6 +76,8 @@
 	<!--<var name="ldap.merge.properties" value="/opt/shibboleth-idp"/>-->
 	<!--<var name="idp.conf.filemode" value="/opt/shibboleth-idp"/>-->
 	
+	
+
     <macrodef name="TGT" description="log the invocation of an Ant target">
         <text name="t" description="name of the target being invoked"/>
         <sequential>
@@ -115,6 +117,8 @@
     <!--<property name="idp.keystore.password" value="X^^fDevVQbg6QS*25Q5E"/>
     <property name="idp.sealer.password" value="X^^fDevVQbg6QS*25Q5E"/>-->
 
+	<echoproperties/>
+	
     <target name="getkeystorepassword" if="idp.ask.keystore.password" depends="checkproperties">
         <TGT>getkeystorepassword</TGT>
         <fail if="idp.noprompt">Input needed, silence demanded</fail>
@@ -220,6 +224,14 @@
         </echo>
     </target>
 
+	<target name="setscope" if="idp.set.scope" depends="checkproperties">
+        <TGT>setscope</TGT>
+        <property name="idp.scopeidp.sealer.storePassword" value="${DOMAIN}"/>
+        <echo file="${idp.merge.properties}" append="yes">
+           idp.sealer.storePassword=${idp.sealer.storePassword}
+        </echo>
+    </target>
+	
     <!--
      KEY MANAGEMENT
     -->
