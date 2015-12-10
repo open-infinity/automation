@@ -139,6 +139,7 @@
         </echo>
     </target>-->
 	
+	<!--
 	<target name="getsealerpassword" if="idp.ask.sealer.password" depends="checkproperties">
 		<echo> properties are now : ${idp.sealer.password} </echo>
 		<echoproperties/>
@@ -148,24 +149,22 @@
             <handler classname="net.shibboleth.idp.installer.ant.PasswordHandler"/>
         </input>
         <echo file="${idp.merge.properties}" append="yes">
-            idp.sealer.storePassword=X^^fDevVQbg6QS*25Q5E
+            idp.sealer.storePassword=${idp.sealer.password}
+        </echo>
+        <echo file="${idp.merge.properties}" append="yes">
+            idp.sealer.keyPassword=${idp.sealer.password}
+        </echo>
+    </target>-->
+	<target name="getsealerpassword">
+		<echo> properties are now : ${idp.sealer.password} </echo>
+		<echoproperties/>
+        <echo file="${idp.merge.properties}" append="yes">
+			idp.sealer.storePassword=X^^fDevVQbg6QS*25Q5E
         </echo>
         <echo file="${idp.merge.properties}" append="yes">
             idp.sealer.keyPassword=X^^fDevVQbg6QS*25Q5E
         </echo>
     </target>
-	<!--<target name="getsealerpassword">
-		<echo> properties are now : ${idp.sealer.password} </echo>
-		<echoproperties/>
-        <echo file="${idp.merge.properties}" append="yes">
-			idp.sealer.storePassword=${idp.sealer.password}
-        </echo>
-        <echo file="${idp.merge.properties}" append="yes">
-            idp.sealer.keyPassword=
-
-        </echo>
-    </target>
-	-->
 
     <target name="getsealeralias" if="idp.ask.sealer.alias" depends="checkproperties">
         <TGT>getsealeralias</TGT>
