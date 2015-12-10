@@ -126,7 +126,8 @@
         </input>
     </target>
 
-	<echo> idp sealer password is now: ${idp.sealer.password} </echo>
+	<echo> idp sealer password is now : ${idp.sealer.password} </echo>
+    <echoproperties/>
 	
     <target name="getsealerpassword" if="idp.ask.sealer.password" depends="checkproperties">
         <TGT>getsealerpassword</TGT>
