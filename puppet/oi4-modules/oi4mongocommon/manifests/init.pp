@@ -28,6 +28,13 @@ class oi4mongocommon {
         "/opt/openinfinity/service/mongodb",
         "/opt/openinfinity/service/mongodb/scripts",
     ] 
+	file {"/opt/openinfinity":
+            ensure => directory,
+            owner => 'oiuser',
+            group => 'oiuser',
+            mode => 644,
+            require => [User["oiuser"], File["/opt/openinfinity"]],
+    } ->
 	file {"/opt/openinfinity/data":
             ensure => directory,
             owner => 'oiuser',
