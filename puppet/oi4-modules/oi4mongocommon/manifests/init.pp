@@ -27,7 +27,7 @@ class oi4mongocommon {
 #        "/opt/openinfinity/service",
         "/opt/openinfinity/service/mongodb",
         "/opt/openinfinity/service/mongodb/scripts",
-    } -> 
+    ] 
 	file {"/opt/openinfinity/data":
             ensure => directory,
             owner => 'oiuser',
