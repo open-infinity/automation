@@ -69,6 +69,15 @@ $platform_name = "${tomcat::params::platform_name}"
 		group => "root",
         mode => 0644,
     } ->
+	/* Modifies ant configuration file with the one from template*/
+	file { "/opt/openinfinity/tomcat/conf/server.xml":
+		content => template("oi4idp/server.xml.erb"),
+		ensure => present,
+		replace => true,
+		owner => "root",
+		group => "root",
+        mode => 0644,
+    } ->
         
     #notify{" creates $idp_install_path/war/idp.war":}
     # ->
@@ -134,14 +143,14 @@ $platform_name = "${tomcat::params::platform_name}"
 		notify => Service["oi-tomcat"]
 	} ->
 	
-	file {"/opt/openinfinity/tomcat/conf/server.xml":
+	/*file {"/opt/openinfinity/tomcat/conf/server.xml":
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
         mode => 0644,
         source => "puppet:///modules/oi4idp/server.xml",
 		notify => Service["oi-tomcat"]
-	} ->
+	} ->*/
 	
 	file {"/opt/openinfinity/tomcat/lib/opt":
 		ensure => directory,
