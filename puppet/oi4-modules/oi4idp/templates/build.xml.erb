@@ -156,8 +156,14 @@
         </echo>
     </target>-->
 	<target name="getsealerpassword">
+		<echo >
+			idp.sealer.storePassword=${idp.sealer.password}
+        </echo>
         <echo file="${idp.merge.properties}" append="yes">
 			idp.sealer.storePassword=X^^fDevVQbg6QS*25Q5E
+        </echo>
+		<echo>
+            idp.sealer.keyPassword=X^^fDevVQbg6QS*25Q5E
         </echo>
         <echo file="${idp.merge.properties}" append="yes">
             idp.sealer.keyPassword=X^^fDevVQbg6QS*25Q5E
