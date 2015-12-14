@@ -1,7 +1,7 @@
 class profiles::serviceplatform {
   $apachePackageName = hiera('toas::httpd::apachePackageName')
   $apacheServiceName = hiera('toas::httpd::apacheServiceName')
-  $use_lb =  hiera('toas::httpd::use_lb', undef)
+  $use_lb =  hiera('toas::httpd::use_lb', false)
   $apacheConfPath = hiera('toas::httpd::apacheConfPath', undef)
   $httpd_domain_name = hiera('toas::httpd::domain_name') 
   $httpd_selfsigned_certificate = hiera('toas::httpd::domain_name', true)
