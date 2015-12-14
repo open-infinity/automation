@@ -26,7 +26,7 @@ class profiles::serviceplatform {
 			httpd_serverkey_password => $httpd_serverkey_password, 
 			httpd_domain_certificate => $httpd_domain_certificate, 
 			httpd_ssl_key => $httpd_ssl_key, 
-			httpd_ca_certificate = $httpd_ca_certificate
+			httpd_ca_certificate => $httpd_ca_certificate
 	}-> class {'oi4-serviceplatform::service':
 			apachePackageName => $apachePackageName,
 			apacheServiceName => $apacheServiceName
