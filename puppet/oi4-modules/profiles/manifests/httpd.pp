@@ -4,15 +4,15 @@ class profiles::httpd {
   $use_lb =  hiera('toas::httpd::use_lb', false)
   $apacheConfPath = hiera('toas::httpd::apacheConfPath', undef)
   $httpd_domain_name = hiera('toas::httpd::domain_name') 
-  $httpd_selfsigned_certificate = hiera('toas::httpd::domain_name', true)
+  $httpd_selfsigned_certificate = hiera('toas::httpd::selfsigned_certificate', true)
   
   if $httpd_selfsigned_certificate == true {
-	$httpd_serverkey_password = hiera('toas::httpd::domain_name')
+	$httpd_serverkey_password = hiera('toas::httpd::serverkey_password')
   }
   
-  $httpd_domain_certificate = hiera('toas::httpd::domain_name')
-  $httpd_ssl_key = hiera('toas::httpd::domain_name')			
-  $httpd_ca_certificate = hiera('toas::httpd::domain_name')	
+  $httpd_domain_certificate = hiera('toas::httpd::domain_certificate', undef)
+  $httpd_ssl_key = hiera('toas::httpd::ssl_key', undef)			
+  $httpd_ca_certificate = hiera('toas::httpd::ca_certificate', undef)	
 
 	class {'oi4httpd::install':
 			apachePackageName => $apachePackageName
