@@ -47,3 +47,22 @@ jdbc.default.driverClassName=com.mysql.jdbc.Driver
 jdbc.default.url=jdbc:mysql://<%= @portal_db_address %>/lportal?emulateLocators=true&useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false
 jdbc.default.username=liferay
 jdbc.default.password=<%= @portal_db_password %>
+   #
+    # Entity level caching for a specific type of value object can be configured
+    # by using a property name that includes the value object's class name.
+    #
+    value.object.entity.cache.enabled.com.liferay.portal.model.Layout=true
+    value.object.entity.cache.enabled.com.liferay.portal.model.User=true
+    value.object.entity.cache.enabled.com.liferay.portlet.social.model.SocialEquityAssetEntry=false
+    value.object.entity.cache.enabled.com.liferay.portlet.social.model.SocialEquityLog=false
+    value.object.entity.cache.enabled.com.liferay.portlet.social.model.SocialEquityUser=false
+ 
+    #
+    # Finder level caching for a specific type of value object can be configured
+    # by using a property name that includes the value object's class name.
+    # Mapping tables can also be specified to configure the caching of value
+    # object relationships.
+    #
+    value.object.finder.cache.enabled.com.liferay.portal.model.Layout=true
+    value.object.finder.cache.enabled.com.liferay.portal.model.User=true
+    value.object.finder.cache.enabled.Users_Roles=true
