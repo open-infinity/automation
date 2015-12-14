@@ -27,7 +27,7 @@ class profiles::httpd {
 			httpd_domain_certificate => $httpd_domain_certificate, 
 			httpd_ssl_key => $httpd_ssl_key, 
 			httpd_ca_certificate => $httpd_ca_certificate
-	}-> class {'oi4-serviceplatform::service':
+	}-> class {'oi4httpd::service':
 			apachePackageName => $apachePackageName,
 			apacheServiceName => $apacheServiceName
 	}
