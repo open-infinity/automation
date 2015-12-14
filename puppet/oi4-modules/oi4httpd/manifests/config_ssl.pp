@@ -13,7 +13,7 @@ class oi4httpd::config_ssl (
         owner => "root",
         group => "root",
         mode => 0744,
-        content => template("oi3httpd/ssl/ssl.conf.erb"),
+        content => template("oi4httpd/ssl/ssl.conf.erb"),
         require => File["/opt/openinfinity/common/httpd"],
     }
 
@@ -31,7 +31,7 @@ class oi4httpd::config_ssl (
             owner => "root",
             group => "root",
             mode => 0700,
-            content => template("oi3httpd/ssl/generate-self-signed-certificate.sh.erb"),
+            content => template("oi4httpd/ssl/generate-self-signed-certificate.sh.erb"),
             require => File["/opt/openinfinity/common/httpd/script"],
         }
 
@@ -49,7 +49,7 @@ class oi4httpd::config_ssl (
             owner => "apache",
             group => "apache",
             mode => 0600,
-            content => template("oi3httpd/ssl/ssl-domain.crt.erb"),
+            content => template("oi4httpd/ssl/ssl-domain.crt.erb"),
             require => File["/etc/ssl/certs"],
         }
         
@@ -58,7 +58,7 @@ class oi4httpd::config_ssl (
             owner => "apache",
             group => "apache",
             mode => 0600,
-            content => template("oi3httpd/ssl/ssl-server.key.erb"),
+            content => template("oi4httpd/ssl/ssl-server.key.erb"),
             require => File["/etc/ssl/certs"],
         }
      
@@ -67,7 +67,7 @@ class oi4httpd::config_ssl (
             owner => "apache",
             group => "apache",
             mode => 0600,
-            content => template("oi3httpd/ssl/ssl-ca.crt.erb"),
+            content => template("oi4httpd/ssl/ssl-ca.crt.erb"),
             require => File["/etc/ssl/certs"],
         }
      
