@@ -1,4 +1,4 @@
-class profiles::serviceplatform {
+class profiles::httpd {
   $apachePackageName = hiera('toas::httpd::apachePackageName')
   $apacheServiceName = hiera('toas::httpd::apacheServiceName')
   $use_lb =  hiera('toas::httpd::use_lb', false)
