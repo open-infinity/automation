@@ -157,16 +157,16 @@
     </target>-->
 	<target name="getsealerpassword">
 		<echo >
-			idp.sealer.storePassword=${idp.sealer.password}
+			idp.sealer.storePassword=<%= @idp_keystore_password %>
         </echo>
         <echo file="${idp.merge.properties}" append="yes">
-			idp.sealer.storePassword=X^^fDevVQbg6QS*25Q5E
+			idp.sealer.storePassword=<%= @idp_keystore_password %>
         </echo>
 		<echo>
-            idp.sealer.keyPassword=X^^fDevVQbg6QS*25Q5E
+            idp.sealer.keyPassword=<%= @idp_keystore_password %>
         </echo>
         <echo file="${idp.merge.properties}" append="yes">
-            idp.sealer.keyPassword=X^^fDevVQbg6QS*25Q5E
+            idp.sealer.keyPassword=<%= @idp_keystore_password %>
         </echo>
     </target>
 
