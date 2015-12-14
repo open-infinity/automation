@@ -14,10 +14,10 @@ class oi4httpd::install
     }
 }
 
-class oi4httpd::config {
+class oi4httpd::config 
 (
   $apachePackageName = undef
-)
+) {
     file { "/opt/openinfinity/common/httpd":
         ensure => directory,
         owner => 'apache',
@@ -35,11 +35,11 @@ class oi4httpd::config {
     }
 }
     
-class oi4httpd::service {
+class oi4httpd::service 
 (
   $apachePackageName = undef,
   $apacheServiceName = undef
-)
+) {
     service { $apacheServiceName:
         ensure => running,
         enable => true,
