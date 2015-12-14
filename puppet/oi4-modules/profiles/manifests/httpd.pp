@@ -15,7 +15,7 @@ class {'oi4httpd::install':
 		apachePackageName => $apachePackageName,
 }
 	if $use_lb {
-		class {'oi4httpd::config_ssl': 
+		class {'oi4httpd::config_lb': 
 			require => Class["oi4httpd::config_ssl"], 
 			apacheConfPath => $apacheConfPath
 		}
