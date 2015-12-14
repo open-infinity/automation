@@ -112,9 +112,6 @@
 
     <input message="A keystore is about to be generated for you. Please enter a password that will be used to protect it." addproperty="idp.keystore.password"/> 
     
-    <!--<property name="idp.keystore.password" value="X^^fDevVQbg6QS*25Q5E"/>
-    <property name="idp.sealer.password" value="X^^fDevVQbg6QS*25Q5E"/>-->
-
     <target name="getkeystorepassword" if="idp.ask.keystore.password" depends="checkproperties">
         <TGT>getkeystorepassword</TGT>
         <fail if="idp.noprompt">Input needed, silence demanded</fail>
@@ -156,17 +153,11 @@
         </echo>
     </target>-->
 	<target name="getsealerpassword">
-		<echo >
-			idp.sealer.storePassword=<%= @idp_keystore_password %>
+        <echo file="${idp.merge.properties}" append="yes">
+			idp.sealer.storePassword=${idp.sealer.password}
         </echo>
         <echo file="${idp.merge.properties}" append="yes">
-			idp.sealer.storePassword=<%= @idp_keystore_password %>
-        </echo>
-		<echo>
-            idp.sealer.keyPassword=<%= @idp_keystore_password %>
-        </echo>
-        <echo file="${idp.merge.properties}" append="yes">
-            idp.sealer.keyPassword=<%= @idp_keystore_password %>
+            idp.sealer.keyPassword=${idp.sealer.password}
         </echo>
     </target>
 
