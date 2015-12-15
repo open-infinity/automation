@@ -88,13 +88,13 @@ class oi4basic::config ($toaspathversion = undef) {
             require => [User["oiuser"], File["/opt/openinfinity"]],
     }*/
 
-    file {"/home/oiuser":
+    /*file {"/home/oiuser":
             ensure => directory,
             owner => 'oiuser',
             group => 'oiuser',
             mode => 750,
             require => [User['oiuser'],Group['oiuser']]
-    }
+    }*/
 
     user { "oiuser":
             ensure => present,
