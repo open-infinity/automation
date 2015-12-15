@@ -7,7 +7,7 @@
 
 class oi4mongocommon {
 
-	class {'oi4-basic': 
+	class {'oi4basic': 
 	}
 
 	#include profiles::oi4-basic
