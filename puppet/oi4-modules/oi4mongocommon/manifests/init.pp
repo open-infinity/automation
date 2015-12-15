@@ -7,7 +7,7 @@
 
 class oi4mongocommon {
 
-	include oi4basic
+	require oi4-basic
 	#include profiles::oi4-basic
     package { ['mongodb-org-server']:
         ensure => present,
