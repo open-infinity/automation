@@ -6,6 +6,10 @@
 #
 
 class oi4mongocommon {
+
+	class {'oi4-basic': 
+	}
+
 	#include profiles::oi4-basic
     package { ['mongodb-org-server']:
         ensure => present,
