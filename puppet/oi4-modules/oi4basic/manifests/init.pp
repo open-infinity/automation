@@ -1,13 +1,13 @@
 class oi4basic::config ($toaspathversion = undef) {
 
-  if $toaspathversion == undef {
+  /*if $toaspathversion == undef {
     $_toasversion = $::toaspathversion
   } else {
     $_toasversion = $toaspathversion
   }
   if $_toasversion == undef {
   	fail("Missing _toasversion (toaspathversion) variable")
-  }
+  }*/
 
     /*require oi4ebs
         file {"/etc/logrotate.d/oi-tomcat":
@@ -88,7 +88,7 @@ class oi4basic::config ($toaspathversion = undef) {
             require => [User["oiuser"], File["/opt/openinfinity"]],
     }
 
-    file {"/opt/openinfinity/$_toasversion":
+    file {"/opt/openinfinity":
             ensure => directory,
             owner => 'oiuser',
             group => 'oiuser',
