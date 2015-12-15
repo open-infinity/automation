@@ -5,7 +5,7 @@
 #
 
 class oi4mongod {
-	require oi4bas
+	require oi4basic
     require oi4mongod::install
     require oi4mongod::config
     require oi4mongod::service
