@@ -48,7 +48,7 @@ class oi4basic::config ($toaspathversion = undef) {
             require => [User["oiuser"], File["/opt/openinfinity"]],
     }*/
 
-    file {"/opt/openinfinity/log":
+    /*file {"/opt/openinfinity/log":
             ensure => directory,
             owner => 'oiuser',
             group => 'oiuser',
@@ -78,7 +78,7 @@ class oi4basic::config ($toaspathversion = undef) {
             group => 'oiuser',
             mode => 644,
             require => [User["oiuser"], File["/opt/openinfinity"]],
-    }
+    }*/
 
     /*file {"/opt/openinfinity/$_toasversion":
             ensure => directory,
