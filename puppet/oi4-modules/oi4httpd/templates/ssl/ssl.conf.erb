@@ -1,0 +1,19 @@
+
+LoadModule ssl_module modules/mod_ssl.so
+
+Listen 443 
+
+<VirtualHost <%=httpd_domain_name%>:443>
+DocumentRoot /var/www/html
+ServerName <%=httpd_domain_name%>
+SSLEngine on
+<% if httpd_selfsigned_certificate %>
+SSLCertificateFile /etc/ssl/certs/self-signed.crt
+SSLCertificateKeyFile /etc/ssl/keys/server.key
+<% else %>
+SSLCertificateFile /etc/ssl/certs/<%=httpd_domain_name%>.crt
+SSLCertificateKeyFile /etc/ssl/keys/server.key
+SSLCertificateChainFile /etc/ssl/certs/<%=httpd_ss_ca_name%>.crt
+<% end %>
+</VirtualHost> 
+
