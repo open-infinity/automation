@@ -18,12 +18,12 @@ class oi4basic::config ($toaspathversion = undef) {
         mode => 0644,
     }*/
 
-    /*file {"/opt/data":
+    file {"/opt/data":
             ensure => directory,
             owner => 'root',
             group => 'root',
             mode => 777,
-        }*/
+        }
 
     file {"/data":
             ensure => link,
@@ -32,23 +32,23 @@ class oi4basic::config ($toaspathversion = undef) {
             require => File["/opt/data"],
         }
 
-    /*file {"/opt/openinfinity":
+    file {"/opt/openinfinity":
             ensure => directory,
             owner => 'oiuser',
             group => 'oiuser',
             mode => 644,
             require => User["oiuser"],
-    }*/
+    }
 
-    /*file {"/opt/openinfinity/data":
+    file {"/opt/openinfinity/data":
             ensure => directory,
             owner => 'oiuser',
             group => 'oiuser',
             mode => 644,
             require => [User["oiuser"], File["/opt/openinfinity"]],
-    }*/
+    }
 
-    /*file {"/opt/openinfinity/log":
+    file {"/opt/openinfinity/log":
             ensure => directory,
             owner => 'oiuser',
             group => 'oiuser',
@@ -78,7 +78,7 @@ class oi4basic::config ($toaspathversion = undef) {
             group => 'oiuser',
             mode => 644,
             require => [User["oiuser"], File["/opt/openinfinity"]],
-    }*/
+    }
 
     /*file {"/opt/openinfinity/$_toasversion":
             ensure => directory,
@@ -88,26 +88,26 @@ class oi4basic::config ($toaspathversion = undef) {
             require => [User["oiuser"], File["/opt/openinfinity"]],
     }*/
 
-    /*file {"/home/oiuser":
+    file {"/home/oiuser":
             ensure => directory,
             owner => 'oiuser',
             group => 'oiuser',
             mode => 750,
             require => [User['oiuser'],Group['oiuser']]
-    }*/
+    }
 
-    /*user { "oiuser":
+    user { "oiuser":
             ensure => present,
             comment => "Open Infinity user",
             gid => "oiuser",
             shell => "/bin/bash",
             managehome => true,
             require => Group["oiuser"],
-        }*/
+        }
 
-    /*group {"oiuser":
+    group {"oiuser":
             ensure => present,
-        }*/
+        }
 }
 
 class oi4basic::service inherits oi4variables {
