@@ -9,14 +9,14 @@ class oi4basic::config ($toaspathversion = undef) {
   	fail("Missing _toasversion (toaspathversion) variable")
   }
 
-    require oi4ebs
+    /*require oi4ebs
         file {"/etc/logrotate.d/oi-tomcat":
         ensure => present,
         content => template("oi4basic/oi-tomcat.logrotate.erb"),
         owner => "root",
         group => "root",
         mode => 0644,
-    }
+    }*/
 
     file {"/opt/data":
             ensure => directory,
@@ -136,7 +136,7 @@ class oi4basic::install inherits oi3variables {
 }
 
 class oi4basic {
-    require oi4ebs
+    #require oi4ebs
     include  oi4basic::install, oi4basic::config,  oi4basic::service
 }
 
