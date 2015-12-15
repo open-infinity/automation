@@ -96,14 +96,14 @@ class oi4basic::config ($toaspathversion = undef) {
             require => [User['oiuser'],Group['oiuser']]
     }*/
 
-    user { "oiuser":
+    /*user { "oiuser":
             ensure => present,
             comment => "Open Infinity user",
             gid => "oiuser",
             shell => "/bin/bash",
             managehome => true,
             require => Group["oiuser"],
-        }
+        }*/
 
     group {"oiuser":
             ensure => present,
