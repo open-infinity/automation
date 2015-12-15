@@ -105,9 +105,9 @@ class oi4basic::config ($toaspathversion = undef) {
             require => Group["oiuser"],
         }*/
 
-    group {"oiuser":
+    /*group {"oiuser":
             ensure => present,
-        }
+        }*/
 }
 
 class oi4basic::service inherits oi4variables {
