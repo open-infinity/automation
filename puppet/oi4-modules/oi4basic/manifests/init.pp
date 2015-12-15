@@ -118,7 +118,7 @@ class oi4basic::config ($toaspathversion = undef) {
         }
 }
 
-class oi4basic::service inherits oi3variables {
+class oi4basic::service inherits oi4variables {
     service { $cronServiceName:
         ensure => running,
         hasstatus => true,
@@ -128,7 +128,7 @@ class oi4basic::service inherits oi3variables {
     }
 }
 
-class oi4basic::install inherits oi3variables {
+class oi4basic::install inherits oi4variables {
     package { $cronPackageName:
         ensure => installed,
         require => Class["oi4basic::config"],
