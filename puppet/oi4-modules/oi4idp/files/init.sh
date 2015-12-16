@@ -1,5 +1,6 @@
 #!/bin/bash
 # install ant-contrib (needed by shibboleth idp installation)
+export JAVA_HOME=/etc/alternatives/jre_1.7.0/
 echo installing ant contrib:
 cd /root
 yum install wget
