@@ -40,6 +40,8 @@ class oi4httpd_sp::config inherits oi4variables {
         require => Package[$apachePackageName],
     }
 
+	$shibboleth_sp_entityid_url=hiera('toas::sp::shibboleth_entity_url')
+	
     file { "/etc/shibboleth/shibboleth2.xml":
         content => template("oi4httpd_sp/sp/shibboleth2.xml.erb"),
         replace => true,
