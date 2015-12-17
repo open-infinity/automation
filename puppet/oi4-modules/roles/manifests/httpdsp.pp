@@ -1,5 +1,5 @@
 class roles::httpdsp {
   include profiles::base
   include profiles::httpd
-  include profiles::oi4httpd_sp
+  include profiles::httpd_sp
 }
