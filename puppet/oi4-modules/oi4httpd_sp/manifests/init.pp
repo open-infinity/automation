@@ -12,8 +12,7 @@ class oi4httpd_sp  {
 
 
 class oi4httpd_sp::install inherits oi4variables {
-    #package { "shibboleth":
-	package { "oi4-sp-lb":
+    package { "shibboleth":
         ensure => installed,
         require => Package["$apachePackageName"],
     }
@@ -57,7 +56,7 @@ class oi4httpd_sp::config inherits oi4variables {
         group => "root",
         mode => 0644,
         notify => Service["$apacheServiceName"],
-        require => Package["oi4-sp-lb"],
+        require => Package["shibboleth"],
     }
 
     file { "/etc/shibboleth/attribute-map.xml":
@@ -67,7 +66,7 @@ class oi4httpd_sp::config inherits oi4variables {
         group => "root",
         mode => 0644,
         notify => Service["$apacheServiceName"],
-        require => Package["oi4-sp-lb"],
+        require => Package["shibboleth"],
     }
 
     file {"/opt/openinfinity/common/shibboleth-sp":
