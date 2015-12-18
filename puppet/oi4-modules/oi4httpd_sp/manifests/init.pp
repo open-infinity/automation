@@ -12,7 +12,8 @@ class oi4httpd_sp  {
 
 
 class oi4httpd_sp::install inherits oi4variables {
-    package { "shibboleth":
+    #package { "shibboleth":
+	package { "oi4-sp-lb":
         ensure => installed,
         require => Package["$apachePackageName"],
     }
