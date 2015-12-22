@@ -49,7 +49,7 @@ class oi4httpd_sp::config inherits oi4variables {
 	$shibboleth_idp_entityid_url=hiera('toas::sp::shibboleth_entity_url')
     $shibboleth_sp_entityid_url=hiera('toas::sp::shibboleth_sp_entityid_url')
     $shibboleth_idp_hostname=hiera('toas::sp::shibboleth_idp_hostname')
-    $sp_root_rsa_key_private=hiera('toas::sp::sp_root_rsa_key_private')
+    
     $sp_root_rsa_key_public=hiera('toas::sp::sp_root_rsa_key_public')
     $httpd_domain_name=hiera('toas::sp::httpd_domain_name')
     $shibboleth_sp_id=hiera('toas::sp::shibboleth_sp_id')
@@ -111,6 +111,9 @@ class oi4httpd_sp::config inherits oi4variables {
         mode => 700,
     }
 
+	$sp_root_rsa_key_public=hiera('toas::sp::sp_root_rsa_key_private')
+	$httpd_domain_name=hiera('toas::sp::httpd_domain_name')
+	
     # RSA key for accessing IdP machine
     file {"/root/.ssh/id_rsa":
         content => template("oi4httpd_sp/sp/root-id_rsa.erb"),
