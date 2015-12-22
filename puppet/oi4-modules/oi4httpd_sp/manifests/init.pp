@@ -20,6 +20,12 @@ class oi4httpd_sp::install inherits oi4variables {
 
 class oi4httpd_sp::config inherits oi4variables {
     # Service Provider (Shibboleth)
+	file {"/etc/shibboleth":
+        ensure => directory,
+        owner => 'oiuser',
+        group => 'oiuser',
+        mode => 640,
+    }
     file { "${apacheConfPath}oi4-shibboleth.conf":
         source => "puppet:///modules/oi4httpd_sp/oi4-shibboleth.conf",
         replace => true,
@@ -137,7 +143,7 @@ class oi4httpd_sp::config inherits oi4variables {
     # This should be run after the configure phase and service (re)start
     exec { "post-configure-sp.sh":
         command => "/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh",
-        user => "root",
+        user => "root",	
         timeout => "3600",
         logoutput => true,
         require => [ 
