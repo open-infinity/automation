@@ -111,7 +111,7 @@ class oi4httpd_sp::config inherits oi4variables {
         mode => 700,
     }
 
-	$sp_root_rsa_key_public=hiera('toas::sp::sp_root_rsa_key_private')
+	$sp_root_rsa_key_public=hiera('toas::sp::sp_root_rsa_key_public')
 	$httpd_domain_name=hiera('toas::sp::httpd_domain_name')
 	$sp_root_rsa_key_private=hiera('toas::sp::sp_root_rsa_key_private')
 	
