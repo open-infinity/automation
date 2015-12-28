@@ -22,9 +22,9 @@ class oi4httpd_sp::config inherits oi4variables {
     # Service Provider (Shibboleth)
 	file {"/etc/shibboleth":
         ensure => directory,
-        owner => 'oiuser',
-        group => 'oiuser',
-        mode => 640,
+        owner => 'apache',
+        group => 'apache',
+        mode => 777,
     }
     file { "${apacheConfPath}oi4-shibboleth.conf":
         source => "puppet:///modules/oi4httpd_sp/oi4-shibboleth.conf",
@@ -58,9 +58,9 @@ class oi4httpd_sp::config inherits oi4variables {
     file { "/etc/shibboleth/shibboleth2.xml":
         content => template("oi4httpd_sp/sp/shibboleth2.xml.erb"),
         replace => true,
-        owner => "root",
-        group => "root",
-        mode => 0644,
+        owner => "apache",
+        group => "apache",
+        mode => 777,
         notify => Service["$apacheServiceName"],
         require => Package["shibboleth"],
     }
