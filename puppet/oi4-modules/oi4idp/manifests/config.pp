@@ -78,10 +78,9 @@ $platform_name = "${tomcat::params::platform_name}"
 		group => "root",
         mode => 0644,
     } ->
-        
-    #notify{" creates $idp_install_path/war/idp.war":}
-    # ->
 	
+
+
     /* The original install.sh with modified ant configuration is used for installation */
 	exec { "install_idp":
         #command => "/bin/sh install.sh",
@@ -185,6 +184,21 @@ $platform_name = "${tomcat::params::platform_name}"
 	} ->
 	exec { "/tmp/setscriptpermissions.sh":
         command => "/tmp/setscriptpermissions.sh",
+    }
+
+
+    file {"/opt/openinfinity/common/shibboleth-idp/":
+	ensure => directory,
+	owner  => "root",
+	group  => "root",
+	mode   => 755,  
+    } ->    
+    file {"/opt/openinfinity/common/shibboleth-idp/add-sp.py":
+        ensure => present,
+        owner => 'oiuser',
+        group => 'oiuser',
+        mode => 0644,
+        source => "puppet:///modules/oi4idp/add-sp.py"
     }
 	
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
