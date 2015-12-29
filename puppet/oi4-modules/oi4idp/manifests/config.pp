@@ -197,7 +197,7 @@ $platform_name = "${tomcat::params::platform_name}"
         ensure => present,
         owner => 'oiuser',
         group => 'oiuser',
-        mode => 0644,
+        mode => 0777,
         source => "puppet:///modules/oi4idp/add-sp.py"
     }
 	
