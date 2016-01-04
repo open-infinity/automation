@@ -78,12 +78,15 @@ f.write(dom.toxml())
 f.close()
 
 # Restart the service
-print("Restarting jetty service")
-os.system("/etc/init.d/jetty stop")
-time.sleep(2) # as stop seems to return too quickly sometimes, we better use a hack
-if 0 != os.system("/etc/init.d/jetty start"):
-    sys.stderr.write("Failed to restart the service\n")
-    sys.exit(1)
+#print("Restarting jetty service")
+#os.system("/etc/init.d/jetty stop")
+#time.sleep(2) # as stop seems to return too quickly sometimes, we better use a hack
+#if 0 != os.system("/etc/init.d/jetty start"):
+#    sys.stderr.write("Failed to restart the service\n")
+#    sys.exit(1)
+
+print("Restarting tomcat service")
+service oi-tomcat restart
 
 # Success
 print("All done.")
