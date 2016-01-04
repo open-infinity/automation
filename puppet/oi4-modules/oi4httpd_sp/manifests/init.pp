@@ -35,6 +35,15 @@ class oi4httpd_sp::config inherits oi4variables {
         notify => Service["$apacheServiceName"],
         require => Package[$apachePackageName],
     }
+	file { "${apacheConfPath}shib.conf":
+        source => "puppet:///modules/oi4httpd_sp/shib.conf",
+        replace => true,
+        owner => "root",
+        group => "root",
+        mode => 0644,
+        notify => Service["$apacheServiceName"],
+        require => Package[$apachePackageName],
+    }
 
     file { "${apacheConfPath}oi4-shibboleth-proxy.conf":
         source => "puppet:///modules/oi4httpd_sp/oi4-shibboleth-proxy.conf",
