@@ -68,7 +68,6 @@ mp_found = False
 for rootnode in dom.childNodes:
    print("root node name is %s " % (rootnode.nodeName))
    if rootnode.nodeName == "MetadataProvider":
-        print("rootnode name is %s " % (rootnode))
         rootnode.appendChild(elem)
         mp_found = True
 
