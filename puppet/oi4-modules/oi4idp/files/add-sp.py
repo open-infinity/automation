@@ -59,20 +59,21 @@ print("Metadata wrote to %s " % (sp_filename))
 # Modify IdP XML file /opt/shibboleth-idp/conf/relying-party.xml
 print("Modifying file %s" % (relying_party_out_filename))
 dom = parse(relying_party_in_filename)
-elem = dom.createElement('metadata:MetadataProvider')
+elem = dom.createElement('MetadataProvider')
 elem.setAttribute('id', options.sp_id) # 'SPMetadata')
 elem.setAttribute('xsi:type', 'metadata:FilesystemMetadataProvider')
 elem.setAttribute('metadataFile', sp_filename)
 mp_found = False
 
 for rootnode in dom.childNodes:
-    if rootnode.nodeName == "MetadataProvider":
+   print("root node name is %s " % (rootnode.nodeName))
+   if rootnode.nodeName == "MetadataProvider":
         print("rootnode name is %s " % (rootnode))
         rootnode.appendChild(elem)
-        mp_found = True				
-				
+        mp_found = True
+
 if not mp_found:
-	print("Error: Expected chaining metadata provider not found in XML!")
+    print("Error: Expected chaining metadata provider not found in XML!")
     sys.stderr.write("Expected chaining metadata provider not found in XML!")
     sys.exit(1)
 
