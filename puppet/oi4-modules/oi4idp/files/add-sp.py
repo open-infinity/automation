@@ -41,7 +41,8 @@ if options.sp_url == None or options.sp_id == None:
 print("Started adding service provider (SP) %s to the local identity provider (IdP)\n" % (options.sp_id))
 basedir = options.shibboleth_idp_basedir
 sp_filename = "%s/metadata/sp-%s-metadata.xml" % (basedir, options.sp_id)
-relying_party_in_filename = "%s/conf/relying-party.xml" % (basedir)
+#relying_party_in_filename = "%s/conf/relying-party.xml" % (basedir)
+relying_party_in_filename = "%s/conf/metadata-providers.xml" % (basedir)
 relying_party_out_filename = relying_party_in_filename
 if options.dry_run:
     print("Activating dry run mode")
@@ -63,13 +64,15 @@ elem.setAttribute('id', options.sp_id) # 'SPMetadata')
 elem.setAttribute('xsi:type', 'metadata:FilesystemMetadataProvider')
 elem.setAttribute('metadataFile', sp_filename)
 mp_found = False
+
 for rootnode in dom.childNodes:
-    if rootnode.nodeName == "rp:RelyingPartyGroup":
-        for rpnodes in rootnode.childNodes:
-            if rpnodes.nodeName == "metadata:MetadataProvider": # the chaining provider
-                rpnodes.appendChild(elem)
-                mp_found = True
+    if rootnode.nodeName == "MetadataProvider":
+        print("rootnode name is %s " % (rootnode))
+        rootnode.appendChild(elem)
+        mp_found = True				
+				
 if not mp_found:
+	print("Error: Expected chaining metadata provider not found in XML!")
     sys.stderr.write("Expected chaining metadata provider not found in XML!")
     sys.exit(1)
 
@@ -86,7 +89,7 @@ f.close()
 #    sys.exit(1)
 
 print("Restarting tomcat service")
-service oi-tomcat restart
+#service oi-tomcat restart
 
 # Success
 print("All done.")
