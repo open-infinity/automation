@@ -90,7 +90,7 @@ f.close()
 #    sys.exit(1)
 
 print("Restarting tomcat service")
-#service oi-tomcat restart
+os.system("service oi-tomcat restart") 
 
 # Success
 print("All done.")
