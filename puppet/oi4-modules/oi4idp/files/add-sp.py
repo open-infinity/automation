@@ -61,7 +61,7 @@ print("Modifying file %s" % (relying_party_out_filename))
 dom = parse(relying_party_in_filename)
 elem = dom.createElement('MetadataProvider')
 elem.setAttribute('id', options.sp_id) # 'SPMetadata')
-elem.setAttribute('xsi:type', 'metadata:FilesystemMetadataProvider')
+elem.setAttribute('xsi:type', 'FilesystemMetadataProvider')
 elem.setAttribute('metadataFile', sp_filename)
 mp_found = False
 
