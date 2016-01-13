@@ -64,17 +64,23 @@ elem.setAttribute('id', options.sp_id) # 'SPMetadata')
 elem.setAttribute('xsi:type', 'FilesystemMetadataProvider')
 elem.setAttribute('metadataFile', sp_filename)
 mp_found = False
+duplicate_mp_found = False
 
 for rootnode in dom.childNodes:
-   print("root node name is %s " % (rootnode.nodeName))
-   if rootnode.nodeName == "MetadataProvider":
-        rootnode.appendChild(elem)
-        mp_found = True
+	if rootnode.nodeName == "MetadataProvider":
+		if rootnode.id == options.sp_id:
+			duplicate_mp_found = True
+if not duplicate_mp_found:		
+	for rootnode in dom.childNodes:
+		 print("root node name is %s " % (rootnode.nodeName))
+		 if rootnode.nodeName == "MetadataProvider":
+					rootnode.appendChild(elem)
+					mp_found = True
 
-if not mp_found:
-    print("Error: Expected chaining metadata provider not found in XML!")
-    sys.stderr.write("Expected chaining metadata provider not found in XML!")
-    sys.exit(1)
+	if not mp_found:
+			print("Error: Expected chaining metadata provider not found in XML!")
+			sys.stderr.write("Expected chaining metadata provider not found in XML!")
+			sys.exit(1)
 
 f = file(relying_party_out_filename, "w")
 f.write(dom.toxml())
