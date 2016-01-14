@@ -67,9 +67,8 @@ mp_found = False
 duplicate_mp_found = False
 
 for rootnode in dom.childNodes:
-	print("at rootnode")
   if rootnode.nodeName == "MetadataProvider":
-		for childnode in rootnode.childNodes:
+    for childnode in rootnode.childNodes:
       if childnode.nodeName == "MetadataProvider":
         if childnode.getAttribute("id") == options.sp_id:
           print("duplicate found attribute id was %s " % (options.sp_id))
@@ -84,9 +83,9 @@ if not duplicate_mp_found:
       mp_found = True
 
     if not mp_found:
-			print("Error: Expected chaining metadata provider not found in XML!")
-			sys.stderr.write("Expected chaining metadata provider not found in XML!")
-			sys.exit(1)
+      print("Error: Expected chaining metadata provider not found in XML!")
+      sys.stderr.write("Expected chaining metadata provider not found in XML!")
+      sys.exit(1)
 
 f = file(relying_party_out_filename, "w")
 f.write(dom.toxml())
