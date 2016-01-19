@@ -36,10 +36,10 @@ class oi4mongod (
 				mongod_port => $mongod_replicaset_name, 
 				require => Class["oi4mongod::config"]
 			}-> class {'oi4mongod::shards':
-				mongod_replicaset_name = $mongod_replicaset_name,
-				mongod_replicaset_node = $mongod_replicaset_node, 
-				mongo_mongos_node = $mongo_mongos_node,
-				mongod_port = $mongod_port
+				mongod_replicaset_name => $mongod_replicaset_name,
+				mongod_replicaset_node => $mongod_replicaset_node, 
+				mongo_mongos_node => $mongo_mongos_node,
+				mongod_port => $mongod_port
 			} ->class{'oi4mongod::service':}
         }
     }
