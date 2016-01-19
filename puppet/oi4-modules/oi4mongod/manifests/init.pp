@@ -91,7 +91,6 @@ class oi4mongod::config (
         owner => "mongod",
         group => "mongod",
         content => template("oi4mongod/mongod.conf.erb"),
-        require => Class["oi4mongod::install"],
     }
     
     file { '/etc/init.d/mongod':
@@ -101,7 +100,6 @@ class oi4mongod::config (
         group => "root",
         mode => 0755,
         source => "puppet:///modules/oi4mongod/mongod",
-        require => Class["oi4mongod::install"],
     }
 
     file { '/etc/sysconfig/mongod':
@@ -110,7 +108,6 @@ class oi4mongod::config (
         owner => "mongod",
         group => "mongod",
         source => "puppet:///modules/oi4mongod/sysconfig-mongod",
-        require => Class["oi4mongod::install"],
     }
 
 }
