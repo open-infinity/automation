@@ -63,9 +63,13 @@ class oi4mongod::config (
 	#
 
     # Directories to be created
-    $mongo_directories = [
-        "/opt/openinfinity/data/mongod",
-    ]
+	if  $mongo_directories == undef
+	{
+		$mongo_directories = [
+			"/opt/openinfinity/data/mongod",
+		]
+	}
+	
 	user { "mongod":
             ensure => present,
             comment => "Open Infinity user",
