@@ -82,7 +82,6 @@ class oi4mongod::config (
         owner => 'mongod',
         group => 'mongod',
         mode => 0755,
-        require => Class["oi4mongod::install"],
     }
 
     file { '/etc/mongod.conf':
