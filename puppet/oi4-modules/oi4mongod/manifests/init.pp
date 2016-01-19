@@ -9,7 +9,7 @@ class oi4mongod (
 	$mongo_storage_smallFiles = undef,
 	$mongo_security_authorization = undef,
 	$mongod_replicaset_name = undef,
-	$mongod_replicaset_oplogSizeMB =u ndef,
+	$mongod_replicaset_oplogSizeMB =undef,
 	$mongod_replicaset_node = undef,
 	$mongo_mongos_node = undef
 ) 
