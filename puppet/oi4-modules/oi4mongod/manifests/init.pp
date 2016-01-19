@@ -13,9 +13,7 @@ class oi4mongod (
 	$mongod_replicaset_node = undef,
 	$mongo_mongos_node = undef
 ) 
-{
-	include oi4mongod::service;
-	
+{	
 	class {'oi4basic':}-> 
 	class {'oi4mongod::config':
 	}
