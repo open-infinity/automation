@@ -1,8 +1,8 @@
 class profiles::nosql {
     $mongo_cluster_type=hiera('toas::mongod::mongo_cluster_type')
-	$mongod_port=hiera('toas::mongod::mongod_port')
-	$mongo_storage_smallFiles=hiera('toas::mongod::mongo_storage_smallFiles')
-	$mongo_security_authorization=hiera('toas::mongod::mongo_security_authorization')
+	$_mongod_port=hiera('toas::mongod::mongod_port')
+	$_mongo_storage_smallFiles=hiera('toas::mongod::mongo_storage_smallFiles')
+	$_mongo_security_authorization=hiera('toas::mongod::mongo_security_authorization')
 	$mongod_replicaset_name=hiera('toas::mongod::mongod_replicaset_name')
 	$mongod_replicaset_oplogSizeMB=hiera('toas::mongod::mongod_replicaset_oplogSizeMB')
 	$mongod_replicaset_node=hiera('toas::mongod::mongod_replicaset_node')
@@ -17,34 +17,43 @@ class profiles::nosql {
 	}
 		
 	# mongod_port
-	if ($mongod_port == undef) { 
+	if ($_mongod_port == undef) { 
 		if ($mongo_cluster_type == 'sharded') {
 			$mongod_port = '27018'
 		} else {
 			$mongod_port = '27017'
 		}
 		notice("Using mongod_port=$mongod_port") 
-	} 
+	}  else {
+		$mongod_port = $_mongod_port
+	}
 	
 	if ($mongod_port !~ /^[0-9]+$/) { 
 		fail("Invalid mongod_port value '$mongod_port'") 
 	}
 
 	# mongo_storage_smallFiles
-	if ($mongo_storage_smallFiles == undef) { 
+	if (_$mongo_storage_smallFiles == undef) { 
 		$mongo_storage_smallFiles = 'false'
 		notice("Using mongo_storage_smallFiles=$mongo_storage_smallFiles") 
-	} 
+	} else
+	{
+		$mongo_storage_smallFiles = $_mongo_storage_smallFiles
+	}
 	
 	if ($mongo_storage_smallFiles !~ /^(true|false)$/) { 
 		fail("Invalid mongo_storage_smallFiles value '$mongo_storage_smallFiles'") 
 	}
 			
 	# mongo_security_authorization
-	if ($mongo_security_authorization == undef) { 
+	if ($_mongo_security_authorization == undef) { 
 		$mongo_security_authorization = 'disabled'
 		notice("Using mongo_security_authorization=$mongo_security_authorization") 
+	} else 
+	{
+		$mongo_security_authorization = $_mongo_security_authorization
 	}
+	
 	if ($mongo_security_authorization !~ /^(enabled|disabled)$/) { 
 		fail("Invalid mongo_security_authorization value '$mongo_security_authorization'") 
 	}
