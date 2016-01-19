@@ -24,9 +24,8 @@ class profiles::nosql {
 			$mongod_port = '27017'
 		}
 		notice("Using mongod_port=$mongod_port") 
-	} else {
-		$mongod_port = $mongod_port
-	}
+	} 
+	
 	if ($mongod_port !~ /^[0-9]+$/) { 
 		fail("Invalid mongod_port value '$mongod_port'") 
 	}
@@ -35,9 +34,8 @@ class profiles::nosql {
 	if ($mongo_storage_smallFiles == undef) { 
 		$mongo_storage_smallFiles = 'false'
 		notice("Using mongo_storage_smallFiles=$mongo_storage_smallFiles") 
-	} else {
-		$mongo_storage_smallFiles = $mongo_storage_smallFiles
-	}
+	} 
+	
 	if ($mongo_storage_smallFiles !~ /^(true|false)$/) { 
 		fail("Invalid mongo_storage_smallFiles value '$mongo_storage_smallFiles'") 
 	}
@@ -46,8 +44,6 @@ class profiles::nosql {
 	if ($mongo_security_authorization == undef) { 
 		$mongo_security_authorization = 'disabled'
 		notice("Using mongo_security_authorization=$mongo_security_authorization") 
-	} else {
-		$mongo_security_authorization = $mongo_security_authorization
 	}
 	if ($mongo_security_authorization !~ /^(enabled|disabled)$/) { 
 		fail("Invalid mongo_security_authorization value '$mongo_security_authorization'") 
@@ -58,9 +54,8 @@ class profiles::nosql {
 		if ($mongod_replicaset_oplogSizeMB == undef) { 
 			$mongod_replicaset_oplogSizeMB = 'default'
 			notice("Using mongod_replicaset_oplogSizeMB=$mongod_replicaset_oplogSizeMB") 
-		} else {
-			$mongod_replicaset_oplogSizeMB = $mongod_replicaset_oplogSizeMB
 		}
+		
 		if ($mongod_replicaset_oplogSizeMB !~ /^([0-9]+|default)$/) { 
 			fail("Invalid mongo_cluster_type value '$mongo_cluster_type'") 
 		}
