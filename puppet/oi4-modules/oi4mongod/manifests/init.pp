@@ -86,7 +86,6 @@ class oi4mongod::config (
 
     file { '/etc/mongod.conf':
         ensure => present,
-        notify => Service["mongod"],
         owner => "mongod",
         group => "mongod",
         content => template("oi4mongod/mongod.conf.erb"),
@@ -94,7 +93,6 @@ class oi4mongod::config (
     
     file { '/etc/init.d/mongod':
         ensure => present,
-        notify => Service["mongod"],
         owner => "root",
         group => "root",
         mode => 0755,
@@ -103,7 +101,6 @@ class oi4mongod::config (
 
     file { '/etc/sysconfig/mongod':
         ensure => present,
-        notify => Service["mongod"],
         owner => "mongod",
         group => "mongod",
         source => "puppet:///modules/oi4mongod/sysconfig-mongod",
