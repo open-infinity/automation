@@ -16,7 +16,6 @@ class oi4mongod (
 {
 	class {'oi4basic':}-> 
 	class {'oi4mongod::config':
-		mongo_directories => $mongo_directories
 	}
 	
 		
@@ -49,7 +48,6 @@ class oi4mongod (
 
 
 class oi4mongod::config (
-	$mongo_directories = undef, 
 	$mongo_storage_smallFiles = undef, 
 	$mongo_security_authorization = undef, 
 	$mongod_port = undef,
@@ -63,13 +61,10 @@ class oi4mongod::config (
 	#
 
     # Directories to be created
-	if  $mongo_directories == undef
-	{
-		$mongo_directories = [
-			"/opt/openinfinity/data/mongod",
-		]
-	}
 	
+    $mongo_directories = [
+        "/opt/openinfinity/data/mongod",
+    ]
 	user { "mongod":
             ensure => present,
             comment => "Open Infinity user",
