@@ -33,7 +33,7 @@ class profiles::nosql {
 	}
 
 	# mongo_storage_smallFiles
-	if (_$mongo_storage_smallFiles == undef) { 
+	if ($_mongo_storage_smallFiles == undef) { 
 		$mongo_storage_smallFiles = 'false'
 		notice("Using mongo_storage_smallFiles=$mongo_storage_smallFiles") 
 	} else
