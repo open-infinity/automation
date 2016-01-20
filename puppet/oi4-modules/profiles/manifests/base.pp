@@ -39,7 +39,15 @@ class profiles::base {
     mode    => 644,
     require => [User["oiuser"], File["$oi_home"]],
   }
-
+  
+  file {"$oi_home/service":
+    ensure  => directory,
+    owner   => 'oiuser',
+    group   => 'oiuser',
+    mode    => 644,
+    require => [User["oiuser"], File["$oi_home"]],
+  }
+  
   file {"$oi_home/conf":
     ensure  => directory,
     owner   => 'oiuser',
@@ -47,6 +55,7 @@ class profiles::base {
     mode    => 644,
     require => [User["oiuser"], File["$oi_home"]],
   }
+
 
   file {"$oi_home/lib":
     ensure  => directory,

@@ -7,9 +7,6 @@
 
 class oi4mongocommon {
 
-	#require oi4-basic
-	include oi4basic
-	#include profiles::oi4-basic
     package { ['mongodb-org-server']:
         ensure => present,
     }
@@ -24,21 +21,11 @@ class oi4mongocommon {
     
     # Directories to be created
     $mongo_directories = [
-#        "/opt/openinfinity",
-#        "/opt/openinfinity/log",
         "/opt/openinfinity/log/mongodb",
-#        "/opt/openinfinity/data",
-#        "/opt/openinfinity/service",
         "/opt/openinfinity/service/mongodb",
         "/opt/openinfinity/service/mongodb/scripts",
     ] 
-	/*file {"/opt/openinfinity/service":
-            ensure => directory,
-            owner => 'oiuser',
-            group => 'oiuser',
-            mode => 644,
-            require => [User["oiuser"], File["/opt/openinfinity"]],
-    } ->*/
+
     file { $mongo_directories:
         ensure => "directory",
         owner => 'mongod',

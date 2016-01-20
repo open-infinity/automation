@@ -31,12 +31,12 @@ done
 echo "" > $VARFILE
 while : 
 do
-    mongo --quiet localhost:<%=_mongod_port%> >$VARFILE << EOF
+    mongo --quiet localhost:<%=mongod_port%> >$VARFILE << EOF
     db.serverStatus().host
 EOF
     LOCAL_MONGOD=`cat $VARFILE`
     if [ "$LOCAL_MONGOD" != "" ] ; then
-        LOCAL_MONGOD=`echo "$LOCAL_MONGOD" | sed "s/\..*//" | sed "s/:.*//"`$DOMAIN:<%=_mongod_port%>
+        LOCAL_MONGOD=`echo "$LOCAL_MONGOD" | sed "s/\..*//" | sed "s/:.*//"`$DOMAIN:<%=mongod_port%>
         break
     fi
     
