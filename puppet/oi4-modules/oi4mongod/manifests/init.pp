@@ -162,9 +162,7 @@ class oi4mongod::shards (
         group => "mongod",
         mode => 0755,
         content => template("oi4mongod/shard-join.sh.erb"),
-        require => Exec['rset-join'],
-    }
-
+    }->
     # Execute the shard join script.
     exec { 'shard-join':
         command => "/opt/openinfinity/service/mongodb/scripts/shard-join.sh",
@@ -172,10 +170,7 @@ class oi4mongod::shards (
         try_sleep => 60,
         user => "mongod",
         logoutput => true,
-        require => [
-            File['/opt/openinfinity/service/mongodb/scripts/shard-join.sh'], 
-            Exec['rset-join']
-        ],
+
     }
 }
 
