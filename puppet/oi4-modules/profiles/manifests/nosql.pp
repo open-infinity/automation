@@ -8,6 +8,9 @@ class profiles::nosql {
 	$mongod_replicaset_node=hiera('toas::mongod::mongod_replicaset_node')
 	$mongo_mongos_node=hiera('toas::mongod::mongo_mongos_node')
 	
+	$mongo_security_authorization = hiera('toas::mongocfg::security_authorization')
+	$mongocfg_port = hiera ('toas::mongocfg::port')
+	
 	# mongo_cluster_type
 	if ($mongo_cluster_type == undef) { 
 		fail("Parameter mongo_cluster_type undefined") 
@@ -93,12 +96,6 @@ class profiles::nosql {
 		}
 	}
   class {'oi4mongocommon':
-  }->class {'oi4mongocfg::config':
-	mongo_storage_smallFiles => $mongo_storage_smallFiles, 
-	mongo_security_authorization => $mongo_security_authorization , 
-	mongocfg_port => $mongocfg_port, 
-	mongo_cluster_type => $mongo_cluster_type
-  }-> class {'oi4mongocfg::service':
   }-> class {'oi4mongod': 
 	mongo_cluster_type => $mongo_cluster_type,
 	mongod_port => $mongod_port,
