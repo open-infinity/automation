@@ -28,12 +28,12 @@ class oi4mongod (
 			-> class {'oi4mongod::replicaset':
 				mongod_replicaset_node => $mongod_replicaset_node,
 				mongod_replicaset_name => $mongod_replicaset_name,
-				mongod_port => $mongod_replicaset_name, 
+				mongod_port => $mongod_port, 
 				require => Class["oi4mongod::config"]
 			}
         }
         sharded: { 
-			class{'oi4mongod::service':} 
+			class{'oi4mongod::service':}
 			-> class {'oi4mongod::replicaset':
 				mongod_replicaset_node => $mongod_replicaset_node,
 				mongod_replicaset_name => $mongod_replicaset_name,
