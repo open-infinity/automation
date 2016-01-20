@@ -1,14 +1,14 @@
 class profiles::nosql {
+	$mongod_replicaset_name=hiera('toas::mongod::mongod_replicaset_name')
+	$mongod_replicaset_node=hiera('toas::mongod::mongod_replicaset_node')
+	$mongod_replicaset_oplogSizeMB=hiera('toas::mongod::mongod_replicaset_oplogSizeMB')
+
+
     $mongo_cluster_type=hiera('toas::mongod::mongo_cluster_type')
 	$_mongod_port=hiera('toas::mongod::mongod_port')
 	$_mongo_storage_smallFiles=hiera('toas::mongod::mongo_storage_smallFiles')
 	$_mongo_security_authorization=hiera('toas::mongod::mongo_security_authorization')
-
-	$mongod_replicaset_name=hiera('toas::mongod::mongod_replicaset_name')
-	$mongod_replicaset_node=hiera('toas::mongod::mongod_replicaset_node')
-	$mongod_replicaset_oplogSizeMB=hiera('toas::mongod::mongod_replicaset_oplogSizeMB')
 	$mongo_mongos_node=hiera('toas::mongod::mongo_mongos_node')
-	
 	
 	# mongo_cluster_type
 	if ($mongo_cluster_type == undef) { 
