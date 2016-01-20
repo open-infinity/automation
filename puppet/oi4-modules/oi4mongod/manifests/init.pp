@@ -14,7 +14,6 @@ class oi4mongod (
 	$mongo_mongos_node = undef
 ) 
 {	
-	class {'oi4basic':}-> 
 	class {'oi4mongod::config':
 	}
     case $mongo_cluster_type {
