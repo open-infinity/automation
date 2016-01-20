@@ -8,8 +8,6 @@ class profiles::nosql {
 	$mongod_replicaset_node=hiera('toas::mongod::mongod_replicaset_node')
 	$mongo_mongos_node=hiera('toas::mongod::mongo_mongos_node')
 	
-	$mongo_security_authorization = hiera('toas::mongocfg::security_authorization')
-	$mongocfg_port = hiera ('toas::mongocfg::port')
 	
 	# mongo_cluster_type
 	if ($mongo_cluster_type == undef) { 
