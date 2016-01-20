@@ -5,9 +5,9 @@ class profiles::nosql {
 
 
     $mongo_cluster_type=hiera('toas::mongod::mongo_cluster_type')
-	$_mongod_port=hiera('toas::mongod::mongod_port')
-	$_mongo_storage_smallFiles=hiera('toas::mongod::mongo_storage_smallFiles')
-	$_mongo_security_authorization=hiera('toas::mongod::mongo_security_authorization')
+	$_mongod_port=hiera('toas::mongod::mongod_port', undef)
+	$_mongo_storage_smallFiles=hiera('toas::mongod::mongo_storage_smallFiles', undef)
+	$_mongo_security_authorization=hiera('toas::mongod::mongo_security_authorization', undef)
 	$mongo_mongos_node=hiera('toas::mongod::mongo_mongos_node')
 	
 	# mongo_cluster_type
