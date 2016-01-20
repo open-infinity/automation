@@ -15,6 +15,12 @@ class oi4mongod (
 ) 
 {	
 	class {'oi4mongod::config':
+		mongo_storage_smallFiles => $mongo_storage_smallFiles, 
+		mongo_security_authorization => $mongo_security_authorization, 
+		mongod_port => $mongod_port,
+		mongod_replicaset_name => $mongod_replicaset_name,
+		mongod_replicaset_oplogSizeMB => $mongod_replicaset_oplogSizeMB,
+		mongo_cluster_type => $mongo_cluster_type
 	}
     case $mongo_cluster_type {
         replicaset: {
@@ -55,6 +61,7 @@ class oi4mongod::config (
 	$mongo_cluster_type = undef
 )
 {
+
 	#
 	# Typical puppet stuff
 	#
