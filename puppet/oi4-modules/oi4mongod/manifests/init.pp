@@ -17,16 +17,18 @@ class oi4mongod (
 	class {'oi4mongod::config':
 	}
     case $mongo_cluster_type {
-        replicaset: { 
-            class {'oi4mongod::replicaset':
+        replicaset: {
+			class{'oi4mongod::service':} 
+			-> class {'oi4mongod::replicaset':
 				mongod_replicaset_node => $mongod_replicaset_node,
 				mongod_replicaset_name => $mongod_replicaset_name,
 				mongod_port => $mongod_replicaset_name, 
 				require => Class["oi4mongod::config"]
-			}->class{'oi4mongod::service':} 
+			}
         }
         sharded: { 
-            class {'oi4mongod::replicaset':
+			class{'oi4mongod::service':} 
+			-> class {'oi4mongod::replicaset':
 				mongod_replicaset_node => $mongod_replicaset_node,
 				mongod_replicaset_name => $mongod_replicaset_name,
 				mongod_port => $mongod_replicaset_name, 
@@ -36,7 +38,7 @@ class oi4mongod (
 				mongod_replicaset_node => $mongod_replicaset_node, 
 				mongo_mongos_node => $mongo_mongos_node,
 				mongod_port => $mongod_port
-			} ->class{'oi4mongod::service':}
+			}  
         }
     }
 	
