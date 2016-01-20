@@ -92,8 +92,14 @@ class profiles::nosql {
 			fail("Invalid mongo_mongos_node value '$mongo_mongos_node'") 
 		}
 	}
-
-  class {'oi4mongod': 
+  class {'oi4mongocommon':
+  }->class {'oi4mongocfg::config':
+	mongo_storage_smallFiles => $mongo_storage_smallFiles, 
+	mongo_security_authorization = $mongo_security_authorization , 
+	mongocfg_port = $mongocfg_port, 
+	mongo_cluster_type = $mongo_cluster_type
+  }-> class {'oi4mongocfg::service':
+  }-> class {'oi4mongod': 
 	mongo_cluster_type => $mongo_cluster_type,
 	mongod_port => $mongod_port,
 	mongo_storage_smallFiles => $mongo_storage_smallFiles, 
@@ -102,5 +108,5 @@ class profiles::nosql {
 	mongod_replicaset_oplogSizeMB => $mongod_replicaset_oplogSizeMB, 
 	mongod_replicaset_node => $mongod_replicaset_node, 
 	mongo_mongos_node => $mongo_mongos_node
-  }
+  } 
 }
