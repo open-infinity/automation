@@ -144,16 +144,12 @@ class oi4mongod::replicaset (
         mode => 0755,
         content => template("oi4mongod/rset-join.sh.erb"),
         require => Service['mongod'],
-    }
-    
-    # Execute the replica set join script.
-    exec { 'rset-join':
+    }-> exec { 'rset-join':
         command => "/opt/openinfinity/service/mongodb/scripts/rset-join.sh",
         #tries => 2,
         #try_sleep => 60,
         logoutput => true,
         user => "mongod",
-        require => File['/opt/openinfinity/service/mongodb/scripts/rset-join.sh'],
     }
 }
 
