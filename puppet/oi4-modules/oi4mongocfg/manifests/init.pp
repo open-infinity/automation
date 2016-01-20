@@ -31,7 +31,6 @@ class oi4mongocfg::config
 
     file { '/etc/mongocfg.conf':
         ensure => present,
-        notify => Service["mongocfg"],
         owner => "mongod",
         group => "mongod",
         content => template("oi4mongocfg/mongocfg.conf.erb"),
@@ -39,7 +38,6 @@ class oi4mongocfg::config
     
     file { '/etc/init.d/mongocfg':
         ensure => present,
-        notify => Service["mongocfg"],
         owner => "root",
         group => "root",
         mode => 0755,
