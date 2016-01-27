@@ -19,7 +19,9 @@ class oi4httpd_sp::install inherits oi4variables {
 }
 
 class oi4httpd_sp::config inherits oi4variables {
-    # Service Provider (Shibboleth)
+  $httpd_domain_name=hiera('toas::sp::httpd_domain_name')
+  
+  # Service Provider (Shibboleth)
 	file {"/etc/shibboleth":
         ensure => directory,
         owner => 'apache',
@@ -54,7 +56,7 @@ class oi4httpd_sp::config inherits oi4variables {
         notify => Service["$apacheServiceName"],
         require => Package[$apachePackageName],
     }
-
+		
 		file {"/etc/sysconfig/shibd":
 				content => template("oi4httpd_sp/sp/shib.conf.erb"),
         replace => true,
@@ -65,10 +67,7 @@ class oi4httpd_sp::config inherits oi4variables {
 		
 	$shibboleth_idp_entityid_url=hiera('toas::sp::shibboleth_entity_url')
     $shibboleth_sp_entityid_url=hiera('toas::sp::shibboleth_sp_entityid_url')
-    $shibboleth_idp_hostname=hiera('toas::sp::shibboleth_idp_hostname')
-    
-    #$sp_root_rsa_key_public=hiera('toas::sp::sp_root_rsa_key_public')
-    #$httpd_domain_name=hiera('toas::sp::httpd_domain_name')
+    $shibboleth_idp_hostname=hiera('toas::sp::shibboleth_idp_hostname')  
     $shibboleth_sp_id=hiera('toas::sp::shibboleth_sp_id')
     $shibboleth_sp_metadata_url=hiera('toas::sp::shibboleth_sp_metadata_url')
 		
