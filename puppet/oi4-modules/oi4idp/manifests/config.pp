@@ -188,10 +188,10 @@ $platform_name = "${tomcat::params::platform_name}"
 
 
     file {"/opt/openinfinity/common/shibboleth-idp/":
-	ensure => directory,
-	owner  => "root",
-	group  => "root",
-	mode   => 755,  
+	    ensure => directory,
+	    owner  => "root",
+	    group  => "root",
+	    mode   => 755,  
     } ->    
     file {"/opt/openinfinity/common/shibboleth-idp/add-sp.py":
         ensure => present,
@@ -200,7 +200,7 @@ $platform_name = "${tomcat::params::platform_name}"
         mode => 0777,
         source => "puppet:///modules/oi4idp/add-sp.py"
     }
-		
+
     file {"/opt/shibboleth-idp/conf/metadata-providers.xml":
         ensure => present,
         owner => 'oiuser',
@@ -208,7 +208,24 @@ $platform_name = "${tomcat::params::platform_name}"
         mode => 0640,
         source => "puppet:///modules/oi4idp/metadata_providers.xml",
     }
-	
+
+    file { "/opt/shibboleth-idp/conf/attribute-resolver.xml":
+        source => "puppet:///modules/oi4idp/attribute-resolver.xml",
+        ensure => present,
+        replace => true,
+        owner => "oiuser",
+        group => "root",
+        mode => 0644,
+    } ->
+		file { "/opt/shibboleth-idp/conf/attribute-filter.xml":
+        source => "puppet:///modules/oi4idp/attribute-filter.xml",
+        ensure => present,
+        replace => true,
+        owner => "oiuser",
+        group => "root",
+        mode => 0644,
+    }
+		
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
 	#ile { "${platfom_home}/tomcat/endorsed":
         #       ensure => 'directory',
