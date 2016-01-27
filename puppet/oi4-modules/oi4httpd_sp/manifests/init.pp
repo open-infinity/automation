@@ -57,7 +57,7 @@ class oi4httpd_sp::config inherits oi4variables {
         require => Package[$apachePackageName],
     }
 		
-		file {"/etc/sysconfig/shibd":
+		file {"/etc/httpd/conf.d/shibd":
 				content => template("oi4httpd_sp/sp/shib.conf.erb"),
         replace => true,
         owner => 'root',
