@@ -15,28 +15,36 @@ class oi4mongod (
 ) 
 {	
 	class {'oi4mongod::config':
+		mongo_storage_smallFiles => $mongo_storage_smallFiles, 
+		mongo_security_authorization => $mongo_security_authorization, 
+		mongod_port => $mongod_port,
+		mongod_replicaset_name => $mongod_replicaset_name,
+		mongod_replicaset_oplogSizeMB => $mongod_replicaset_oplogSizeMB,
+		mongo_cluster_type => $mongo_cluster_type
 	}
     case $mongo_cluster_type {
-        replicaset: { 
-            class {'oi4mongod::replicaset':
+        replicaset: {
+			class{'oi4mongod::service':} 
+			-> class {'oi4mongod::replicaset':
 				mongod_replicaset_node => $mongod_replicaset_node,
 				mongod_replicaset_name => $mongod_replicaset_name,
-				mongod_port => $mongod_replicaset_name, 
+				mongod_port => $mongod_port, 
 				require => Class["oi4mongod::config"]
-			}->class{'oi4mongod::service':} 
+			}
         }
         sharded: { 
-            class {'oi4mongod::replicaset':
+			class{'oi4mongod::service':}
+			-> class {'oi4mongod::replicaset':
 				mongod_replicaset_node => $mongod_replicaset_node,
 				mongod_replicaset_name => $mongod_replicaset_name,
-				mongod_port => $mongod_replicaset_name, 
+				mongod_port => $mongod_port, 
 				require => Class["oi4mongod::config"]
 			}-> class {'oi4mongod::shards':
 				mongod_replicaset_name => $mongod_replicaset_name,
 				mongod_replicaset_node => $mongod_replicaset_node, 
 				mongo_mongos_node => $mongo_mongos_node,
 				mongod_port => $mongod_port
-			} ->class{'oi4mongod::service':}
+			}  
         }
     }
 	
@@ -53,6 +61,7 @@ class oi4mongod::config (
 	$mongo_cluster_type = undef
 )
 {
+
 	#
 	# Typical puppet stuff
 	#
@@ -135,16 +144,12 @@ class oi4mongod::replicaset (
         mode => 0755,
         content => template("oi4mongod/rset-join.sh.erb"),
         require => Service['mongod'],
-    }
-    
-    # Execute the replica set join script.
-    exec { 'rset-join':
+    }-> exec { 'rset-join':
         command => "/opt/openinfinity/service/mongodb/scripts/rset-join.sh",
         #tries => 2,
         #try_sleep => 60,
         logoutput => true,
         user => "mongod",
-        require => File['/opt/openinfinity/service/mongodb/scripts/rset-join.sh'],
     }
 }
 
@@ -162,9 +167,7 @@ class oi4mongod::shards (
         group => "mongod",
         mode => 0755,
         content => template("oi4mongod/shard-join.sh.erb"),
-        require => Exec['rset-join'],
-    }
-
+    }->
     # Execute the shard join script.
     exec { 'shard-join':
         command => "/opt/openinfinity/service/mongodb/scripts/shard-join.sh",
@@ -172,10 +175,7 @@ class oi4mongod::shards (
         try_sleep => 60,
         user => "mongod",
         logoutput => true,
-        require => [
-            File['/opt/openinfinity/service/mongodb/scripts/shard-join.sh'], 
-            Exec['rset-join']
-        ],
+
     }
 }
 
