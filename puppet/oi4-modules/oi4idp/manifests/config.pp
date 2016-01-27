@@ -208,7 +208,6 @@ $platform_name = "${tomcat::params::platform_name}"
         mode => 0640,
         source => "puppet:///modules/oi4idp/metadata_providers.xml",
     }
-
     file { "/opt/shibboleth-idp/conf/attribute-resolver.xml":
         source => "puppet:///modules/oi4idp/attribute-resolver.xml",
         ensure => present,
