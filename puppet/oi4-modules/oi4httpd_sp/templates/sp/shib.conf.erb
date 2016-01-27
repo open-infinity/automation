@@ -12,7 +12,8 @@
 #
 LoadModule mod_shib /usr/lib64/shibboleth/mod_shib_22.so
 
-ServerName mediitsp.toas.eu.tieto.com
+ServerName <%= httpd_domain_name %>
+#ServerName mediitsp.toas.eu.tieto.com
 
 #
 # Ensures handler will be accessible.

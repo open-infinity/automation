@@ -13,7 +13,7 @@ class oi4httpd_sp  {
 
 class oi4httpd_sp::install inherits oi4variables {
     package { "shibboleth":
-        ensure => installed,
+        ensure => '2.5.5-3.1.el6',
         require => Package["$apachePackageName"],
     }
 }
@@ -55,6 +55,14 @@ class oi4httpd_sp::config inherits oi4variables {
         require => Package[$apachePackageName],
     }
 
+		file {"/etc/sysconfig/shibd":
+        source => "puppet:///modules/oi4httpd_sp/shibd.conf",
+        replace => true,
+        owner => 'root',
+        group => 'root',
+        mode => 644,
+    }
+		
 	$shibboleth_idp_entityid_url=hiera('toas::sp::shibboleth_entity_url')
     $shibboleth_sp_entityid_url=hiera('toas::sp::shibboleth_sp_entityid_url')
     $shibboleth_idp_hostname=hiera('toas::sp::shibboleth_idp_hostname')

@@ -200,6 +200,14 @@ $platform_name = "${tomcat::params::platform_name}"
         mode => 0777,
         source => "puppet:///modules/oi4idp/add-sp.py"
     }
+		
+    file {"/opt/shibboleth-idp/conf/metadata-providers.xml":
+        ensure => present,
+        owner => 'oiuser',
+        group => 'root',
+        mode => 0640,
+        source => "puppet:///modules/oi4idp/metadata_providers.xml",
+    }
 	
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
 	#ile { "${platfom_home}/tomcat/endorsed":

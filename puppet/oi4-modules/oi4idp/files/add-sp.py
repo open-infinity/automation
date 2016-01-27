@@ -82,10 +82,10 @@ if not duplicate_mp_found:
       rootnode.appendChild(elem)
       mp_found = True
 
-    if not mp_found:
-      print("Error: Expected chaining metadata provider not found in XML!")
-      sys.stderr.write("Expected chaining metadata provider not found in XML!")
-      sys.exit(1)
+  if not mp_found:
+    print("Error: Expected chaining metadata provider not found in XML!")
+    sys.stderr.write("Expected chaining metadata provider not found in XML!")
+    sys.exit(1)
 
 f = file(relying_party_out_filename, "w")
 f.write(dom.toxml())
