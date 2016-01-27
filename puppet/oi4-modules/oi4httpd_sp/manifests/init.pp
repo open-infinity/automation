@@ -57,7 +57,7 @@ class oi4httpd_sp::config inherits oi4variables {
 
 		file {"/etc/sysconfig/shibd":
         #source => "puppet:///modules/oi4httpd_sp/shibd.conf",
-				content => template("oi4httpd_sp/shibd.conf.erb"),
+				content => template("oi4httpd_sp/sp/shibd.conf.erb"),
         replace => true,
         owner => 'root',
         group => 'root',
