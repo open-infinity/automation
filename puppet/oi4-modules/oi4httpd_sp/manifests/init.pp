@@ -128,7 +128,7 @@ class oi4httpd_sp::config inherits oi4variables {
     }
 
 	$sp_root_rsa_key_public=hiera('toas::sp::sp_root_rsa_key_public')
-	$httpd_domain_name=hiera('toas::sp::httpd_domain_name')
+	#$httpd_domain_name=hiera('toas::sp::httpd_domain_name')
 	$sp_root_rsa_key_private=hiera('toas::sp::sp_root_rsa_key_private')
 	#$sp_root_rsa_key_private = PSON.parse(hiera('toas::sp::sp_root_rsa_key_private'))
 	
