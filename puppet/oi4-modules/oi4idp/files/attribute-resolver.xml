@@ -108,29 +108,39 @@ urn:mace:shibboleth:2.0:security classpath:/schema/shibboleth-2.0-security.xsd">
 <resolver:AttributeEncoder xsi:type="enc:SAML1StringNameIdentifier" nameFormat="urn:mace:shibboleth:1.0:nameIdentifier"/>
 <resolver:AttributeEncoder xsi:type="enc:SAML2StringNameID" nameFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:transient"/>
 </resolver:AttributeDefinition>
+
 <resolver:DataConnector id="myLDAP" xsi:type="dc:LDAPDirectory"
-        ldapURL="ldap://localhost:10389"
-        baseDN="ou=toas,dc=example,dc=com">
+        ldapURL="%{idp.attribute.resolver.LDAP.ldapURL}"
+        baseDN="%{idp.attribute.resolver.LDAP.baseDN}"
+        principal="%{idp.attribute.resolver.LDAP.bindDN}"
+        principalCredential="%{idp.attribute.resolver.LDAP.bindDNCredential}"
+        useStartTLS="%{idp.attribute.resolver.LDAP.useStartTLS:false}">
         <dc:FilterTemplate>
-                <![CDATA[(uid=$requestContext.principalName)]]>
+        <![CDATA[
+                %{idp.attribute.resolver.LDAP.searchFilter}
+         ]]>
         </dc:FilterTemplate>
+        <!--<dc:StartTLSTrustCredential id="LDAPtoIdPCredential" xsi:type="sec:X509ResourceBacked">
+        <sec:Certificate>%{idp.attribute.resolver.LDAP.trustCertificates}</sec:Certificate>
+        </dc:StartTLSTrustCredential>-->
         <dc:ReturnAttributes>uid mail sn givenName employeeNumber o ou title preferredLanguage l street telephoneNumber accountStatus</dc:ReturnAttributes>
-                                                                                                                </resolver:DataConnector>
+        </resolver:DataConnector>
 
 <resolver:DataConnector id="myLDAPForGroups" xsi:type="dc:LDAPDirectory"
-        ldapURL="ldap://localhost:10389"
+        ldapURL="%{idp.attribute.resolver.LDAP.ldapURL}"
         baseDN="ou=systemprivileges,dc=example,dc=com"
         maxResultSize="512"
         mergeResults="true"
+        principal="%{idp.attribute.resolver.LDAP.bindDN}"
+        principalCredential="%{idp.attribute.resolver.LDAP.bindDNCredential}"
+
         xmlns="urn:mace:shibboleth:2.0:resolver:dc">
         <resolver:Dependency ref="uid" />
         <dc:FilterTemplate>
-                <![CDATA[
-                  (&(objectclass=toasGroup)(member=uid=$uid.get(0),ou=toas,dc=tieto,dc=com))
-                ]]>
-         </dc:FilterTemplate>
-         <dc:ReturnAttributes>cn</dc:ReturnAttributes>
-         </resolver:DataConnector>
+                <![CDATA[(&(objectclass=toasGroup)(member=uid=$uid.get(0),ou=toas,dc=example,dc=com))]]>
+        </dc:FilterTemplate>
+        <dc:ReturnAttributes>cn</dc:ReturnAttributes>
+</resolver:DataConnector>
 
 <resolver:AttributeDefinition id="member" xsi:type="Simple" xmlns="urn:mace:shibboleth:2.0:resolver:ad"
 sourceAttributeID="cn">
