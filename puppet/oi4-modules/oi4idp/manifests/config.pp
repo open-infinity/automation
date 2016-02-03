@@ -32,20 +32,34 @@ $platform_name = "${tomcat::params::platform_name}"
 	$idp_install_script_prefix="${oi4idp::params::idp_install_script_prefix}"
 	#idp_install_script_conf_file='/src/installer/resources/build.xml'
 	#$idp_install_script="${idp_install_script_prefix}${idp_shibboleth_version}${idp_install_script_conf_file}"
-  	$idp_install_script="${oi4idp::params::idp_install_script}"
+  $idp_install_script="${oi4idp::params::idp_install_script}"
 
 	# Local, dynamic
 	$idp_hostname="${oi4idp::params::idp_hostname}"
 	$idp_keystore_password= "${oi4idp::params::idp_keystore_password}"
 
-    # should be from Hiera
+  # should be from Hiera
 	#$platform_name=hiera('toas::idp::platform_name')
-    #$platform_name="${oi4idp::params::platform_name}"
-    #$idp_shibboleth_version="${oi4idp::params::idp_shibboleth_version}"
+  #$platform_name="${oi4idp::params::platform_name}"
+  #$idp_shibboleth_version="${oi4idp::params::idp_shibboleth_version}"
 	$idp_shibboleth_version=hiera('toas::idp::idp_shibboleth_version')
-    #$platform_version="${oi4idp::params::platform_version}"
+  #$platform_version="${oi4idp::params::platform_version}"
 	$platform_version=hiera('toas::idp::platform_version')
 
+	$authn_LDAP_ldapURL="${toas::idp::authn_LDAP_authenticator}"
+	$authn_LDAP_useStartTLS="${toas::idp::authn_LDAP_useStartTLS}"
+	$authn_LDAP_useStartSSL="${toas::idp::authn_LDAP_useSSL}"
+	$authn_LDAP_trustCertificates="${toas::idp::authn_LDAP_trustCertificates}"
+	$authn_LDAP_trustStore="${toas::idp::authn_LDAP_trustStore}"
+	$authn_LDAP_returnAttributes="${toas::idp::authn_LDAP_returnAttributes}"
+	$authn_LDAP_baseDN="${toas::idp::authn_LDAP_baseDN}"
+	$authn_LDAP_userFilter="${toas::idp::authn_LDAP_userFilter}"
+	$authn_LDAP_bindDN="${toas::idp::authn_LDAP_bindDN}"
+	$authn_LDAP_bindDNCredential="${toas::idp::authn_LDAP_bindDNCredential}"
+	$authn_LDAP_dnFormat="${toas::idp::authn_LDAP_dnFormat}"
+	$authn_LDAP_ldapURL="${toas::idp::authn_LDAP_ldapURL}"
+	$authn_LDAP_groupBaseDN="${toas::idp::authn_LDAP_groupBaseDN}"
+	
 
 	#require openjdkjava
     /* Tomcat which is not run by root user can't listen to pot 443, therefore forwarding of 443 to 8443 */
@@ -69,7 +83,6 @@ $platform_name = "${tomcat::params::platform_name}"
 		group => "root",
         mode => 0644,
     } ->
-	/* Modifies ant configuration file with the one from template*/
 	file { "/opt/openinfinity/tomcat/conf/server.xml":
 		content => template("oi4idp/server.xml.erb"),
 		ensure => present,
@@ -78,7 +91,14 @@ $platform_name = "${tomcat::params::platform_name}"
 		group => "root",
         mode => 0644,
     } ->
-	
+	file { "/opt/shibboleth-idp/conf/ldap.properties":
+		content => template("oi4idp/ldap.properties.erb"),
+		ensure => present,
+		replace => true,
+		owner => "oiuser",
+		group => "root",
+        mode => 0644,
+    } ->
 
 
     /* The original install.sh with modified ant configuration is used for installation */

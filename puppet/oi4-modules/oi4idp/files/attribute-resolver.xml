@@ -128,7 +128,7 @@ urn:mace:shibboleth:2.0:security classpath:/schema/shibboleth-2.0-security.xsd">
 
 <resolver:DataConnector id="myLDAPForGroups" xsi:type="dc:LDAPDirectory"
         ldapURL="%{idp.attribute.resolver.LDAP.ldapURL}"
-        baseDN="ou=systemprivileges,dc=example,dc=com"
+        baseDN="%{toas.idp.attribute.resolver.LDAP.groupBaseDN}"
         maxResultSize="512"
         mergeResults="true"
         principal="%{idp.attribute.resolver.LDAP.bindDN}"
