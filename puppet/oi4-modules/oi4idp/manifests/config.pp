@@ -244,14 +244,6 @@ $platform_name = "${tomcat::params::platform_name}"
 			owner => "oiuser",
 			group => "root",
 			mode => 0644,
-		} ->
-		file { "/opt/shibboleth-idp/conf/ldap.properties":
-			content => template("oi4idp/ldap.properties.erb"),
-			ensure => present,
-			replace => true,
-			owner => "oiuser",
-			group => "root",
-			mode => 0644,
 		} 
 		
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
