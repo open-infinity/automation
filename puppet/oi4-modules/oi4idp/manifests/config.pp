@@ -46,9 +46,9 @@ $platform_name = "${tomcat::params::platform_name}"
   #$platform_version="${oi4idp::params::platform_version}"
 	$platform_version=hiera('toas::idp::platform_version')
 
-	$authn_LDAP_ldapURL="${toas::idp::authn_LDAP_authenticator}"
+	$authn_LDAP_authenticator="${toas::idp::authn_LDAP_authenticator}"
 	$authn_LDAP_useStartTLS="${toas::idp::authn_LDAP_useStartTLS}"
-	$authn_LDAP_useStartSSL="${toas::idp::authn_LDAP_useSSL}"
+	$authn_LDAP_useSSL="${toas::idp::authn_LDAP_useSSL}"
 	$authn_LDAP_trustCertificates="${toas::idp::authn_LDAP_trustCertificates}"
 	$authn_LDAP_trustStore="${toas::idp::authn_LDAP_trustStore}"
 	$authn_LDAP_returnAttributes="${toas::idp::authn_LDAP_returnAttributes}"
