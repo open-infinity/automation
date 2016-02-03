@@ -244,6 +244,14 @@ $platform_name = "${tomcat::params::platform_name}"
 			owner => "oiuser",
 			group => "root",
 			mode => 0644,
+		} ->
+		file { "/opt/shibboleth-idp/conf/authn/jaas.config":
+			content => template("oi4idp/jaas.config.erb"),
+			ensure => present,
+			replace => true,
+			owner => "oiuser",
+			group => "root",
+			mode => 0644,
 		} 
 		
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
