@@ -38,7 +38,7 @@ idp.authn.LDAP.bindDNCredential                 = <%= @authn_LDAP_bindDNCredenti
 idp.authn.LDAP.dnFormat                         = <%= @authn_LDAP_dnFormat %>
 
 # TOAS specific user access group information 
-toas::idp::authn_LDAP_groupBaseDN               = <%= @authn_LDAP_groupBaseDN %>
+toas.idp.authn_LDAP_groupBaseDN                 = <%= @authn_LDAP_groupBaseDN %>
 
 # LDAP attribute configuration, see attribute-resolver.xml
 idp.attribute.resolver.LDAP.ldapURL             = %{idp.authn.LDAP.ldapURL}
