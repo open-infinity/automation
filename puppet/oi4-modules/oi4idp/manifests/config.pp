@@ -46,19 +46,20 @@ $platform_name = "${tomcat::params::platform_name}"
   #$platform_version="${oi4idp::params::platform_version}"
 	$platform_version=hiera('toas::idp::platform_version')
 
-	$authn_LDAP_authenticator="${toas::idp::authn_LDAP_authenticator}"
-	$authn_LDAP_useStartTLS="${toas::idp::authn_LDAP_useStartTLS}"
-	$authn_LDAP_useSSL="${toas::idp::authn_LDAP_useSSL}"
-	$authn_LDAP_trustCertificates="${toas::idp::authn_LDAP_trustCertificates}"
-	$authn_LDAP_trustStore="${toas::idp::authn_LDAP_trustStore}"
-	$authn_LDAP_returnAttributes="${toas::idp::authn_LDAP_returnAttributes}"
-	$authn_LDAP_baseDN="${toas::idp::authn_LDAP_baseDN}"
-	$authn_LDAP_userFilter="${toas::idp::authn_LDAP_userFilter}"
-	$authn_LDAP_bindDN="${toas::idp::authn_LDAP_bindDN}"
-	$authn_LDAP_bindDNCredential="${toas::idp::authn_LDAP_bindDNCredential}"
-	$authn_LDAP_dnFormat="${toas::idp::authn_LDAP_dnFormat}"
-	$authn_LDAP_ldapURL="${toas::idp::authn_LDAP_ldapURL}"
-	$authn_LDAP_groupBaseDN="${toas::idp::authn_LDAP_groupBaseDN}"
+	$apacheds_version=hiera('toas::idp::apacheds_version')
+	$authn_LDAP_authenticator=hiera('toas::idp::authn_LDAP_authenticator')
+	$authn_LDAP_useStartTLS=hiera(toas::idp::authn_LDAP_useStartTLS')
+	$authn_LDAP_useSSL=hiera(toas::idp::authn_LDAP_useSSL')
+	$authn_LDAP_trustCertificates=hiera(toas::idp::authn_LDAP_trustCertificates')
+	$authn_LDAP_trustStore=hiera(toas::idp::authn_LDAP_trustStore')
+	$authn_LDAP_returnAttributes=hiera(toas::idp::authn_LDAP_returnAttributes')
+	$authn_LDAP_baseDN=hiera(toas::idp::authn_LDAP_baseDN')
+	$authn_LDAP_userFilter=hiera(toas::idp::authn_LDAP_userFilter')
+	$authn_LDAP_bindDN=hiera(toas::idp::authn_LDAP_bindDN')
+	$authn_LDAP_bindDNCredential=hiera(toas::idp::authn_LDAP_bindDNCredential')
+	$authn_LDAP_dnFormat=hiera(toas::idp::authn_LDAP_dnFormat')
+	$authn_LDAP_ldapURL=hiera(toas::idp::authn_LDAP_ldapURL')
+	$authn_LDAP_groupBaseDN=hiera(toas::idp::authn_LDAP_groupBaseDN')
 	
 
 	#require openjdkjava
