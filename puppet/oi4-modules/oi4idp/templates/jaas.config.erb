@@ -1,0 +1,10 @@
+ShibUserPassAuth {
+    /*
+        com.sun.security.auth.module.Krb5LoginModule required;
+        */
+
+    org.ldaptive.jaas.LdapLoginModule required
+      ldapUrl="<%= @authn_LDAP_ldapURL %>"
+      baseDn="<%= @authn_LDAP_baseDN %>"
+      userFilter="<%= @authn_LDAP_userFilter %>";
+

@@ -222,7 +222,7 @@ $platform_name = "${tomcat::params::platform_name}"
         source => "puppet:///modules/oi4idp/metadata_providers.xml",
     }
     file { "/opt/shibboleth-idp/conf/attribute-resolver.xml":
-        source => "puppet:///modules/oi4idp/attribute-resolver.xml",
+				content => template("oi4idp/attribute-resolver.xml.erb"),
         ensure => present,
         replace => true,
         owner => "oiuser",
@@ -237,6 +237,14 @@ $platform_name = "${tomcat::params::platform_name}"
         group => "root",
         mode => 0644,
     } -> 
+		file { "/opt/shibboleth-idp/conf/ldap.properties":
+			content => template("oi4idp/ldap.properties.erb"),
+			ensure => present,
+			replace => true,
+			owner => "oiuser",
+			group => "root",
+			mode => 0644,
+		} ->
 		file { "/opt/shibboleth-idp/conf/ldap.properties":
 			content => template("oi4idp/ldap.properties.erb"),
 			ensure => present,

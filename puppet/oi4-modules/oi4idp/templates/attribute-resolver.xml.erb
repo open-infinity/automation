@@ -137,7 +137,7 @@ urn:mace:shibboleth:2.0:security classpath:/schema/shibboleth-2.0-security.xsd">
         xmlns="urn:mace:shibboleth:2.0:resolver:dc">
         <resolver:Dependency ref="uid" />
         <dc:FilterTemplate>
-                <![CDATA[(&(objectclass=toasGroup)(member=uid=$uid.get(0),ou=toas,dc=example,dc=com))]]>
+                <![CDATA[(&(objectclass=toasGroup)(member=uid=$uid.get(0),<%= @authn_LDAP_baseDN %>))]]>
         </dc:FilterTemplate>
         <dc:ReturnAttributes>cn</dc:ReturnAttributes>
 </resolver:DataConnector>
