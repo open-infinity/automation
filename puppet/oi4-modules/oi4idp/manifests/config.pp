@@ -81,24 +81,16 @@ $platform_name = "${tomcat::params::platform_name}"
 		replace => true,
 		owner => "root",
 		group => "root",
-        mode => 0644,
-    } ->
+    mode => 0644,
+  } ->
 	file { "/opt/openinfinity/tomcat/conf/server.xml":
 		content => template("oi4idp/server.xml.erb"),
 		ensure => present,
 		replace => true,
 		owner => "root",
 		group => "root",
-        mode => 0644,
-    } ->
-	file { "/opt/shibboleth-idp/conf/ldap.properties":
-		content => template("oi4idp/ldap.properties.erb"),
-		ensure => present,
-		replace => true,
-		owner => "oiuser",
-		group => "root",
-        mode => 0644,
-    } ->
+    mode => 0644,
+  } ->
 
 
     /* The original install.sh with modified ant configuration is used for installation */
@@ -243,7 +235,15 @@ $platform_name = "${tomcat::params::platform_name}"
         owner => "oiuser",
         group => "root",
         mode => 0644,
-    }
+    } -> 
+		file { "/opt/shibboleth-idp/conf/ldap.properties":
+			content => template("oi4idp/ldap.properties.erb"),
+			ensure => present,
+			replace => true,
+			owner => "oiuser",
+			group => "root",
+			mode => 0644,
+		} 
 		
 	/* Shibboleth endorsed dir is copied to tomcat home dir */
 	#ile { "${platfom_home}/tomcat/endorsed":
