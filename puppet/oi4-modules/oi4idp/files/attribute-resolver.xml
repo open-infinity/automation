@@ -126,9 +126,9 @@ urn:mace:shibboleth:2.0:security classpath:/schema/shibboleth-2.0-security.xsd">
         <dc:ReturnAttributes>uid mail sn givenName employeeNumber o ou title preferredLanguage l street telephoneNumber accountStatus</dc:ReturnAttributes>
         </resolver:DataConnector>
 
-<resolver:DataConnector id="myLDAPForGroups" xsi:type="dc:LDAPDirectory"
+				<resolver:DataConnector id="myLDAPForGroups" xsi:type="dc:LDAPDirectory"
         ldapURL="%{idp.attribute.resolver.LDAP.ldapURL}"
-        baseDN="%{toas.idp.attribute.resolver.LDAP.groupBaseDN}"
+        baseDN="%{toas.idp.authn_LDAP_groupBaseDN}"
         maxResultSize="512"
         mergeResults="true"
         principal="%{idp.attribute.resolver.LDAP.bindDN}"
