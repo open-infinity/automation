@@ -21,6 +21,9 @@ class oi4idp::install{
         require oi4idp::params
 		#include openjdkjava
 		
+		package { "wget":
+        ensure => 'installed',
+    }
 		package { "apacheds":
 			ensure => present,
 		}
