@@ -15,6 +15,9 @@ class oi4httpd_sp::install inherits oi4variables {
     package { "wget":
         ensure => 'installed',
     }->
+		package { "ntp":
+        ensure => 'installed',
+    }->
 		package { "shibboleth":
         ensure => '2.5.5-3.1.el6',
         require => Package["$apachePackageName"],

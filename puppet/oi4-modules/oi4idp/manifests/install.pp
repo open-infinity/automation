@@ -23,7 +23,10 @@ class oi4idp::install{
 		
 		package { "wget":
         ensure => 'installed',
-    }
+    }->
+		package { "ntp":
+        ensure => 'installed',
+    }->
 		package { "apacheds":
 			ensure => present,
 		}
