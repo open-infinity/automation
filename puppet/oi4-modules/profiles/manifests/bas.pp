@@ -13,7 +13,7 @@ $sso_attribute_session_tenant_id = hiera('sso::attribute::session::tenant::id','
 $sso_attribute_session_roles = hiera('sso::attribute::session::roles','roles')
 $sso_attribute_session_role_delimiter = hiera('sso::attribute::session::role::delimiter',',')
 $sso_attribute_session_attributes = hiera('sso::attribute::session::attributes','name,address,phone')
-$sso_attribute_session_user_attribute_delimiter = hiera('sso::attribute::session::user::attribute::delimiter')
+$sso_attribute_session_user_attribute_delimiter = hiera('sso::attribute::session::user::attribute::delimiter', ',')
 
 # Session header identifiers
 $sso_header_session_identifier = hiera('sso::header::session::identifier','iv-user')
