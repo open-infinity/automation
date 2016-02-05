@@ -45,7 +45,22 @@ $sso_header_session_user_attribute_delimiter = hiera('sso::header::session::user
   class {'oi4bas::config':
     bas_multicast_address       => $multicast_address,
     bas_tomcat_monitor_role_pwd => $tomcat_monitor_role_password,
-	ignore_catalina_propeties => $ignore_catalina_propeties
+	ignore_catalina_propeties => $ignore_catalina_propeties,
+	sso_attribute_session_identifier => $sso_attribute_session_identifier,
+	sso_attribute_session_username => $sso_attribute_session_username,
+	sso_attribute_session_tenant_id => $sso_attribute_session_tenant_id,
+	sso_attribute_session_roles => $sso_attribute_session_roles,
+	sso_attribute_session_role_delimiter => $sso_attribute_session_role_delimiter,
+	sso_attribute_session_attributes => $sso_attribute_session_attributes,
+	sso_attribute_session_user_attribute_delimiter => $sso_attribute_session_user_attribute_delimiter,
+	sso_header_session_identifier => $sso_header_session_identifier,
+	sso_header_session_username => $sso_header_session_username,
+	sso_header_session_tenant_id => $sso_header_session_tenant_id,
+	sso_header_session_roles => $sso_header_session_roles,
+	sso_header_session_role_delimiter => $sso_header_session_role_delimiter,
+	sso_header_session_attributes => $sso_header_session_attributes,
+	sso_header_session_user_attribute_delimiter => $sso_header_session_user_attribute_delimiter
+	
   }->class {'profiles::bas::tomcatconf':
 	oi_home => $oi_home
   }->class {'oi4bas::service': 
