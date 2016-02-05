@@ -3,6 +3,20 @@ class oi4bas::config (
   $bas_tomcat_monitor_role_pwd = undef,
   $oi_home = '/opt/openinfinity',
   $ignore_catalina_propeties = undef,
+  $sso_attribute_session_identifier = undef,
+  $sso_attribute_session_username = undef,
+  $sso_attribute_session_tenant_id = undef,
+  $sso_attribute_session_roles = undef,
+  $sso_attribute_session_role_delimiter = undef,
+  $sso_attribute_session_attributes = undef,
+  $sso_attribute_session_user_attribute_delimiter = undef,
+  $sso_header_session_identifier = undef,
+  $sso_header_session_username = undef,
+  $sso_header_session_tenant_id = undef,
+  $sso_header_session_roles = undef,
+  $sso_header_session_role_delimiter = undef,
+  $sso_header_session_attributes = undef,
+  $sso_header_session_user_attribute_delimiter = undef
 ) 
 
 {
