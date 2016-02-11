@@ -1,6 +1,8 @@
-class oi4portal::install  {
+class oi4portal::install (
+ $liferay_package_name = undef
+)  {
 
-	package { ["java-1.8.0-openjdk", "oi4-connectorj", "oi4-liferay", "oi4-core", "oi4-tomcat", "oi4-secvault", "oi4-hazelcast"]:
+	package { ["java-1.8.0-openjdk", "oi4-connectorj", $liferay_package_name, "oi4-core", "oi4-tomcat", "oi4-secvault", "oi4-hazelcast"]:
 		ensure => present,
 	} 
 #	package { ["oi4-bas"]:
@@ -39,15 +41,15 @@ class oi4portal::config (
 		require => Class["oi4portal::install"],
 	}
 
-  file { "$oi_home/tomcat/bin/setenv.sh":
-    ensure => present,
-    owner => 'oiuser',
-    group => 'oiuser',
-    mode => 0755,
-    content => template("oi4portal/setenv.sh.erb"),
-    require => Class["oi4portal::install"],
-    notify => Service["oi-tomcat"],
-  }
+	  file { "$oi_home/tomcat/bin/setenv.sh":
+		ensure => present,
+		owner => 'oiuser',
+		group => 'oiuser',
+		mode => 0755,
+		content => template("oi4portal/setenv.sh.erb"),
+		require => Class["oi4portal::install"],
+		notify => Service["oi-tomcat"],
+	  }
 
 	file {"/opt/openinfinity/tomcat/webapps/ROOT/WEB-INF/classes/portal-ext.properties":
 		ensure => present,
@@ -112,42 +114,33 @@ class oi4portal::config (
 		require => Class["oi4portal::install"],
 	}
 	
-  #     file {"/opt/openinfinity/tomcat/conf/context.xml":
-  #              ensure => present,
-  #              owner => 'oiuser',
-  #              group => 'oiuser',
-  #              mode => 0600,
-  #              source => "puppet:///modules/oi4portal/context.xml",
-  #              require => Class["oi4portal::install"],
-  #      }
+	file {"/opt/openinfinity/tomcat/conf/jmxremote.password":
+			ensure => present,
+			owner => 'oiuser',
+			group => 'oiuser',
+			mode => 0600,
+			content => template("oi4portal/jmxremote.password.erb"),
+			require => Class["oi4portal::install"],
+	}
 
-        file {"/opt/openinfinity/tomcat/conf/jmxremote.password":
-                ensure => present,
-                owner => 'oiuser',
-                group => 'oiuser',
-                mode => 0600,
-                content => template("oi4portal/jmxremote.password.erb"),
-                require => Class["oi4portal::install"],
-        }
+	file {"/opt/openinfinity/tomcat/conf/jmxremote.access":
+			ensure => present,
+			owner => 'oiuser',
+			group => 'oiuser',
+			mode => 0644,
+			source => "puppet:///modules/oi4portal/jmxremote.access",
+			require => Class["oi4portal::install"],
+	}
 
-        file {"/opt/openinfinity/tomcat/conf/jmxremote.access":
-                ensure => present,
-                owner => 'oiuser',
-                group => 'oiuser',
-                mode => 0644,
-                source => "puppet:///modules/oi4portal/jmxremote.access",
-                require => Class["oi4portal::install"],
-        }
+	file {"/etc/init.d/oi-tomcat":
+			ensure  => present,
+			owner   => 'root',
+			group   => 'root',
+			mode    => 0755,
+			content => template("oi4portal/oi-tomcat.erb"),
+			require => Class["oi4portal::install"],
+	}
 
-        file {"/etc/init.d/oi-tomcat":
-                ensure  => present,
-                owner   => 'root',
-                group   => 'root',
-                mode    => 0755,
-                content => template("oi4portal/oi-tomcat.erb"),
-                require => Class["oi4portal::install"],
-        }
-	
 	file {"/opt/openinfinity/portal-setup-wizard.properties":
 		ensure    => present,
 		owner     => 'oiuser',

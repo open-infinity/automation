@@ -6,6 +6,25 @@ class profiles::bas {
   $ignore_catalina_propeties = hiera('toas::bas::ignore_catalina_properties', undef) # if bas acts as a base module and some other module provides catalina.properties
   $run_tomcat_service = hiera('toas::bas:runtomcat', true)  #if bas acts as a base for other module that starts tomcat instead of bas
 
+# Session attribute identifiers
+$sso_attribute_session_identifier = hiera('sso::attribute::session::identifier', 'Shib-Session-ID')
+$sso_attribute_session_username = hiera('sso::attribute::session::username','uid')
+$sso_attribute_session_tenant_id = hiera('sso::attribute::session::tenant::id','tenantId')
+$sso_attribute_session_roles = hiera('sso::attribute::session::roles','roles')
+$sso_attribute_session_role_delimiter = hiera('sso::attribute::session::role::delimiter',',')
+$sso_attribute_session_attributes = hiera('sso::attribute::session::attributes','name,address,phone')
+$sso_attribute_session_user_attribute_delimiter = hiera('sso::attribute::session::user::attribute::delimiter', ',')
+
+# Session header identifiers
+$sso_header_session_identifier = hiera('sso::header::session::identifier','iv-user')
+$sso_header_session_username = hiera('sso::header::session::username','iv-user')
+$sso_header_session_tenant_id = hiera('sso::header::session::tenant::id','iv-groups')
+$sso_header_session_roles = hiera('sso::header::session::roles','iv-groups')
+$sso_header_session_role_delimiter = hiera('sso::header::session::role::delimiter',',')
+$sso_header_session_attributes = hiera('sso::header::session::attributes','name,address,phone')
+$sso_header_session_user_attribute_delimiter = hiera('sso::header::session::user::attribute::delimiter',',')
+
+
   class { 'tomcat':
     install_from_source => false,
     user                => 'oiuser',
@@ -26,7 +45,22 @@ class profiles::bas {
   class {'oi4bas::config':
     bas_multicast_address       => $multicast_address,
     bas_tomcat_monitor_role_pwd => $tomcat_monitor_role_password,
-	ignore_catalina_propeties => $ignore_catalina_propeties
+	ignore_catalina_propeties => $ignore_catalina_propeties,
+	sso_attribute_session_identifier => $sso_attribute_session_identifier,
+	sso_attribute_session_username => $sso_attribute_session_username,
+	sso_attribute_session_tenant_id => $sso_attribute_session_tenant_id,
+	sso_attribute_session_roles => $sso_attribute_session_roles,
+	sso_attribute_session_role_delimiter => $sso_attribute_session_role_delimiter,
+	sso_attribute_session_attributes => $sso_attribute_session_attributes,
+	sso_attribute_session_user_attribute_delimiter => $sso_attribute_session_user_attribute_delimiter,
+	sso_header_session_identifier => $sso_header_session_identifier,
+	sso_header_session_username => $sso_header_session_username,
+	sso_header_session_tenant_id => $sso_header_session_tenant_id,
+	sso_header_session_roles => $sso_header_session_roles,
+	sso_header_session_role_delimiter => $sso_header_session_role_delimiter,
+	sso_header_session_attributes => $sso_header_session_attributes,
+	sso_header_session_user_attribute_delimiter => $sso_header_session_user_attribute_delimiter
+	
   }->class {'profiles::bas::tomcatconf':
 	oi_home => $oi_home
   }->class {'oi4bas::service': 

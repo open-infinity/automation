@@ -7,6 +7,15 @@ class profiles::liferay {
   $jvm_perm = hiera('toas::portal::jvm_perm', '512')
   $extra_jvm_opts = hiera('toas::portal::extra_jvm_opts', undef)
   $extra_catalina_opts = hiera('toas::portal::extra_catalina_opts', undef)
+  $use_ee_version = hiera('toas::portal::use_ee', false)
+  
+  if ( $use_ee_version )  {
+	$liferay_package_name = 'oi4-liferay-ee' 
+  } else 
+  {
+	$liferay_package_name = 'oi4-liferay' 
+  }
+  
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
 
   file {"$oi_home/log/tomcat":
@@ -17,6 +26,7 @@ class profiles::liferay {
     require => [User["oiuser"], File["$oi_home/log"]],
   }->
   class {'oi4portal::install': 
+	liferay_package_name => $liferay_package_name,
   }->
   class {'oi4portal::config':
     portal_multicast_address            => $multicast_address,
