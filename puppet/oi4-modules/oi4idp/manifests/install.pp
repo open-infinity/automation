@@ -5,17 +5,17 @@ class oi4idp::install{
                 #TODO maybe needed for logrotate ect
         
 	#}
-		file {"/tmp/setup_ant_extensions.sh":
-			ensure => present,
-			owner => 'root',
-			group => 'root',
-			mode => 0700,
-			source => "puppet:///modules/oi4idp/init.sh",
-			notify => Service["oi-tomcat"]
-		} ->
-		exec { "/tmp/setupantextensionsforbuild.sh":
-			command => "/tmp/setup_ant_extensions.sh",
-		}
+		#file {"/tmp/setup_ant_extensions.sh":
+		#	ensure => present,
+		#	owner => 'root',
+		#	group => 'root',
+		#	mode => 0700,
+		#	source => "puppet:///modules/oi4idp/init.sh",
+		#	notify => Service["oi-tomcat"]
+		#} ->
+		#exec { "/tmp/setupantextensionsforbuild.sh":
+		#	command => "/tmp/setup_ant_extensions.sh",
+		#}
 	
 	
         require oi4idp::params
