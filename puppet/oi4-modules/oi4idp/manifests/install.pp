@@ -1,10 +1,5 @@
 class oi4idp::install{
 	
-        #package { ["java-1.7.0-openjdk"]:
-        	#ensure => present,
-                #TODO maybe needed for logrotate ect
-        
-	#}
 		#file {"/tmp/setup_ant_extensions.sh":
 		#	ensure => present,
 		#	owner => 'root',
@@ -17,33 +12,24 @@ class oi4idp::install{
 		#	command => "/tmp/setup_ant_extensions.sh",
 		#}
 	
-	
-        require oi4idp::params
-		#include openjdkjava
+    require oi4idp::params
+		require oi4apacheds
 		
 		package { "wget":
         ensure => 'installed',
     }->
 		package { "ntp":
         ensure => 'installed',
-    }->
-		package { "apacheds":
-			ensure => present,
-		}
-		
-		
-		#package { "oi4-bas":
-		#	ensure => installed,
+    }
+		#package { "apacheds":
+		#	ensure => present,
 		#}
-        $idp_rpm="${oi4idp::params::idp_rpm}"
+		
+    $idp_rpm="${oi4idp::params::idp_rpm}"
 		
 		package { "oi4-idp":
-                ensure => installed,
-        }
-		
-        #package { ["${$idp_rpm}"]:
-        #        ensure => installed,
-        #} 
+      ensure => installed,
+    } 
 }
 	
 	
