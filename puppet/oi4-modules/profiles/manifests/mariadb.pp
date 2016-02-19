@@ -2,6 +2,7 @@ class profiles::mariadb {
   $mariadb_root_password = hiera('toas::mariadb::root_password')
   $mariadb_backup_password = hiera('toas::mariadb::backup_user_password')
   $user_mysqld_options = hiera('toas::mariadb::mysqld_variables')
+  $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
   include 'stdlib'
 
   $local_mysqld_options = {
