@@ -1,5 +1,5 @@
 class profiles::bas {
-  $multicast_address = hiera('toas::bas:multicast_address')
+  $multicast_address = hiera('toas::bas:multicast_address', undef)
   $tomcat_monitor_role_password = hiera('toas::bas::tomcat_monitor_role_password')
   $extra_catalina_opts = hiera('toas::bas::extra_catalina_opts', undef)
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
