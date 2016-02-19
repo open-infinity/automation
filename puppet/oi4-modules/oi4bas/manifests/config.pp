@@ -45,7 +45,7 @@ if ! $ignore_catalina_propeties {
   
   if ( $bas_multicast_address == undef ) {
     if ( $bas_hazelcast_cluster_nodes == undef ) {
-		fail ("Cluster members are not defined. Cannot continue.");
+		fail ("Cluster members are not defined. Cannot continue.")
 	}	
 	file {"$oi_home/tomcat/conf/hazelcast.xml":
 		ensure => present,
