@@ -5,8 +5,6 @@ class oi4-serviceplatform::config (
   $sp_amq_password = undef,
   $sp_activiti_password = undef,
   $sp_oi_dbuser_password = undef,
-  $sp_jvmmem = undef,
-  $sp_jvmperm = undef,
   $sp_extra_jvm_opts = undef,
   $sp_extra_catalina_opts = undef,
   $sp_oi_httpuser_pwd = undef,
