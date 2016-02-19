@@ -1,5 +1,5 @@
 class profiles::serviceplatform {
-  $bas_multicast_address = hiera('toas::bas:multicast_address')
+  $bas_multicast_address = hiera('toas::bas:multicast_address', undef)
   $sp_dbaddress = hiera('toas::sp::dbaddress')
   $sp_nodeid =  hiera('toas::sp::nodeid')
   $sp_activiti_password = hiera('toas::rdbms::activiti::pw')
