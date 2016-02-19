@@ -35,36 +35,37 @@ class profiles::galeracluster {
     'mysqld_safe' => $local_mysqld_safe_options,
     'client'      => $local_client_options,
   }
-
+  
   group { 'mysql':
-    ensure => present,
+	ensure => present,
   }->
   user { 'mysql':
-    ensure  => present,
-    comment => 'MariaDB user',
-    gid     => 'mysql',
-    shell   => '/bin/false',
+	ensure  => present,
+	comment => 'MariaDB user',
+	gid     => 'mysql',
+	shell   => '/bin/false',
   }->
   file {"$oi_home/data/rdbms":
-    ensure => directory,
-    owner  => 'mysql',
-    group  => 'mysql',
-    mode   => 0775,
-    require => File["$oi_home/data"],
+	ensure => directory,
+	owner  => 'mysql',
+	group  => 'mysql',
+	mode   => 0775,
+	require => File["$oi_home/data"],
   }->
   file {"$oi_home/log/rdbms":
-    ensure  => directory,
-    owner   => 'mysql',
-    group   => 'mysql',
-    mode    => 0775,
-    require => File["$oi_home/data"],
+	ensure  => directory,
+	owner   => 'mysql',
+	group   => 'mysql',
+	mode    => 0775,
+	require => File["$oi_home/data"],
   }->
   file {'/var/run/mysql':
-    ensure => directory,
-    owner  => 'mysql',
-    group  => 'mysql',
-    mode   => 0775,
-  }->
+	ensure => directory,
+	owner  => 'mysql',
+	group  => 'mysql',
+	mode   => 0775,
+  }
+  
   class { 'galera':
     galera_servers     => $galera_servers,
     galera_master      => $galera_master,
@@ -74,6 +75,7 @@ class profiles::galeracluster {
     configure_firewall => false,
     root_password      => $galera_root_password,
     status_password    => $galera_status_password,
+  }-> class {'profiles::mariadbdatabases': 
   }
 
 }
