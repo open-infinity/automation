@@ -50,21 +50,14 @@ class profiles::mariadbdatabases {
 		}
   }
   
-  define createMQDB ($dbname) {
-	  mysql::db { "toasamq${$dbname}":
+  if $activemq_user_password {
+	if $nodeids {
+	  mysql::db { "toasamq${nodeids[0]}":
 	  user     => 'activemq',
-	  password => $name,
+	  password => $activemq_user_password,
 	  host     => '%',
 	  grant    => ['ALL'],
 	  }
-  }
-  
-  if $activemq_user_password {
-
-	if $nodeids {
-		createMQDB {$nodeids:
-			dbname => $activemq_user_password
-		}
 	}
   }
 
