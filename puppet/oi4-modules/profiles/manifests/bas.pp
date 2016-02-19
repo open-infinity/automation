@@ -5,6 +5,7 @@ class profiles::bas {
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
   $ignore_catalina_propeties = hiera('toas::bas::ignore_catalina_properties', undef) # if bas acts as a base module and some other module provides catalina.properties
   $run_tomcat_service = hiera('toas::bas:runtomcat', true)  #if bas acts as a base for other module that starts tomcat instead of bas
+  $bas_hazelcast_cluster_nodes = hiera('toas::bas:hazelcast::nodes', undef)
 
 # Session attribute identifiers
 $sso_attribute_session_identifier = hiera('sso::attribute::session::identifier', 'Shib-Session-ID')
@@ -23,6 +24,7 @@ $sso_header_session_roles = hiera('sso::header::session::roles','iv-groups')
 $sso_header_session_role_delimiter = hiera('sso::header::session::role::delimiter',',')
 $sso_header_session_attributes = hiera('sso::header::session::attributes','name,address,phone')
 $sso_header_session_user_attribute_delimiter = hiera('sso::header::session::user::attribute::delimiter',',')
+
 
 
   class { 'tomcat':
@@ -59,7 +61,8 @@ $sso_header_session_user_attribute_delimiter = hiera('sso::header::session::user
 	sso_header_session_roles => $sso_header_session_roles,
 	sso_header_session_role_delimiter => $sso_header_session_role_delimiter,
 	sso_header_session_attributes => $sso_header_session_attributes,
-	sso_header_session_user_attribute_delimiter => $sso_header_session_user_attribute_delimiter
+	sso_header_session_user_attribute_delimiter => $sso_header_session_user_attribute_delimiter, 
+	bas_hazelcast_cluster_nodes => $bas_hazelcast_cluster_nodes
 	
   }->class {'profiles::bas::tomcatconf':
 	oi_home => $oi_home

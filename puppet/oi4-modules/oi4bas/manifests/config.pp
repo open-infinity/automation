@@ -16,7 +16,8 @@ class oi4bas::config (
   $sso_header_session_roles = undef,
   $sso_header_session_role_delimiter = undef,
   $sso_header_session_attributes = undef,
-  $sso_header_session_user_attribute_delimiter = undef
+  $sso_header_session_user_attribute_delimiter = undef,
+  $bas_hazelcast_cluster_nodes = undef
 ) 
 
 {
