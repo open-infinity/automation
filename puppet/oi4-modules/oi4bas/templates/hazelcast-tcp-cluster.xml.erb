@@ -37,11 +37,11 @@
                 <multicast-group><%= @_bas_multicast_address %></multicast-group>
                 <multicast-port>54328</multicast-port>
             </multicast>
-            <tcp-ip enabled="true">
-				<% @bas_hazelcast_cluster_nodes.each do |node| -%>
-					<interface><%= @node %></interface>
-				<% end -%>
-            </tcp-ip>
+              <tcp-ip enabled="true">
+			   <% @bas_hazelcast_cluster_nodes.each do |$node| -%>
+			     <interface><%= $node %></interface>
+			   <% end -%>
+              </tcp-ip>
             <aws enabled="false">
                 <access-key>my-access-key</access-key>
                 <secret-key>my-secret-key</secret-key>
