@@ -1,24 +1,24 @@
 class oi4bas::config (
-  $bas_multicast_address = undef,
+  $bas_multicast_address = hiera("oi4bas::bas_multicast_address", undef),
+  $bas_hazelcast_cluster_nodes = hiera("oi4bas::bas_hazelcast_cluster_nodes", undef),
   $bas_tomcat_monitor_role_pwd = undef,
-  $oi_home = '/opt/openinfinity',
-  $ignore_catalina_propeties = undef,
-  $sso_attribute_session_identifier = undef,
-  $sso_attribute_session_username = undef,
-  $sso_attribute_session_tenant_id = undef,
-  $sso_attribute_session_roles = undef,
-  $sso_attribute_session_role_delimiter = undef,
-  $sso_attribute_session_attributes = undef,
-  $sso_attribute_session_user_attribute_delimiter = undef,
-  $sso_header_session_identifier = undef,
-  $sso_header_session_username = undef,
-  $sso_header_session_tenant_id = undef,
-  $sso_header_session_roles = undef,
-  $sso_header_session_role_delimiter = undef,
-  $sso_header_session_attributes = undef,
-  $sso_header_session_user_attribute_delimiter = undef,
-  $bas_hazelcast_cluster_nodes = undef
-) 
+  $oi_home = hiera("oi4bas::oi_home", "/opt/openinfinity"),
+  $ignore_catalina_propeties = hiera("oi4bas::ignore_catalina_propeties", undef),
+  $sso_attribute_session_identifier = hiera("oi4bas::sso_attribute_session_identifier", "OI_SESSION_ID"),
+  $sso_attribute_session_username = hiera("oi4bas::sso_attribute_session_username", "uid"),
+  $sso_attribute_session_tenant_id = hiera("oi4bas::sso_attribute_session_tenant_id", "tenantId"),
+  $sso_attribute_session_roles = hiera("oi4bas::sso_attribute_session_roles", "roles"),
+  $sso_attribute_session_role_delimiter = hiera("oi4bas::sso_attribute_session_role_delimiter", undef),
+  $sso_attribute_session_attributes = hiera("oi4bas::sso_attribute_session_attributes", undef),
+  $sso_attribute_session_user_attribute_delimiter = hiera("oi4bas::sso_attribute_session_user_attribute_delimiter", undef),
+  $sso_header_session_identifier = hiera("oi4bas::sso_header_session_identifier", "OI_SESSION_ID"),
+  $sso_header_session_username = hiera("oi4bas::sso_header_session_username", "uid"),
+  $sso_header_session_tenant_id = hiera("oi4bas::sso_header_session_tenant_id", "tenantId"),
+  $sso_header_session_roles = hiera("oi4bas::sso_header_session_roles", "roles"),
+  $sso_header_session_role_delimiter = hiera("oi4bas::sso_header_session_role_delimiter", undef),
+  $sso_header_session_attributes = hiera("oi4bas::sso_header_session_attributes", undef),
+  $sso_header_session_user_attribute_delimiter = hiera("oi4bas::sso_header_session_user_attribute_delimiter", undef),
+)
 
 {
 if ! $ignore_catalina_propeties {
