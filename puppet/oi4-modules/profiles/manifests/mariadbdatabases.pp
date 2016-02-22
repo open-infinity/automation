@@ -50,13 +50,28 @@ class profiles::mariadbdatabases {
 		}
   }
   
-  if $activemq_user_password {
-	if $nodeids {
-	  mysql::db { "toasamq${nodeids[0]}":
+  define createMQDB  ($password) {
+	  mysql::db { "toasamq${$name}":
 	  user     => 'activemq',
-	  password => $activemq_user_password,
+	  password => $password,
 	  host     => '%',
 	  grant    => ['ALL'],
+	  }
+  }
+  
+  if $activemq_user_password {
+	
+	if $nodeids {
+	
+	  createMQDB {$nodeids:
+		password => $activemq_user_password
+	  }
+
+	  #mysql::db { "toasamq${nodeids[0]}":
+	  #user     => 'activemq',
+	  #password => $activemq_user_password,
+	  #host     => '%',
+	  #grant    => ['ALL'],
 	  }
 	}
   }
