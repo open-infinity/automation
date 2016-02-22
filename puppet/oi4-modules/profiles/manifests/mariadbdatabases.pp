@@ -66,13 +66,6 @@ class profiles::mariadbdatabases {
 	  createMQDB {$nodeids:
 		password => $activemq_user_password
 	  }
-
-	  #mysql::db { "toasamq${nodeids[0]}":
-	  #user     => 'activemq',
-	  #password => $activemq_user_password,
-	  #host     => '%',
-	  #grant    => ['ALL'],
-	  #}
 	}
   }
 
