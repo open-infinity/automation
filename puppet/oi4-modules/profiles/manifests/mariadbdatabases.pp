@@ -72,7 +72,7 @@ class profiles::mariadbdatabases {
 	  #password => $activemq_user_password,
 	  #host     => '%',
 	  #grant    => ['ALL'],
-	  }
+	  #}
 	}
   }
 
