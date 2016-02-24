@@ -95,6 +95,6 @@ class profiles::base {
   class {'selinux':
     mode => 'permissive'
   }
-  class {'users': }
-  class {'repos': }
+#  class {'users': }
+#  class {'repos': }
 }
