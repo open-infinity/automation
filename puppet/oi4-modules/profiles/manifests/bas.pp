@@ -74,10 +74,15 @@ $sso_header_session_user_attribute_delimiter = hiera('sso::header::session::user
 class  profiles::bas::tomcatconf  ( $oi_home = undef ) {
   $extra_jvm_opts = hiera('toas::bas::extra_jvm_opts', undef)
   $jvm_mem = hiera('toas::bas::jvm_mem')
-  $jvm_perm = hiera('toas::bas:jvm_perm')
+  $jvm_perm = hiera('toas::bas::jvm_perm')
+
 
   tomcat::config::server::valve { 'securityvault-valve':
     class_name    => 'org.openinfinity.sso.valve.AttributeBasedSecurityVaultValve',
+  }
+
+  tomcat::config::server::listener { 'indentity-context':
+    class_name    => 'org.openinfinity.sso.security.context.grid.IdentityContext',
   }
 
   tomcat::setenv::entry { 'catalina_out':
