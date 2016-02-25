@@ -47,7 +47,6 @@ class profiles::bas {
     bas_multicast_address                          => $multicast_address,
     bas_tomcat_monitor_role_pwd                    => $tomcat_monitor_role_password,
     ignore_catalina_propeties                      => $ignore_catalina_propeties,
-    force_ajp                                      => $force_ajp,
     sso_attribute_session_identifier               => $sso_attribute_session_identifier,
     sso_attribute_session_username                 => $sso_attribute_session_username,
     sso_attribute_session_tenant_id                => $sso_attribute_session_tenant_id,
@@ -93,12 +92,6 @@ class  profiles::bas::tomcatconf  ( $oi_home = undef ) {
       port                  => '8080',
       connector_ensure      => 'absent',
     }
-
-#    tomcat::config::server::connector { 'tomcat_https_443':
-#      catalina_base         => "${oi_home}/tomcat",
-#      port                  => '443',
-#      connector_ensure      => 'absent',
-#    }
   }
 
   tomcat::config::server::valve { 'securityvault-valve':
