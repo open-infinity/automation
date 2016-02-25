@@ -76,6 +76,27 @@ class  profiles::bas::tomcatconf  ( $oi_home = undef ) {
   $jvm_mem = hiera('toas::bas::jvm_mem')
   $jvm_perm = hiera('toas::bas::jvm_perm')
 
+  tomcat::config::server::connector { 'tomcat_ajp_8089':
+    catalina_base         => "${oi_home}/tomcat",
+    port                  => '8009',
+    additional_attributes => {
+    'redirectPort' => '443'
+    },
+    connector_ensure => 'present',
+    purge_connectors => true
+  }
+
+  tomcat::config::server::connector { 'tomcat_http_8080':
+    catalina_base         => "${oi_home}/tomcat",
+    port                  => '8080',
+    connector_ensure => 'absent',
+  }
+
+  tomcat::config::server::connector { 'tomcat_https_443':
+    catalina_base         => "${oi_home}/tomcat",
+    port                  => '443',
+    connector_ensure => 'absent',
+  }
 
   tomcat::config::server::valve { 'securityvault-valve':
     class_name    => 'org.openinfinity.sso.valve.AttributeBasedSecurityVaultValve',
