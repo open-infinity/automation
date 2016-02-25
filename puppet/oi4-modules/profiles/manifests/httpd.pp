@@ -6,7 +6,7 @@ class profiles::httpd {
   $httpd_domain_name = hiera('toas::httpd::domain_name') 
   $httpd_selfsigned_certificate = hiera('toas::httpd::selfsigned_certificate', true)
   
-  if $httpd_selfsigned_certificate == true {
+  if $httpd_selfsigned_certificate {
 	$httpd_serverkey_password = hiera('toas::httpd::serverkey_password')
   }
   
@@ -17,9 +17,11 @@ class profiles::httpd {
 	class {'oi4httpd::install':
 			apachePackageName => $apachePackageName
 	}-> class {'oi4httpd::config': 
-			apachePackageName => $apachePackageName
+			apachePackageName => $apachePackageName,
+			apacheConfPath => $apacheConfPath,
+			apacheServiceName => $apacheServiceName,
 	}-> class {'oi4httpd::config_ssl': 
-			apachePackageName => $apachePackageName, 
+			apachePackageName => $apachePackageName,
 			apacheServiceName => $apacheServiceName,
 			httpd_domain_name => $httpd_domain_name,
 			httpd_selfsigned_certificate => $httpd_selfsigned_certificate,

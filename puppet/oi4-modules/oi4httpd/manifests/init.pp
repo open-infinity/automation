@@ -16,7 +16,9 @@ class oi4httpd::install
 
 class oi4httpd::config 
 (
-  $apachePackageName = undef
+  $apachePackageName = undef,
+  $apacheConfPath = undef,
+  $apacheServiceName = undef,
 ) {
     file { "/opt/openinfinity/common/httpd":
         ensure => directory,
@@ -32,6 +34,16 @@ class oi4httpd::config
         group => 'apache',
         mode => 640,
         require => File["/opt/openinfinity/common/httpd"],
+    }
+
+    file { "${apacheConfPath}oi4-ajp-proxy.conf":
+        source => "puppet:///modules/oi4httpd/oi4-ajp-proxy.conf",
+        replace => true,
+        owner => "root",
+        group => "root",
+        mode => 0644,
+        notify => Service["$apacheServiceName"],
+        require => Package[$apachePackageName],
     }
 }
     
