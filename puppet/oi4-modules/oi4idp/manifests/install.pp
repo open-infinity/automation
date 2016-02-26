@@ -13,7 +13,7 @@ class oi4idp::install{
 		#}
 	
     require oi4idp::params
-		require oi4apacheds
+		#require oi4apacheds
 		
 		package { "wget":
         ensure => 'installed',

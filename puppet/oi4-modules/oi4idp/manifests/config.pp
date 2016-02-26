@@ -170,12 +170,12 @@ $platform_name = "${tomcat::params::platform_name}"
 		group  => "root",
 		mode   => 755,
 	} ->
-	file {"/opt/openinfinity/log/tomcat":
-		ensure => directory,
-		owner  => "oiuser",
-		group  => "oiuser",
-		mode   => 755,
-	} ->
+	#file {"/opt/openinfinity/log/tomcat":
+	#	ensure => directory,
+	#	owner  => "oiuser",
+	#	group  => "oiuser",
+	#	mode   => 755,
+	#} ->
 	file {"/tmp/init-tomcat.sh":
         ensure => present,
         owner => 'oiuser',
