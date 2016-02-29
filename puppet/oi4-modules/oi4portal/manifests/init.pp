@@ -31,7 +31,8 @@ class oi4portal::config (
   $portal_jvmperm = undef,
   $portal_extra_jvm_opts = undef,
   $portal_extra_catalina_opts = undef,
-  $oi_home = '/opt/openinfinity'
+  $oi_home = '/opt/openinfinity',
+  $enable_cluster  = undef
 )
 
 {
