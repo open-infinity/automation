@@ -1,11 +1,12 @@
-class profiles::bas {
+class profiles::bas ($bas_hazelcast_cluster_nodes=undef) {
   $multicast_address = hiera('toas::bas::multicast_address', undef)
   $tomcat_monitor_role_password = hiera('toas::bas::tomcat_monitor_role_password')
   $extra_catalina_opts = hiera('toas::bas::extra_catalina_opts', undef)
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
   $ignore_catalina_propeties = hiera('toas::bas::ignore_catalina_properties', undef) # if bas acts as a base module and some other module provides catalina.properties
   $run_tomcat_service = hiera('toas::bas:runtomcat', true)  #if bas acts as a base for other module that starts tomcat instead of bas
-  $bas_hazelcast_cluster_nodes = hiera('toas::bas:hazelcast::nodes', undef)
+  # NOTE: variable assignment moved to class construction becasue hiera call always returns string, and this should be array
+  #$bas_hazelcast_cluster_nodes = hiera('toas::bas:hazelcast::nodes', undef)
 
   # Session attribute identifiers
   $sso_attribute_session_identifier = hiera('sso::attribute::session::identifier', 'Shib-Session-ID')
