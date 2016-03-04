@@ -92,9 +92,9 @@ class profiles::base {
   group {"oiuser":
     ensure => present,
   }
-  class {'selinux':
-    mode => 'permissive'
-  }
+#  class {'selinux':
+#    mode => 'permissive'
+#  }
 #  class {'users': }
 #  class {'repos': }
 }
