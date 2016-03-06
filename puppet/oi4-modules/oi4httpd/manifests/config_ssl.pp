@@ -62,7 +62,7 @@ class oi4httpd::config_ssl (
             require => File["/etc/ssl/certs"],
         }
      
-        file { "/etc/ssl/certs/$httpd_ca_name.crt":
+        file { "/etc/ssl/certs/$httpd_ca_certificate.crt":
             replace => true,
             owner => "apache",
             group => "apache",
