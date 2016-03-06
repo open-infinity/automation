@@ -20,18 +20,18 @@ class oi4bas::config (
   $bas_hazelcast_cluster_nodes = undef)
 
 {
-if ! $ignore_catalina_propeties {
+  if ! $ignore_catalina_propeties {
 
-  file {"$oi_home/tomcat/conf/catalina.properties":
-    ensure => present,
-    owner => 'oiuser',
-    group => 'oiuser',
-    mode => 0600,
-    source => "puppet:///modules/oi4bas/catalina.properties",
-    require => Class["oi4bas::install"],
-    notify => Service["oi-tomcat"],
+    file {"$oi_home/tomcat/conf/catalina.properties":
+      ensure => present,
+      owner => 'oiuser',
+      group => 'oiuser',
+      mode => 0600,
+      source => "puppet:///modules/oi4bas/catalina.properties",
+      require => Class["oi4bas::install"],
+      notify => Service["oi-tomcat"],
+    }
   }
-}
 
   # Security Vault configuration
   file {"$oi_home/tomcat/conf/securityvault.properties":
@@ -42,31 +42,30 @@ if ! $ignore_catalina_propeties {
     content => template("oi4bas/securityvault.properties.erb"),
     require => Class["oi4bas::install"],
   }
-  
+
   if ( $bas_multicast_address == undef ) {
     if ( $bas_hazelcast_cluster_nodes == undef ) {
-		fail ("Cluster members are not defined. Cannot continue.")
-	}	
-	file {"$oi_home/tomcat/conf/hazelcast.xml":
-		ensure => present,
-		owner => 'oiuser',
-		group => 'oiuser',
-		mode => 0600,
-		content => template("oi4bas/hazelcast-tcp-cluster.xml.erb"),
-		require => Class["oi4bas::install"],
-	  }
+      fail ("Cluster members are not defined. Cannot continue.")
+    }
+    file {"$oi_home/tomcat/conf/hazelcast.xml":
+      ensure => present,
+      owner => 'oiuser',
+      group => 'oiuser',
+      mode => 0600,
+      content => template("oi4bas/hazelcast-tcp-cluster.xml.erb"),
+      require => Class["oi4bas::install"],
+    }
 
-  } else 
-  {
-	  file {"$oi_home/tomcat/conf/hazelcast.xml":
-		ensure => present,
-		owner => 'oiuser',
-		group => 'oiuser',
-		mode => 0600,
-		content => template("oi4bas/hazelcast.xml.erb"),
-		require => Class["oi4bas::install"],
-	  }
-  
+  } else {
+    file {"$oi_home/tomcat/conf/hazelcast.xml":
+      ensure => present,
+      owner => 'oiuser',
+      group => 'oiuser',
+      mode => 0600,
+      content => template("oi4bas/hazelcast.xml.erb"),
+      require => Class["oi4bas::install"],
+    }
+
   }
 
   file {"/etc/init.d/oi-tomcat":
