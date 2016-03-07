@@ -107,7 +107,9 @@ class oi4httpd_sp::config inherits oi4variables {
         require => File["/opt/openinfinity/common/shibboleth-sp"],
     }
 
-    exec { "configure-sp.sh":
+		$connect_to_idp=hiera('toas::sp::connect_to_idp')
+		if $connect_to_idp == true {
+			exec { "configure-sp.sh":
         command => "/opt/openinfinity/common/shibboleth-sp/configure-sp.sh",
         user => "root",
         timeout => "3600",
@@ -117,7 +119,8 @@ class oi4httpd_sp::config inherits oi4variables {
             Package["shibboleth"],
             File["/root/.ssh/id_rsa"]
         ],
-    }
+			}
+		}
 
     file {"/root/.ssh":
         ensure => directory,
@@ -161,7 +164,8 @@ class oi4httpd_sp::config inherits oi4variables {
     }
 
     # This should be run after the configure phase and service (re)start
-    exec { "post-configure-sp.sh":
+		if $connect_to_idp == true {
+			exec { "post-configure-sp.sh":
         command => "/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh",
         user => "root",	
         timeout => "3600",
@@ -170,7 +174,8 @@ class oi4httpd_sp::config inherits oi4variables {
             File["/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh"], 
             Service["shibd"],
         ],
-    }
+			}
+		}
 }
 
 class oi4httpd_sp::service inherits oi4variables {
