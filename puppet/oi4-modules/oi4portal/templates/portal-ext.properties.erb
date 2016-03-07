@@ -3,7 +3,7 @@ net.sf.ehcache.configurationResourceName=/ehcache/hibernate-clustered.xml
 ehcache.multi.vm.config.location=/ehcache/liferay-multi-vm-clustered.xml
 
 
-cluster.link.enabled=true
+cluster.link.enabled=<%= enable_cluster %>
 cluster.link.autodetect.address=<%= @portal_db_address %>:3306
 lucene.replicate.write=true
 

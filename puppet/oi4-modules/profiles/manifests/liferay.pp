@@ -8,6 +8,7 @@ class profiles::liferay {
   $extra_jvm_opts = hiera('toas::portal::extra_jvm_opts', undef)
   $extra_catalina_opts = hiera('toas::portal::extra_catalina_opts', undef)
   $use_ee_version = hiera('toas::portal::use_ee', false)
+  $enable_cluster = hiera('toas::portal::enable_cluster', 'true')
   
   if ( $use_ee_version )  {
 	$liferay_package_name = 'oi4-liferay-ee' 
@@ -37,6 +38,7 @@ class profiles::liferay {
     portal_extra_catalina_opts          => $extra_catalina_opts,
     portal_jvmmem                       => $jvm_mem,
     portal_jvmperm                      => $jvm_perm,
+	enable_cluster						=> $enable_cluster
   }->
   class {'oi4portal::service':
   }->

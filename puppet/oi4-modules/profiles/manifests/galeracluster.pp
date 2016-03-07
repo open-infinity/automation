@@ -64,8 +64,7 @@ class profiles::galeracluster {
 	owner  => 'mysql',
 	group  => 'mysql',
 	mode   => 0775,
-  }
-  
+  }-> 
   class { 'galera':
     galera_servers     => $galera_servers,
     galera_master      => $galera_master,
