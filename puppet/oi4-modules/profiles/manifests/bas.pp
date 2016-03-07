@@ -71,10 +71,18 @@ class profiles::bas ($bas_hazelcast_cluster_nodes=undef) {
   }
 }
 
-class  profiles::bas::tomcatconf  ( $oi_home = undef ) {
+class profiles::bas::tomcatconf  ( $oi_home = undef ) {
+  $facts_based_jvm_mem = floor($memorysize_mb * 0.75)
+  if $memorysize_mb > 2000 {
+    $facts_based_jvm_perm = 512
+  }
+  else {
+    $facts_based_jvm_perm = floor(0.25 * $memorysize_mb)
+  }
+
   $extra_jvm_opts = hiera('toas::bas::extra_jvm_opts', undef)
-  $jvm_mem = hiera('toas::bas::jvm_mem')
-  $jvm_perm = hiera('toas::bas::jvm_perm')
+  $jvm_mem = hiera('toas::bas::jvm_mem', $facts_based_jvm_mem )
+  $jvm_perm = hiera('toas::bas::jvm_perm', $facts_based_jvm_perm)
   $force_ajp = hiera('toas::bas::force_ajp')
 
   if $force_ajp {
