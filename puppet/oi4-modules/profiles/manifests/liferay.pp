@@ -1,5 +1,5 @@
 class profiles::liferay {
-  $multicast_address = hiera('toas::portal:multicast_address')
+  $multicast_address = hiera('toas::portal:multicast_address', 'placeholder')
   $db_address = hiera('toas::portal::db_address')
   $db_password = hiera('toas::portal::db_password')
   $tomcat_monitor_role_password = hiera('toas::portal::tomcat_monitor_role_password')

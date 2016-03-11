@@ -1,5 +1,5 @@
 class profiles::bas {
-  $multicast_address = hiera('toas::bas:multicast_address', undef)
+  $multicast_address = hiera('toas::bas:multicast_address', 'placeholder')
   $tomcat_monitor_role_password = hiera('toas::bas::tomcat_monitor_role_password')
   $extra_catalina_opts = hiera('toas::bas::extra_catalina_opts', undef)
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
@@ -78,6 +78,11 @@ class  profiles::bas::tomcatconf  ( $oi_home = undef ) {
 
   tomcat::config::server::valve { 'securityvault-valve':
     class_name    => 'org.openinfinity.sso.valve.AttributeBasedSecurityVaultValve',
+  }
+  
+ #<Listener className="org.openinfinity.sso.security.context.grid.IdentityContext" />
+  tomcat::config::server::listener {'':
+    class_name   => "org.openinfinity.sso.security.context.grid.IdentityContext",
   }
 
   tomcat::setenv::entry { 'catalina_out':

@@ -15,7 +15,7 @@
   ~ limitations under the License.
   -->
 
-<hazelcast xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-3.0.xsd"
+<hazelcast xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-3.5.xsd"
            xmlns="http://www.hazelcast.com/schema/config"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <group>
@@ -34,7 +34,7 @@
         </outbound-ports>
         <join>
             <multicast enabled="true">
-                <multicast-group><%= @_bas_multicast_address %></multicast-group>
+                <multicast-group><%= @bas_multicast_address %></multicast-group>
                 <multicast-port>54328</multicast-port>
             </multicast>
             <tcp-ip enabled="false">
