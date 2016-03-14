@@ -43,7 +43,7 @@ if ! $ignore_catalina_propeties {
     require => Class["oi4bas::install"],
   }
   
-  if ( $bas_multicast_address == undef ) {
+  if ( $bas_multicast_address == 'placeholder' ) {
     if ( $bas_hazelcast_cluster_nodes == undef ) {
 		fail ("Cluster members are not defined. Cannot continue.")
 	}	
