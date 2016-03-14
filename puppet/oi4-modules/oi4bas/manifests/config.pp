@@ -20,18 +20,20 @@ class oi4bas::config (
   $bas_hazelcast_cluster_nodes = undef)
 
 {
-if ! $ignore_catalina_propeties {
+  $toas_java_home = hiera('toas::toas_java_home', '/etc/alternatives/jre_1.8.0')
 
-  file {"$oi_home/tomcat/conf/catalina.properties":
-    ensure => present,
-    owner => 'oiuser',
-    group => 'oiuser',
-    mode => 0600,
-    source => "puppet:///modules/oi4bas/catalina.properties",
-    require => Class["oi4bas::install"],
-    notify => Service["oi-tomcat"],
+  if ! $ignore_catalina_propeties {
+
+    file {"$oi_home/tomcat/conf/catalina.properties":
+      ensure => present,
+      owner => 'oiuser',
+      group => 'oiuser',
+      mode => 0600,
+      source => "puppet:///modules/oi4bas/catalina.properties",
+      require => Class["oi4bas::install"],
+      notify => Service["oi-tomcat"],
+    }
   }
-}
 
   # Security Vault configuration
   file {"$oi_home/tomcat/conf/securityvault.properties":
@@ -40,7 +42,7 @@ if ! $ignore_catalina_propeties {
     group => 'oiuser',
     mode => 0600,
     content => template("oi4bas/securityvault.properties.erb"),
-    require => Class["oi4bas::install"],
+    require => Package["oi4-bas"],
   }
   
   if ( $multicast_address == 'placeholder' ) {
@@ -73,7 +75,7 @@ if ! $ignore_catalina_propeties {
     group => 'root',
     mode => 0755,
     content => template("oi4bas/oi-tomcat.erb"),
-    require => Class["oi4bas::install"],
+    require => Package["oi4-bas"],
   }
 
   file {"$oi_home/tomcat/conf/jmxremote.password":
@@ -82,7 +84,7 @@ if ! $ignore_catalina_propeties {
     group => 'oiuser',
     mode => 0600,
     content => template("oi4bas/jmxremote.password.erb"),
-    require => Class["oi4bas::install"],
+    require => Package["oi4-bas"],
   }
 
   file {"$oi_home/tomcat/conf/jmxremote.access":
@@ -91,8 +93,21 @@ if ! $ignore_catalina_propeties {
     group => 'oiuser',
     mode => 0644,
     source => "puppet:///modules/oi4bas/jmxremote.access",
-    require => Class["oi4bas::install"],
+    require => Package["oi4-bas"],
   }
+  
+  exec { "set toas_java_home":
+    command => 'cp /opt/openinfinity/tomcat/bin/setenv.sh /opt/openinfinity/tomcat/bin/setenv.sh.tmp && grep -v JAVA_HOME= /opt/openinfinity/tomcat/bin/setenv.sh.tmp > /opt/openinfinity/tomcat/bin/setenv.sh && echo "export JAVA_HOME=$toas_java_home" >> /opt/openinfinity/tomcat/bin/setenv.sh ; rm /opt/openinfinity/tomcat/bin/setenv.sh.tmp',
+    path => "/bin:/usr/bin",
+    notify => Service["oi-tomcat"],
+    require => Package["oi4-bas"],
+  }
+#  augeas { "set toas_java_home":
+#    context => "/files/opt/openinfinity/tomcat/bin/setenv.sh",
+#    changes => [
+#      "set JAVA_HOME $toas_java_home",
+#    ],
+#    require => Package["oi4-bas"],
+#  }
 }
-
 
