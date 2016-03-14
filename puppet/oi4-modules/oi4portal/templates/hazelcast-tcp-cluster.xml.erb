@@ -33,13 +33,14 @@
             <ports>0</ports>
         </outbound-ports>
         <join>
-            <multicast enabled="true">
-                <multicast-group><%= @portal_multicast_address %></multicast-group>
+            <multicast enabled="false">
                 <multicast-port>54328</multicast-port>
             </multicast>
-            <tcp-ip enabled="false">
-                <interface>127.0.0.1</interface>
-            </tcp-ip>
+              <tcp-ip enabled="true">
+			   <% @hazelcast_cluster_nodes.each do |$node| -%>
+			     <interface><%= $node %></interface>
+			   <% end -%>
+              </tcp-ip>
             <aws enabled="false">
                 <access-key>my-access-key</access-key>
                 <secret-key>my-secret-key</secret-key>

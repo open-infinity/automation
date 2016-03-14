@@ -43,8 +43,8 @@ if ! $ignore_catalina_propeties {
     require => Class["oi4bas::install"],
   }
   
-  if ( $bas_multicast_address == 'placeholder' ) {
-    if ( $bas_hazelcast_cluster_nodes == undef ) {
+  if ( $multicast_address == 'placeholder' ) {
+    if ( $hazelcast_cluster_nodes == undef ) {
 		fail ("Cluster members are not defined. Cannot continue.")
 	}	
 	file {"$oi_home/tomcat/conf/hazelcast.xml":
@@ -53,7 +53,6 @@ if ! $ignore_catalina_propeties {
 		group => 'oiuser',
 		mode => 0600,
 		content => template("oi4bas/hazelcast-tcp-cluster.xml.erb"),
-		require => Class["oi4bas::install"],
 	  }
 
   } else 
@@ -64,7 +63,6 @@ if ! $ignore_catalina_propeties {
 		group => 'oiuser',
 		mode => 0600,
 		content => template("oi4bas/hazelcast.xml.erb"),
-		require => Class["oi4bas::install"],
 	  }
   
   }
@@ -95,7 +93,6 @@ if ! $ignore_catalina_propeties {
     source => "puppet:///modules/oi4bas/jmxremote.access",
     require => Class["oi4bas::install"],
   }
-
 }
 
 
