@@ -81,7 +81,7 @@ class  profiles::bas::tomcatconf  ( $oi_home = undef ) {
   }
   
  #<Listener className="org.openinfinity.sso.security.context.grid.IdentityContext" />
-  tomcat::config::server::listener {'':
+  tomcat::config::server::listener {'identityContext':
     class_name   => "org.openinfinity.sso.security.context.grid.IdentityContext",
   }
 
