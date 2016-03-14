@@ -130,8 +130,8 @@ class oi4portal::config (
 		owner => 'oiuser',
 		group => 'oiuser',
 		mode => 0600,
-		content => template("oi4bas/hazelcast-tcp-cluster.xml.erb"),
-		require => Class["oi4bas::install"],
+		content => template("oi4portal/hazelcast-tcp-cluster.xml.erb"),
+		require => Class["oi4portal::install"],
 	  }
 
   } else 
@@ -141,8 +141,8 @@ class oi4portal::config (
 		owner => 'oiuser',
 		group => 'oiuser',
 		mode => 0600,
-		content => template("oi4bas/hazelcast.xml.erb"),
-		require => Class["oi4bas::install"],
+		content => template("oi4portal/hazelcast.xml.erb"),
+		require => Class["oi4portal::install"],
 	  }
   
   }
