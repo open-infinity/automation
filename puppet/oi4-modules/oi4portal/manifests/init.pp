@@ -32,7 +32,22 @@ class oi4portal::config (
   $portal_extra_jvm_opts = undef,
   $portal_extra_catalina_opts = undef,
   $oi_home = '/opt/openinfinity',
-  $enable_cluster  = undef
+  $enable_cluster  = undef, 
+  $sso_attribute_session_identifier = undef,
+  $sso_attribute_session_username = undef,
+  $sso_attribute_session_tenant_id = undef,
+  $sso_attribute_session_roles = undef,
+  $sso_attribute_session_role_delimiter = undef,
+  $sso_attribute_session_attributes = undef,
+  $sso_attribute_session_user_attribute_delimiter = undef,
+  $sso_header_session_identifier = undef,
+  $sso_header_session_username = undef,
+  $sso_header_session_tenant_id = undef,
+  $sso_header_session_roles = undef,
+  $sso_header_session_role_delimiter = undef,
+  $sso_header_session_attributes = undef,
+  $sso_header_session_user_attribute_delimiter = undef, 
+  $hazelcast_cluster_nodes = undef
 )
 
 {
@@ -105,6 +120,32 @@ class oi4portal::config (
     content => template("oi4portal/securityvault.properties.erb"),
 		require   => Class["oi4portal::install"],
 	}
+
+ if ( $portal_multicast_address == 'placeholder' ) {
+    if ( $hazelcast_cluster_nodes == undef ) {
+		fail ("Cluster members are not defined. Cannot continue.")
+	}	
+	file {"$oi_home/tomcat/conf/hazelcast.xml":
+		ensure => present,
+		owner => 'oiuser',
+		group => 'oiuser',
+		mode => 0600,
+		content => template("oi4portal/hazelcast-tcp-cluster.xml.erb"),
+		require => Class["oi4portal::install"],
+	  }
+
+  } else 
+  {
+	  file {"$oi_home/tomcat/conf/hazelcast.xml":
+		ensure => present,
+		owner => 'oiuser',
+		group => 'oiuser',
+		mode => 0600,
+		content => template("oi4portal/hazelcast.xml.erb"),
+		require => Class["oi4portal::install"],
+	  }
+  
+  }
 
 	file {"/opt/openinfinity/tomcat/conf/hazelcast.xml":
 		ensure => present,
