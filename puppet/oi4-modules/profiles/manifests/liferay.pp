@@ -85,5 +85,7 @@ $sso_header_session_user_attribute_delimiter = hiera('sso::header::session::user
     group               => 'oiuser',
   }-> tomcat::config::server::listener {'identityContext':
     class_name   => "org.openinfinity.sso.security.context.grid.IdentityContext",
+  }-> tomcat::config::server::valve { 'securityvault-valve':
+    class_name    => 'org.openinfinity.sso.valve.AttributeBasedSecurityVaultValve',
   }
 }

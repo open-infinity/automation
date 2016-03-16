@@ -45,8 +45,8 @@ class oi4bas::config (
     require => Package["oi4-bas"],
   }
   
-  if ( $multicast_address == 'placeholder' ) {
-    if ( $hazelcast_cluster_nodes == undef ) {
+  if ( $bas_multicast_address == 'placeholder' ) {
+    if ( $bas_hazelcast_cluster_nodes == undef ) {
 		fail ("Cluster members are not defined. Cannot continue.")
 	}	
 	file {"$oi_home/tomcat/conf/hazelcast.xml":
