@@ -3,9 +3,9 @@ LoadModule ssl_module modules/mod_ssl.so
 
 Listen 443 
 
-<VirtualHost <%=$httpd_clustermember_fqdn%>:443>
+<VirtualHost <%=httpd_clustermember_fqdn%>:443>
 DocumentRoot /var/www/html
-ServerName <%=$httpd_clustermember_fqdn%>
+ServerName <%=httpd_clustermember_fqdn%>
 SSLEngine on
 <% if httpd_selfsigned_certificate %>
 SSLCertificateFile /etc/ssl/certs/self-signed.crt
