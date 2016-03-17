@@ -1,12 +1,14 @@
 class oi4httpd::config_ssl (
 	$apachePackageName = undef, 
 	$apacheServiceName = undef, 
-	$httpd_domain_name = undef, 
-	$httpd_selfsigned_certificate = true, 
+	$httpd_domain_name = undef,
+	$httpd_clustermember_fqdn = undef,
+	$httpd_selfsigned_certificate = true,
 	$httpd_serverkey_password = undef, 	#Needed if $httpd_selfsigned_certificate = true
 	$httpd_domain_certificate = undef, 	#Needed if $httpd_selfsigned_certificate = false
 	$httpd_ssl_key = undef,				#Needed if $httpd_selfsigned_certificate = false
-	$httpd_ca_certificate = undef 		#Needed if $httpd_selfsigned_certificate = false
+	$httpd_ca_certificate = undef, 		#Needed if $httpd_selfsigned_certificate = false
+  $httpd_ss_ca_name = undef 		#Needed if $httpd_selfsigned_certificate = false
 ) {
     file { "/etc/httpd/conf.d/ssl.conf":
         replace => true,
@@ -62,7 +64,7 @@ class oi4httpd::config_ssl (
             require => File["/etc/ssl/certs"],
         }
      
-        file { "/etc/ssl/certs/$httpd_ca_certificate.crt":
+        file { "/etc/ssl/certs/$httpd_ss_ca_name.crt":
             replace => true,
             owner => "apache",
             group => "apache",

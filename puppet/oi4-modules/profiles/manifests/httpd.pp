@@ -3,9 +3,11 @@ class profiles::httpd {
   $apacheServiceName = hiera('toas::httpd::apacheServiceName')
   $use_lb =  hiera('toas::httpd::use_lb', false)
   $apacheConfPath = hiera('toas::httpd::apacheConfPath', undef)
-  $httpd_domain_name = hiera('toas::httpd::domain_name') 
+  $httpd_domain_name = hiera('toas::httpd::domain_name')
+	$httpd_clustermember_fqdn = hiera('toas::httpd::clustermember_fqdn', undef)
   $httpd_selfsigned_certificate = hiera('toas::httpd::selfsigned_certificate', true)
-  
+	$httpd_ss_ca_name = hiera('toas::httpd::ss_ca_name', undef)
+
   if $httpd_selfsigned_certificate {
 	$httpd_serverkey_password = hiera('toas::httpd::serverkey_password')
   }
@@ -24,11 +26,14 @@ class profiles::httpd {
 			apachePackageName => $apachePackageName,
 			apacheServiceName => $apacheServiceName,
 			httpd_domain_name => $httpd_domain_name,
+			httpd_clustermember_fqdn => $httpd_clustermember_fqdn,
 			httpd_selfsigned_certificate => $httpd_selfsigned_certificate,
 			httpd_serverkey_password => $httpd_serverkey_password, 
 			httpd_domain_certificate => $httpd_domain_certificate, 
 			httpd_ssl_key => $httpd_ssl_key, 
-			httpd_ca_certificate => $httpd_ca_certificate
+			httpd_ca_certificate => $httpd_ca_certificate,
+			httpd_ss_ca_name => $httpd_ss_ca_name
+
 	}-> class {'oi4httpd::service':
 			apachePackageName => $apachePackageName,
 			apacheServiceName => $apacheServiceName
