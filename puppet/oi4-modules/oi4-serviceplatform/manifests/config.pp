@@ -14,18 +14,21 @@ class oi4-serviceplatform::config (
 ) 
 
 {
+#
+#  file {"$oi_home/tomcat/conf/catalina.properties":
+#    ensure => present,
+#    owner => 'oiuser',
+#    group => 'oiuser',
+#    mode => 0600,
+#    source => "puppet:///modules/oi4-serviceplatform/catalina.properties",
+#    require => Class["oi4-serviceplatform::install"],
+#    notify => Service["oi-tomcat"],
+#  }
 
-  file {"$oi_home/tomcat/conf/catalina.properties":
-    ensure => present,
-    owner => 'oiuser',
-    group => 'oiuser',
-    mode => 0600,
-    source => "puppet:///modules/oi4-serviceplatform/catalina.properties",
-    require => Class["oi4-serviceplatform::install"],
-    notify => Service["oi-tomcat"],
+
+  class { 'oi4bas::bas::tomcatconf':
+    oi_home => $oi_home
   }
-
-
 	tomcat::setenv::entry {"MULE_HOME": 
 		value => "/opt/data"
 	}

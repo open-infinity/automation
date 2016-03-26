@@ -5,8 +5,11 @@ class profiles::bas ($bas_hazelcast_cluster_nodes=undef) {
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
   $ignore_catalina_propeties = hiera('toas::bas::ignore_catalina_properties', undef) # if bas acts as a base module and some other module provides catalina.properties
   $run_tomcat_service = hiera('toas::bas::runtomcat', true)  #if bas acts as a base for other module that starts tomcat instead of bas
-  # NOTE: variable assignment moved to class construction becasue hiera call always returns string, and this should be array
-  #$bas_hazelcast_cluster_nodes = hiera('toas::bas:hazelcast::nodes', undef)
+
+  # NOTE: New variable $toas::bas::mode identifies bas configuration for cluster type. Supported bas modes: bas, soa
+  # TODO: investigate if there is less intrusive way to pass role/clustertype information to bas profile
+  # -Vedran
+  $bas_mode = hiera('toas::bas::mode', undef)
 
   # Session attribute identifiers
   $sso_attribute_session_identifier = hiera('sso::attribute::session::identifier', 'Shib-Session-ID')
@@ -62,7 +65,8 @@ class profiles::bas ($bas_hazelcast_cluster_nodes=undef) {
     sso_header_session_role_delimiter              => $sso_header_session_role_delimiter,
     sso_header_session_attributes                  => $sso_header_session_attributes,
     sso_header_session_user_attribute_delimiter    => $sso_header_session_user_attribute_delimiter,
-    bas_hazelcast_cluster_nodes                    => $bas_hazelcast_cluster_nodes
+    bas_hazelcast_cluster_nodes                    => $bas_hazelcast_cluster_nodes,
+    bas_mode                                       => $bas_mode
 
   }->class { 'profiles::bas::tomcatconf':
     oi_home => $oi_home

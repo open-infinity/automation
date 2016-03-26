@@ -17,20 +17,25 @@ class oi4bas::config (
   $sso_header_session_role_delimiter = undef,
   $sso_header_session_attributes = undef,
   $sso_header_session_user_attribute_delimiter = undef,
-  $bas_hazelcast_cluster_nodes = undef)
+  $bas_hazelcast_cluster_nodes = undef,
+  $bas_mode = undef)
 
 {
+
   if ! $ignore_catalina_propeties {
 
-    file {"$oi_home/tomcat/conf/catalina.properties":
-      ensure => present,
-      owner => 'oiuser',
-      group => 'oiuser',
-      mode => 0600,
-      source => "puppet:///modules/oi4bas/catalina.properties",
-      require => Class["oi4bas::install"],
-      notify => Service["oi-tomcat"],
+    class { 'oi4bas::config::catalina':
+      mode => $bas_mode
     }
+    #    file {"$oi_home/tomcat/conf/catalina.properties":
+#      ensure => present,
+#      owner => 'oiuser',
+#      group => 'oiuser',
+#      mode => 0600,
+#      source => "puppet:///modules/oi4bas/$fileName",
+#      require => Class["oi4bas::install"],
+#      notify => Service["oi-tomcat"],
+#    }
   }
 
   # Security Vault configuration
@@ -98,3 +103,26 @@ class oi4bas::config (
 }
 
 
+class oi4bas::config::catalina($mode = "bas"){
+
+  if $mode == "bas" {
+    $fileName = "catalina.properties"
+  }
+  elsif $mode == "soa" {
+    $fileName = "catalina-soa.properties"
+  }
+  else{
+    $fileName = "catalina.properties"
+  }
+
+  file {"$oi_home/tomcat/conf/catalina.properties":
+    ensure => present,
+    owner => 'oiuser',
+    group => 'oiuser',
+    mode => 0600,
+    source => "puppet:///modules/oi4bas/$fileName",
+    require => Class["oi4bas::install"],
+    notify => Service["oi-tomcat"],
+  }
+
+}
