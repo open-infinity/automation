@@ -25,7 +25,8 @@ class oi4bas::config (
   if ! $ignore_catalina_propeties {
 
     class { 'oi4bas::config::catalina':
-      mode => $bas_mode
+      mode => $bas_mode,
+      oi_home => $oi_home
     }
     #    file {"$oi_home/tomcat/conf/catalina.properties":
 #      ensure => present,
@@ -103,7 +104,7 @@ class oi4bas::config (
 }
 
 
-class oi4bas::config::catalina($mode = "bas"){
+class oi4bas::config::catalina($mode = "bas", $oi_home){
 
   if $mode == "bas" {
     $fileName = "catalina.properties"

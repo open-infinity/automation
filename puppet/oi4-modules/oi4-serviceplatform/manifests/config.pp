@@ -14,6 +14,11 @@ class oi4-serviceplatform::config (
 ) 
 
 {
+# NOTE [Vedran]
+# Resources below are handled in oi4bas module, which handles bas technology related configuration.
+# This fits well to relos-profiles pattern, and was a bug too, since:
+# - catalina properties is double defined resource ->causes puppet error
+# - oi4bas::bas::tomcatconf does not exist
 #
 #  file {"$oi_home/tomcat/conf/catalina.properties":
 #    ensure => present,
@@ -24,11 +29,10 @@ class oi4-serviceplatform::config (
 #    require => Class["oi4-serviceplatform::install"],
 #    notify => Service["oi-tomcat"],
 #  }
+#  class { 'oi4bas::bas::tomcatconf':
+#    oi_home => $oi_home
+#  }
 
-
-  class { 'oi4bas::bas::tomcatconf':
-    oi_home => $oi_home
-  }
 	tomcat::setenv::entry {"MULE_HOME": 
 		value => "/opt/data"
 	}
