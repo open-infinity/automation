@@ -59,7 +59,7 @@ class profiles::mariadbdatabases($nodeids=undef) {
 		}
 	}
 
-	if ($activemq_user_password && $nodeids){
+	if ($activemq_user_password and $nodeids){
 		$nodeids.each |String $node_id| {
 			createMQDB { $node_id:
 			password => $activemq_user_password
