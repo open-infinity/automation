@@ -7,9 +7,9 @@ class profiles::serviceplatform {
   $sp_extra_jvm_opts =  hiera('toas::sp::extra_jvm_opts', undef)
   $sp_extra_catalina_opts =  hiera('toas::sp::extra_catalina_opts', undef)
   $sp_oi_httpuser_pwd =  hiera('toas::sp::oi_httpuser_pwd')
-  $sp_amq_stomp_conn_bindaddr =  hiera('toas::sp::amq_stomp_conn_bindaddr', undef)
-  $sp_amq_jms_conn_bindaddr =  hiera('toas::sp::amq_jms_conn_bindaddr', undef)
-  $activemq_password = hiera('toas::rdbms::activemq::pw')
+  $sp_amq_stomp_conn_bindaddr =  hiera('toas::sp::amq_stomp_conn_bindaddr', $ipaddress)
+  $sp_amq_jms_conn_bindaddr =  hiera('toas::sp::amq_jms_conn_bindaddr', $ipaddress)
+  $activemq_password = hiera('toas::rdbms::activemq::pw', undef)
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
 
 class {'oi4-serviceplatform::install':
