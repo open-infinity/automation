@@ -97,6 +97,22 @@ EOF
     MONGOD_PRIMARY=`cat $VARFILE | sed "s/\..*//" | sed "s/:.*//"`$DOMAIN:<%=mongod_port%>
     echo "Found primary '$MONGOD_PRIMARY'"
     
+	#Check if this node is already joined	
+	mongo --quiet <%=mongod_replicaset_node%> >$VARFILE << EOF
+    rs.status().members.forEach(function(member) {
+		if (member.name == "$LOCAL_MONGOD" || member.name == "$LOCAL_MONGOD_SHORT") {
+			print('true'); 
+		}
+	});
+EOF
+	ALREADY_JOINED=`cat $VARFILE`; 
+	if [ -n $VARFILE ]; then 
+		echo "$LOCAL_MONGOD already joined cluster."
+		rm $VARFILE
+		exit 0
+	fi 
+	
+	
     # Join this node to the primary node
     mongo --quiet $MONGOD_PRIMARY << EOF
         print("Using the primary to do the actual add...");
