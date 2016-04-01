@@ -80,9 +80,9 @@ class profiles::nosql {
 		if ($mongod_replicaset_node == undef) { 
 			fail ("Parameter mongod_replicaset_node undefined")
 		}
-		if ($mongod_replicaset_node !~ /^([-a-z0-9\.]+:[0-9]+)$/) { 
-			fail("Invalid mongod_replicaset_node value '$mongod_replicaset_node'") 
-		}
+		#if ($mongod_replicaset_node !~ /^([-a-z0-9\.]+:[0-9]+)$/) { 
+		#	fail("Invalid mongod_replicaset_node value '$mongod_replicaset_node'") 
+		#}
 	}
 
 	if ($mongo_cluster_type == 'sharded') {
