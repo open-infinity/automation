@@ -4,7 +4,6 @@ class profiles::mariadbdatabases($nodeids=undef) {
 	$activiti_user_password = hiera('toas::rdbms::activiti::pw', undef)
 	$activiti_httpuser_pwd = hiera('toas::rdbms::activiti::httpuser_pwd', undef)
 	$activemq_user_password = hiera('toas::rdbms::activemq::pw', undef)
-	$nodeids = hiera('toas::cluster::nodeids', undef)
 
 	if $portal_user_password {
 		mysql::db { 'lportal':
@@ -60,10 +59,7 @@ class profiles::mariadbdatabases($nodeids=undef) {
 	}
 
 	if ($activemq_user_password and $nodeids){
-		$nodeids.each |String $node_id| {
-			createMQDB { $node_id:
-			password => $activemq_user_password
-		}
+		createMQDB { $nodeids: password => $activemq_user_password}
 	}
 
 
