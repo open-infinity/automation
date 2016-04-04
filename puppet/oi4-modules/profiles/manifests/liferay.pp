@@ -10,7 +10,7 @@ class profiles::liferay {
   $use_ee_version = hiera('toas::portal::use_ee', false)
   $enable_cluster = hiera('toas::portal::enable_cluster', 'true')
   $hazelcast_cluster_nodes = hiera('toas::hazelcast::nodes', undef)
-  $enable_minifier = hiera('toas::portal::minifier_enabled', true); 
+  $enable_minifier = hiera('toas::portal::minifier_enabled', true)
   
   # Session attribute identifiers
 $sso_attribute_session_identifier = hiera('sso::attribute::session::identifier', 'Shib-Session-ID')
