@@ -6,7 +6,7 @@
 
   <bean id="mysql-ds" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 	<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-	<property name="url" value="jdbc:mysql://<%= @sp_dbaddress %>/toasamq<%= @sp_nodeid %>?relaxAutoCommit=true&amp;autoReconnect=true"/>
+	<property name="url" value="jdbc:mysql://<%= @sp_dbaddress %>/oibroker<%= @sp_nodeid %>?relaxAutoCommit=true&amp;autoReconnect=true"/>
 	<property name="validationQuery" value="select 1"/>
 	<property name="username" value="activemq"/>
 	<property name="password" value="<%= @sp_amq_password  %>"/>

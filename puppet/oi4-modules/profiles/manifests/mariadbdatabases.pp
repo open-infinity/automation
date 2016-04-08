@@ -50,7 +50,7 @@ class profiles::mariadbdatabases($nodeids=undef) {
 	}
 
 	define createMQDB  ($password) {
-		mysql::db { "toasamq${$name}":
+		mysql::db { "oibroker${$name}":
 			user     => 'activemq',
 			password => $password,
 			host     => '%',

@@ -1,4 +1,4 @@
-class profiles::serviceplatform {
+class profiles::serviceplatform($sp_cluster_nodes=undef) {
   $bas_multicast_address = hiera('toas::bas:multicast_address', undef)
   $sp_dbaddress = hiera('toas::sp::dbaddress')
   $sp_nodeid =  hiera('toas::sp::nodeid')
@@ -27,7 +27,8 @@ class {'oi4-serviceplatform::install':
 	  sp_oi_httpuser_pwd => $sp_oi_httpuser_pwd,
 	  sp_amq_stomp_conn_bindaddr =>  $sp_amq_stomp_conn_bindaddr ,
 	  sp_amq_jms_conn_bindaddr =>  $sp_amq_jms_conn_bindaddr,
-	  oi_home => $oi_home
+	  oi_home => $oi_home,
+    sp_cluster_nodes => $sp_cluster_nodes,
   }->
   class {'oi4-serviceplatform::service':
   }
