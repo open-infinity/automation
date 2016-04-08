@@ -47,7 +47,8 @@ class oi4portal::config (
   $sso_header_session_role_delimiter = undef,
   $sso_header_session_attributes = undef,
   $sso_header_session_user_attribute_delimiter = undef, 
-  $hazelcast_cluster_nodes = undef
+  $hazelcast_cluster_nodes = undef, 
+  $enable_minifier = undef
 )
 
 {

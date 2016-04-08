@@ -10,6 +10,8 @@ class profiles::liferay {
   $use_ee_version = hiera('toas::portal::use_ee', false)
   $enable_cluster = hiera('toas::portal::enable_cluster', 'true')
   $hazelcast_cluster_nodes = hiera('toas::hazelcast::nodes', undef)
+  $enable_minifier = hiera('toas::portal::minifier_enabled', true); 
+  
   # Session attribute identifiers
 $sso_attribute_session_identifier = hiera('sso::attribute::session::identifier', 'Shib-Session-ID')
 $sso_attribute_session_username = hiera('sso::attribute::session::username','uid')
@@ -27,6 +29,7 @@ $sso_header_session_roles = hiera('sso::header::session::roles','iv-groups')
 $sso_header_session_role_delimiter = hiera('sso::header::session::role::delimiter',',')
 $sso_header_session_attributes = hiera('sso::header::session::attributes','name,address,phone')
 $sso_header_session_user_attribute_delimiter = hiera('sso::header::session::user::attribute::delimiter',',')
+
 
   
   if ( $use_ee_version )  {
@@ -72,7 +75,8 @@ $sso_header_session_user_attribute_delimiter = hiera('sso::header::session::user
 	sso_header_session_role_delimiter => $sso_header_session_role_delimiter,
 	sso_header_session_attributes => $sso_header_session_attributes,
 	sso_header_session_user_attribute_delimiter => $sso_header_session_user_attribute_delimiter, 
-	hazelcast_cluster_nodes => $hazelcast_cluster_nodes
+	hazelcast_cluster_nodes => $hazelcast_cluster_nodes, 
+	enable_minifier => $enable_minifier
   }->
   class {'oi4portal::service':
   }->
