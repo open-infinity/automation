@@ -106,7 +106,7 @@ EOF
 	});
 EOF
 	ALREADY_JOINED=`cat $VARFILE`; 
-	if [ -n $VARFILE ]; then 
+  if [ "$ALREADY_JOINED"="true" ]; then 
 		echo "$LOCAL_MONGOD already joined cluster."
 		rm $VARFILE
 		exit 0
