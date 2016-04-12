@@ -147,15 +147,6 @@ class oi4portal::config (
 	  }
   
   }
-
-	file {"/opt/openinfinity/tomcat/conf/hazelcast.xml":
-		ensure => present,
-		owner => 'oiuser',
-		group => 'oiuser',
-		mode => 0600,
-		content => template("oi4portal/hazelcast.xml.erb"),
-		require => Class["oi4portal::install"],
-	}
 	
 	file {"/opt/openinfinity/tomcat/conf/jmxremote.password":
 			ensure => present,

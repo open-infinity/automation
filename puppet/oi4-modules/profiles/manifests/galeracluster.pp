@@ -5,6 +5,7 @@ class profiles::galeracluster {
   $galera_servers = hiera('toas::galera::server_list')
   $user_mysqld_options = hiera('toas::galera::mysqld_variables')
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
+  $local_interface = hiera('toas::galera::local_interface', 'eth0')
 
   include 'stdlib'
 
@@ -20,7 +21,7 @@ class profiles::galeracluster {
       'bind-address'            => '0.0.0.0',
   }
 
-  $local_mysqld_safe_options = {
+  $_mysqld_safe_options = {
       'log-error' => "$oi_home/log/rdbms/rdbms_error.log",
       'socket'    => "$oi_home/data/rdbms/mysql.sock",
       'pid-file'  => "$oi_home/data/rdbms/mysqld.pid",
@@ -64,18 +65,37 @@ class profiles::galeracluster {
 	owner  => 'mysql',
 	group  => 'mysql',
 	mode   => 0775,
-  }-> 
-  class { 'galera':
-    galera_servers     => $galera_servers,
-    galera_master      => $galera_master,
-    vendor_type        => 'mariadb',
-    override_options   => $override_options,
-    configure_repo     => false,
-    configure_firewall => false,
-    root_password      => $galera_root_password,
-    status_password    => $galera_status_password,
-  }-> class {'profiles::mariadbdatabases': 
   }
+  
+  if ( $local_interface == 'eth0') 
+  {
+	 class { 'galera':
+		galera_servers     => $galera_servers,
+		galera_master      => $galera_master,
+		vendor_type        => 'mariadb',
+		override_options   => $override_options,
+		configure_repo     => false,
+		configure_firewall => false,
+		root_password      => $galera_root_password,
+		status_password    => $galera_status_password,
+		local_ip => $::ipaddress_eth0,
+		require => File["/var/run/mysql"],
+	  }-> class {'profiles::mariadbdatabases':}
+  } else {
+	 class { 'galera':
+		galera_servers     => $galera_servers,
+		galera_master      => $galera_master,
+		vendor_type        => 'mariadb',
+		override_options   => $override_options,
+		configure_repo     => false,
+		configure_firewall => false,
+		root_password      => $galera_root_password,
+		status_password    => $galera_status_password,
+		local_ip => $::ipaddress_eth1,
+		require => File["/var/run/mysql"],
+	  }-> class {'profiles::mariadbdatabases':}
 
+  }
+ 
 }
 
