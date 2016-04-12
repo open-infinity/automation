@@ -184,7 +184,7 @@ class oi4httpd_sp::service inherits oi4variables {
         enable => true,
         require => [
             Package["shibboleth"],
-            #Exec["configure-sp.sh"],
+            Exec["configure-sp.sh"],
         ]
     }
 }

@@ -1,6 +1,8 @@
 #!/bin/bash -e
 
-SSH_OPTIONS='-q -o BatchMode=yes -o StrictHostKeyChecking=no'
+#SSH_OPTIONS='-q -o BatchMode=yes -o StrictHostKeyChecking=no'
+# verbose option below to help to notice if ssh keys are not ok
+SSH_OPTIONS='-v -o BatchMode=yes -o StrictHostKeyChecking=no'
 
 # We are working on Shibboleth-related files
 #mkdir -p /etc/shibboleth/
