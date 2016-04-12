@@ -179,6 +179,7 @@ class oi4httpd_sp::config inherits oi4variables {
 }
 
 class oi4httpd_sp::service inherits oi4variables {
+	if $connect_to_idp == true {
     service { "shibd":
         ensure => running,
         enable => true,
@@ -187,5 +188,15 @@ class oi4httpd_sp::service inherits oi4variables {
             Exec["configure-sp.sh"],
         ]
     }
+	}
+	if $connect_to_idp == false {
+    service { "shibd":
+        ensure => running,
+        enable => true,
+        require => [
+            Package["shibboleth"],
+        ]
+    }
+	}
 }
 
