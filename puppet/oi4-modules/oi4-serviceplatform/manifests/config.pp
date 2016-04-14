@@ -43,6 +43,7 @@ class oi4-serviceplatform::config (
   }
 
   file { "/opt/openinfinity/tomcat/conf/tomcat-users.xml":
+    notify => Service["oi-tomcat"],
     ensure  => present,
     owner   => 'oiuser',
     group   => 'oiuser',
@@ -55,6 +56,7 @@ class oi4-serviceplatform::config (
   #rights may require change
   $activemqxml = "/opt/openinfinity/tomcat/conf/activemq.xml"
   concat{ $activemqxml:
+    notify => Service["oi-tomcat"],
     owner => 'oiuser',
     group => 'oiuser',
     mode  => 0644,
@@ -62,6 +64,7 @@ class oi4-serviceplatform::config (
 
   if ( $bas_multicast_address == undef ){
     concat::fragment{ 'amqxml_start':
+      notify => Service["oi-tomcat"],
       target  =>  $activemqxml,
       content => template("oi4-serviceplatform/frag_start_activemq_no_multicast.xml.erb"),
       order   => '01',
@@ -70,6 +73,7 @@ class oi4-serviceplatform::config (
     # concat by undef and def parameters
     if $sp_amq_jms_conn_bindaddr != undef {
       concat::fragment{ 'amqxml_jmsconnector':
+        notify => Service["oi-tomcat"],
         target  =>  $activemqxml,
         content => template("oi4-serviceplatform/frag_jmsconnector_activemq_no_multicast.xml.erb"),
         order   => '10',
@@ -78,6 +82,7 @@ class oi4-serviceplatform::config (
   }
   else{
     concat::fragment{ 'amqxml_start':
+      notify => Service["oi-tomcat"],
       target  =>  $activemqxml,
       content => template("oi4-serviceplatform/frag_start_activemq.xml.erb"),
       order   => '01',
@@ -86,6 +91,7 @@ class oi4-serviceplatform::config (
     # concat by undef and def parameters
     if $sp_amq_jms_conn_bindaddr != undef {
       concat::fragment{ 'amqxml_jmsconnector':
+        notify => Service["oi-tomcat"],
         target  =>  $activemqxml,
         content => template("oi4-serviceplatform/frag_jmsconnector_activemq.xml.erb"),
         order   => '10',
@@ -95,6 +101,7 @@ class oi4-serviceplatform::config (
 
   if $sp_amq_stomp_conn_bindaddr != undef {
     concat::fragment{ 'amqxml_stompconnector':
+      notify => Service["oi-tomcat"],
       target  =>  $activemqxml,
       content => template("oi4-serviceplatform/frag_stompconnector_activemq.xml.erb"),
       order   => '10',
@@ -103,6 +110,7 @@ class oi4-serviceplatform::config (
 
 
   concat::fragment{ 'amqxml_end':
+    notify => Service["oi-tomcat"],
     target  =>  $activemqxml,
     content => template("oi4-serviceplatform/frag_end_activemq.xml.erb"),
     order   => '15',
@@ -119,6 +127,7 @@ class oi4-serviceplatform::config (
   # activity webapp configuration override
 
   file { "/opt/openinfinity/tomcat/webapps/activiti-explorer2/WEB-INF/classes/db.properties":
+    notify => Service["oi-tomcat"],
     ensure  => present,
     owner   => 'oiuser',
     group   => 'oiuser',
@@ -128,6 +137,7 @@ class oi4-serviceplatform::config (
   }
 
   file { "/opt/openinfinity/tomcat/webapps/activiti-rest2/WEB-INF/classes/db.properties":
+    notify => Service["oi-tomcat"],
     ensure  => present,
     owner   => 'oiuser',
     group   => 'oiuser',
@@ -137,6 +147,7 @@ class oi4-serviceplatform::config (
   }
 
   file { "/opt/openinfinity/tomcat/webapps/activiti-explorer2/WEB-INF/activiti-standalone-context.xml":
+    notify => Service["oi-tomcat"],
     ensure  => present,
     owner   => 'oiuser',
     group   => 'oiuser',
@@ -155,6 +166,7 @@ class oi4-serviceplatform::config (
   #}
 
   file { "/opt/openinfinity/tomcat/webapps/activiti-rest2/WEB-INF/web.xml":
+    notify => Service["oi-tomcat"],
     ensure  => present,
     owner   => 'oiuser',
     group   => 'oiuser',
@@ -166,6 +178,7 @@ class oi4-serviceplatform::config (
   # activemq-web-console webapp configuration override
 
   file { "/opt/openinfinity/tomcat/webapps/activemq-web-console/WEB-INF/webconsole-embedded.xml":
+    notify => Service["oi-tomcat"],
     ensure  => present,
     owner   => 'oiuser',
     group   => 'oiuser',
@@ -175,6 +188,7 @@ class oi4-serviceplatform::config (
   }
 
   file { "/opt/openinfinity/tomcat/webapps/activemq-web-console/WEB-INF/web.xml":
+    notify => Service["oi-tomcat"],
     ensure  => present,
     owner   => 'oiuser',
     group   => 'oiuser',
@@ -185,6 +199,7 @@ class oi4-serviceplatform::config (
 
   # oauth webapp configuration override
   file { "/opt/openinfinity/tomcat/webapps/oauth/WEB-INF/classes/oauth-repository.properties":
+    notify => Service["oi-tomcat"],
     ensure  => present,
     owner   => 'oiuser',
     group   => 'oiuser',
