@@ -1,0 +1,33 @@
+#!/bin/sh
+#linesToAddString = <%= etc_hosts_additions %>
+linesToAddString = "one, two, three"
+IFS=', ' read -r -a linesToAdd <<< "$linesToAddString"
+#linesToAdd = ( one two three )
+for i in "${linesToAdd[@]}"
+do
+   :
+   # do whatever on $i
+	printf “%4d: %s\n” $index ${linesToAdd[$i]}
+	 
+	# check if line already exists
+	$alreadyExists = 'false'
+	$lineToAdd = linesToAdd[$i];
+	
+	$filename="/etc/hosts"
+	while read -r line
+	do
+			name="$line"
+			echo "Name read from file - $name"
+			if [ "$lineInFile" == "$lineToAdd" ]
+			then
+				echo match
+				$alreadyExists = 'true'
+			fi			
+	done < "$filename"
+	if [$alreadyExists == 'false']
+	then
+		printf $lineToAdd >> /etc/hosts
+	fi
+done
+	
+
