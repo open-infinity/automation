@@ -95,6 +95,22 @@ class profiles::mariadb {
     grants                  => $grants,
   } -> class {'profiles::mariadbdatabases': 
   }
+  
+  package { 'policycoreutils-python':
+    ensure => 'present',
+  } ->
+  file { '/root/mysql-selinux-fix.sh':
+    ensure  => 'present',
+    content => template("profiles/mysql-selinux-fix.sh.erb"),
+  	owner   => "root",
+		group   => "root",
+		mode    => '0700',
+  } ->
+  exec { 'mysql-selinux-tuning':
+    command => "/root/mysql-selinux-fix.sh",
+    logoutput => "true",
+    require => [ Class['::mysql::server'], Class['profiles::mariadbdatabases'] ],
+  }
  
 }
 

@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+OI_HOME=<%= @oi_home %>
+
+# Stop mysql
+service mysql stop >/dev/null || true
+
+# Make the TOAS-specific MySQL data and log dirs work with the SELinux policies
+flock /var/lock/selinux semanage fcontext -a -t mysqld_db_t "$OI_HOME/data/rdbms(/.*)?"
+flock /var/lock/selinux semanage fcontext -a -t mysqld_db_t "$OI_HOME/log/rdbms(/.*)?"
+flock /var/lock/selinux restorecon -R $OI_HOME/log/rdbms $OI_HOME/data/rdbms
+
+# Start mysql
+service mysql start >/dev/null
+
