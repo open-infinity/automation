@@ -3,6 +3,7 @@ class profiles::mariadb {
   $mariadb_backup_password = hiera('toas::mariadb::backup_user_password')
   $user_mysqld_options = hiera('toas::mariadb::mysqld_variables')
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
+  $selinux_mode = hiera('selinux_mode', 'permissive')
   include 'stdlib'
 
   $local_mysqld_options = {
@@ -54,6 +55,7 @@ class profiles::mariadb {
       user                 => 'backup@localhost',
     },
   }
+  
   group { 'mysql':
     ensure => present,
   }->
@@ -82,8 +84,13 @@ class profiles::mariadb {
     owner  => 'mysql',
     group  => 'mysql',
     mode   => 0775,
-  }
- 
+  } ->
+  # The puppetforge mysql module wants to start right after the installation.
+  # We have to hack a bit to not let it cause errors.
+  exec { 'before-mysql-installation':
+    command => "setenforce permissive",
+    path => '/usr/sbin:/sbin'
+  } ->
   class { '::mysql::server':
     root_password           => $mariadb_root_password,
     remove_default_accounts => true,
@@ -94,8 +101,12 @@ class profiles::mariadb {
     users                   => $users,
     grants                  => $grants,
   } -> class {'profiles::mariadbdatabases': 
+  } -> exec { 'after-mysql-installation':
+    command => "service mysql stop ; setenforce $selinux_mode",
+    path => '/usr/sbin:/sbin'
   }
-  
+
+  # Redefine SELinux contexts for TOAS rdbms directories  
   package { 'policycoreutils-python':
     ensure => 'present',
   } ->
@@ -109,7 +120,7 @@ class profiles::mariadb {
   exec { 'mysql-selinux-tuning':
     command => "/root/mysql-selinux-fix.sh",
     logoutput => "true",
-    require => [ Class['::mysql::server'], Class['profiles::mariadbdatabases'] ],
+    require => Exec['after-mysql-installation'],
   }
  
 }
