@@ -1,0 +1,35 @@
+global
+  daemon
+  user haproxy
+  group haproxy
+  pidfile /var/run/haproxy.pid
+  tune.bufsize 32768
+  log 127.0.0.1 local2 debug debug
+
+
+defaults
+  log     global
+  option  tcplog
+  option  dontlognull
+  option  dontlog-normal
+  retries 3
+  contimeout 4000
+  clitimeout <%= cli_timeout %>
+  srvtimeout <%= srv_timeout %>       
+
+
+frontend main_https *:3306
+  mode tcp
+  default_backend jdbc
+
+
+backend jdbc
+  mode tcp
+  balance roundrobin
+  stick-table type ip size 200k expire 30m
+  stick on src
+  <% i = 1 %>
+  <% backend_addresses.each do |backend_address| %>
+    server server<%= i %> <%= backend_address %>:3306 check
+    <% i = i +1 %>
+  <% end %>

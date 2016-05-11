@@ -1,4 +1,4 @@
-class profiles::serviceplatform($sp_cluster_nodes=undef) {
+class profiles::soa($sp_cluster_nodes=undef) {
   $bas_multicast_address = hiera('toas::bas:multicast_address', undef)
   $sp_dbaddress = hiera('toas::sp::dbaddress')
   $sp_nodeid =  hiera('toas::sp::nodeid')
