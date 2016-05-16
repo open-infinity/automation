@@ -2,6 +2,7 @@ class oi4bas::config (
   $bas_multicast_address = undef,
   $bas_tomcat_monitor_role_pwd = undef,
   $oi_home = '/opt/openinfinity',
+  $javaHome = '/usr/lib/jvm/jre-1.8.0-openjdk.x86_64',
   $ignore_catalina_propeties = undef,
   $sso_attribute_session_identifier = undef,
   $sso_attribute_session_username = undef,
