@@ -1,4 +1,4 @@
-class oi4haproxy($backend_addresses, $srv_timeout="30000", $cli_timeout="60000") {
+class oi4haproxy($backend_addresses=["127.0.0.1"], $srv_timeout="30000", $cli_timeout="60000") {
 
   package { "haproxy":
 		ensure => installed
@@ -11,7 +11,7 @@ class oi4haproxy($backend_addresses, $srv_timeout="30000", $cli_timeout="60000")
 	}
 
   file { "/etc/haproxy/haproxy.cfg":
-	  content => template("loadbalancer/haproxy_jdbc.cfg.erb"),
+	  content => template("oi4haproxy/haproxy_jdbc.cfg.erb"),
 		require => Package["haproxy"],
 		notify => Exec['reload-haproxy'],
   }

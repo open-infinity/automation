@@ -1,5 +1,6 @@
-class roles::serviceplatform {
+class roles::soa_galera {
   include profiles::base
   include profiles::bas
-  include profiles::serviceplatform
+  include profiles::soa
+  include profiles::lb_galera
 }
