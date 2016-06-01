@@ -122,6 +122,14 @@ class profiles::mariadb {
     logoutput => "true",
     require => Exec['after-mysql-installation'],
   }
+  ->
+  file { "/opt/openinfinity/conf/rdbms-root-pwd":
+    replace => true,
+    owner => "oiuser",
+    group => "oiuser",
+    mode => 0600,
+    content => template("profiles/mariadb-pwd.erb"),
+  }
  
 }
 
