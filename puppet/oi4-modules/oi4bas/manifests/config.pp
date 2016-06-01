@@ -110,12 +110,11 @@ class oi4bas::config (
     verbose     => false,
     require => Class["oi4bas::install"],
   }
-
+  ->
   file {"$oi_home/tomcat/lib/oi-core-libs/deps/spring-aspects-4.1.8.RELEASE.jar":
     owner => 'oiuser',
     group => 'oiuser',
     mode => 0644,
-    require => Fetch["deploy_bas_patch"],
   }
 
 }

@@ -1,4 +1,4 @@
-½class oi4bas::service ($run_tomcat = true) {
+class oi4bas::service ($run_tomcat = true) {
 	if $run_tomcat {
 		service {"oi-tomcat":
 			ensure => running,
