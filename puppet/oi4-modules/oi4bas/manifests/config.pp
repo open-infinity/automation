@@ -22,6 +22,7 @@ class oi4bas::config (
   $bas_mode = undef)
 
 {
+  $wget_url = hiera("wget::url")
 
   if ! $ignore_catalina_propeties {
 
@@ -100,6 +101,21 @@ class oi4bas::config (
     mode => 0644,
     source => "puppet:///modules/oi4bas/jmxremote.access",
     require => Class["oi4bas::install"],
+  }
+
+  wget::fetch { "deploy_bas_patch":
+    source      => "${wget_url}/modules/toas/4.0/spring-aspects-4.1.8.RELEASE.jar",
+    destination => "$oi_home/tomcat/lib/oi-core-libs/deps/spring-aspects-4.1.8.RELEASE.jar",
+    timeout     => 0,
+    verbose     => false,
+    require => Class["oi4bas::install"],
+  }
+
+  file {"$oi_home/tomcat/lib/oi-core-libs/deps/spring-aspects-4.1.8.RELEASE.jar":
+    owner => 'oiuser',
+    group => 'oiuser',
+    mode => 0644,
+    require => Fetch["deploy_bas_patch"],
   }
 
 }

@@ -3,6 +3,7 @@ class profiles::galeracluster {
   $galera_status_password = hiera('toas::galera::status_user_password')
   $galera_master = hiera('toas::galera::master_address')
   $galera_servers = hiera('toas::galera::server_list')
+  $galera_local_ip = hiera('toas::galera::local_ip')
   $user_mysqld_options = hiera('toas::galera::mysqld_variables')
   $oi_home = hiera('toas::oi_home', '/opt/openinfinity')
 
@@ -71,6 +72,7 @@ class profiles::galeracluster {
     galera_master      => $galera_master,
     vendor_type        => 'mariadb',
     override_options   => $override_options,
+    local_ip           => $galera_local_ip,
     configure_repo     => false,
     configure_firewall => false,
     root_password      => $galera_root_password,

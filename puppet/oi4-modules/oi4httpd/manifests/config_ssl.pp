@@ -42,7 +42,7 @@ class oi4httpd::config_ssl (
             user => "root",
             timeout => "3600",
             notify => Service["$apacheServiceName"],
-            require => [ File["/etc/ssl/certs"], File["/opt/openinfinity/common/httpd/script/generate-self-signed-certificate.sh"] ], 
+            require => [ File["/etc/ssl/certs"], File["/opt/openinfinity/common/httpd/script/generate-self-signed-certificate.sh"] ],
         }
 
     } else {
