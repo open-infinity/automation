@@ -66,7 +66,10 @@ class profiles::galeracluster {
 	group  => 'mysql',
 	mode   => 0775,
   }
-  
+
+  exec { 'bootstrap_galera_cluster':
+    command  => $galera::params::bootstrap_command,
+  }->
   class { 'galera':
     galera_servers     => $galera_servers,
     galera_master      => $galera_master,
