@@ -67,8 +67,8 @@ class profiles::galeracluster {
 	mode   => 0775,
   }
 
-  exec { 'bootstrap_galera_cluster':
-    command  => $galera::params::bootstrap_command,
+  exec { 'selinux_permissive':
+    command  => "/usr/sbin/setenforce 0",
   }->
   class { 'galera':
     galera_servers     => $galera_servers,
