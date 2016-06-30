@@ -24,10 +24,9 @@ frontend main_https *:3306
 
 
 backend jdbc
+  balance source
   mode tcp
-  balance roundrobin
-  stick-table type ip size 200k expire 30m
-  stick on src
+  option tcpka
   <% i = 1 %>
   <% backend_addresses.each do |backend_address| %>
     server server<%= i %> <%= backend_address %>:3306 check
