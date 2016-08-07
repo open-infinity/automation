@@ -75,6 +75,7 @@ tomcat_pid() {
 	    echo "Tomcat is running with pid: $pid"
 	  else
 	    echo "Tomcat is not running"
+	    exit 3
 	  fi	  
           ;;
     *)
