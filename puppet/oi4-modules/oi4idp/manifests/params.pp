@@ -2,9 +2,10 @@ class oi4idp::params {
         include stdlib
         # Should be from Hiera
         $platform_name=hiera('toas::idp::platform_name')
-        $platform_version=hiera('toas::idp::platform_version')
-        $apacheds_version=hiera('toas::idp::apacheds_version')
-        $idp_shibboleth_version=hiera('toas::idp::idp_shibboleth_version')
+        #$platform_version=hiera('toas::idp::platform_version')
+        #$apacheds_version=hiera('toas::idp::apacheds_version')
+        #$idp_shibboleth_version=hiera('toas::idp::idp_shibboleth_version')
+        $requires_ntp=hiera('toas::idp::requires_ntp', false)
 
         # Static
         $java_home='/usr/lib/jvm/jre'
