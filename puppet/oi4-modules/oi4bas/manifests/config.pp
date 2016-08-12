@@ -51,29 +51,30 @@ class oi4bas::config (
     require => Class["oi4bas::install"],
   }
 
-  if ( $bas_multicast_address == undef ) {
-    if ( $bas_hazelcast_cluster_nodes == undef ) {
-      fail ("Cluster members are not defined. Cannot continue.")
-    }
-    file {"$oi_home/tomcat/conf/hazelcast.xml":
-      ensure => present,
-      owner => 'oiuser',
-      group => 'oiuser',
-      mode => 0600,
-      content => template("oi4bas/hazelcast-tcp-cluster.xml.erb"),
-      require => Class["oi4bas::install"],
-    }
+  if ($bas_mode != undef){
+    if ( $bas_multicast_address == undef ) {
+      if ( $bas_hazelcast_cluster_nodes == undef ) {
+        fail ("Cluster members are not defined. Cannot continue.")
+      }
+      file { "$oi_home/tomcat/conf/hazelcast.xml":
+        ensure  => present,
+        owner   => 'oiuser',
+        group   => 'oiuser',
+        mode    => 0600,
+        content => template("oi4bas/hazelcast-tcp-cluster.xml.erb"),
+        require => Class["oi4bas::install"],
+      }
 
-  } else {
-    file {"$oi_home/tomcat/conf/hazelcast.xml":
-      ensure => present,
-      owner => 'oiuser',
-      group => 'oiuser',
-      mode => 0600,
-      content => template("oi4bas/hazelcast.xml.erb"),
-      require => Class["oi4bas::install"],
+    } else {
+      file { "$oi_home/tomcat/conf/hazelcast.xml":
+        ensure  => present,
+        owner   => 'oiuser',
+        group   => 'oiuser',
+        mode    => 0600,
+        content => template("oi4bas/hazelcast.xml.erb"),
+        require => Class["oi4bas::install"],
+      }
     }
-
   }
 
   file {"/etc/init.d/oi-tomcat":
