@@ -1,4 +1,4 @@
-class roles::soa_galera {
+class roles::soagalera {
   include profiles::base
   include profiles::bas
   include profiles::soa

@@ -10,22 +10,26 @@ class oi4httpd_sp  {
 	require oi4httpd_sp::service
 }
 
-
-class oi4httpd_sp::install inherits oi4variables {
+# TODO-TECO : propagate requires_ntp param
+class oi4httpd_sp::install($requires_ntp = false) inherits oi4variables {
     package { "wget":
         ensure => 'installed',
-    }->
-		package { "ntp":
-        ensure => 'installed',
-    }->
-		package { "shibboleth":
+    }
+    if $requires_ntp==true {
+        package { "ntp":
+            ensure => 'installed',
+            require => Package["wget"],
+        }
+    }
+    package { "shibboleth":
         ensure => '2.5.5-3.1.el6',
         require => Package["$apachePackageName"],
     }
 }
 
+
 class oi4httpd_sp::config inherits oi4variables {
-  #$httpd_domain_name=hiera('toas::sp::httpd_domain_name')
+  $httpd_domain_name=hiera('toas::sp::httpd_domain_name')
 	$httpd_domain_full_name=hiera('toas::httpd::domain_name')
   
   # Service Provider (Shibboleth)
