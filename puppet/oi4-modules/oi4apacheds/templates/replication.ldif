@@ -1,0 +1,21 @@
+dn: ads-replConsumerId=consumer1,ou=replConsumers,ads-serverId=ldapServer,ou=servers,ads-directoryServiceId=default,ou=config
+ads-replconsumerid: consumer1
+ads-replstrictcertvalidation: FALSE
+ads-replusetls: FALSE
+ads-replsearchtimeout: 0
+ads-replsearchfilter: (objectClass=*)
+ads-replsearchsizelimit: 0
+ads-replattributes: *
+ads-replrefreshinterval: 60000
+ads-repluserpassword: <%= toas_apacheds_pwd %>
+ads-repluserdn: uid=admin,ou=system
+ads-replprovport: 10389
+ads-replprovhostname: <%= toas_apacheds_master_ip %>
+ads-replrefreshnpersist: TRUE
+ads-replsearchscope: sub
+ads-searchbasedn: <%= toas_apacheds_ads-searchbasedn %>
+ads-enabled: TRUE
+objectclass: ads-replConsumer
+objectclass: ads-base
+objectclass: top
+ads-replaliasderefmode: never

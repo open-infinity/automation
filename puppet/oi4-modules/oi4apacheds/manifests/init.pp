@@ -1,4 +1,6 @@
 class oi4apacheds {
-		class {'oi4apacheds::install':
-		}
+	include oi4apacheds::params
+	include oi4apacheds::install
+	include oi4apacheds::config
+	include oi4apacheds::service
 }

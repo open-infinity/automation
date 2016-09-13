@@ -3,8 +3,11 @@
 # Service Provider configuration for httpd
 #
 
-class oi4httpd_sp  {
-	require oi4httpd::service
+# no_httpd - to install only shibd on the host
+class oi4httpd_sp($has_httpd_mod_shib=true)  {
+  if($has_httpd_mod_shib == false){
+    require oi4httpd::service
+  }
 	require oi4httpd_sp::install
 	require oi4httpd_sp::config
 	require oi4httpd_sp::service

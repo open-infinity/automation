@@ -13,9 +13,9 @@ defaults
   option  dontlognull
   option  dontlog-normal
   retries 3
-  contimeout 4000
-  clitimeout <%= cli_timeout %>
-  srvtimeout <%= srv_timeout %>       
+  timeout connect 4000
+  timeout client <%= cli_timeout %>
+  timeout server <%= srv_timeout %>
 
 
 frontend main_https *:3306

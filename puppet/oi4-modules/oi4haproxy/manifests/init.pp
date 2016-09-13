@@ -1,5 +1,10 @@
 class oi4haproxy($backend_addresses=["127.0.0.1"], $srv_timeout="30000", $cli_timeout="60000") {
 
+  # TODO: check if backend addresses and other class params can go to hiera
+  require oi4haproxy::params
+
+  $toas_haproxy_mode=hiera("toas::haproxy::mode", "jdbc")
+
   package { "haproxy":
 		ensure => installed
 	}
@@ -11,7 +16,7 @@ class oi4haproxy($backend_addresses=["127.0.0.1"], $srv_timeout="30000", $cli_ti
 	}
 
   file { "/etc/haproxy/haproxy.cfg":
-	  content => template("oi4haproxy/haproxy_jdbc.cfg.erb"),
+	  content => template("oi4haproxy/haproxy_$toas_haproxy_mode.cfg.erb"),
 		require => Package["haproxy"],
 		notify => Exec['reload-haproxy'],
   }

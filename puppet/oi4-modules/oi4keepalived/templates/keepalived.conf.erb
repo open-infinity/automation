@@ -1,0 +1,29 @@
+vrrp_script chk_haproxy {
+        # Requires keepalived-1.1.13
+        script "killall -0 haproxy"
+        interval 2
+        weight 2
+}
+
+vrrp_instance VI_1 {
+        notify_master /etc/keepalived/master.sh
+        interface <%= @keepalived_interface %>
+        state MASTER
+        # virtual_router_id differs for each floating IP in the network
+        virtual_router_id <%= @keepalived_virtual_router_id %>
+        # 101 on master, 100 on backup
+        priority <%= @keepalived_priority %>
+        virtual_ipaddress {
+            <%= @keepalived_virtual_ipaddress %>
+        }
+        track_script {
+            # vrrp_script name
+            <%= @keepalived_track_script %>
+        }
+        # Unicast specific option, this is the IP of the interface keepalived listens on
+        vrrp_unicast_bind <%= @keepalived_vrrp_unicast_bind %>
+        # Unicast specific option, this is the IP of the peer instance
+        vrrp_unicast_peer {
+            <%= @keepalived_vrrp_unicast_peer %>
+        }
+}

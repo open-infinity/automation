@@ -1,0 +1,63 @@
+global                                                                                                                                                                                                                                [0/7408]
+  daemon
+  user haproxy
+  group haproxy
+  pidfile /var/run/haproxy.pid
+  tune.bufsize 32768
+  log 127.0.0.1 local2 debug debug
+
+
+defaults
+  log     global
+  option  tcplog
+  option  dontlognull
+  option  dontlog-normal
+  retries 3
+  timeout connect 4000
+  timeout client <%= cli_timeout %>
+  timeout server <%= srv_timeout %>
+
+
+frontend main_http *:80
+  mode http
+  default_backend web_server_http
+
+
+frontend main_https *:443
+  mode tcp
+  default_backend web_server_https
+
+
+backend web_server_http
+  mode http
+  option  redispatch
+  <% if @cookiename %>
+  cookie <%= cookiename %> insert nocache indirect
+  <% end %>
+  balance roundrobin
+  stick-table type ip size 200k expire 30m
+  stick on src
+  <% i = 1 %>
+  <% portal_addresses.each do |portal_address| %>
+  <% if @backend_port_http %>
+  server server<%= i %> <%= portal_address %>:<%= backend_port_http %> cookie server<%= i %> check
+  <% else %>
+  server server<%= i %> <%= portal_address %>:80 cookie server<%= i %> check
+  <% end %>
+  <% i = i +1 %>
+  <% end %>
+
+
+backend web_server_https
+  mode tcp
+  balance roundrobin
+  stick-table type ip size 200k expire 30m
+  stick on src
+  <% i = 1 %>
+  <% portal_addresses.each do |portal_address| %>
+  <% if @backend_port_https %>
+  server server<%= i %> <%= portal_address %>: <%= backend_port_https %> check
+  <% else %>
+  server server<%= i %> <%= portal_address %>: 443 check
+  <% end %>
+  <% i = i +1 %>
