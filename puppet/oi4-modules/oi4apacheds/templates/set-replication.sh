@@ -1,2 +1,2 @@
 #!/bin/bash
-/usr/bin/ldapmodify -h localhost -p 10389 -D "uid=admin,ou=system" -w <%= toas_apacheds_pwd %> -a -f replication.ldif
+/usr/bin/ldapmodify -h localhost -p 10389 -D "uid=admin,ou=system" -w ___SET_ME___ -a -f replication.ldif

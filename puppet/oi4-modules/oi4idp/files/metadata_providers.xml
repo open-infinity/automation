@@ -1,4 +1,13 @@
-<?xml version="1.0" ?><!-- This file is an EXAMPLE metadata configuration file. --><MetadataProvider id="ShibbolethMetadata" xmlns="urn:mace:shibboleth:2.0:metadata" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:resource="urn:mace:shibboleth:2.0:resource" xmlns:security="urn:mace:shibboleth:2.0:security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd   urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd  urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd  urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd" xsi:type="ChainingMetadataProvider">
+<MetadataProvider id="ShibbolethMetadata" xsi:type="ChainingMetadataProvider"
+                  xmlns="urn:mace:shibboleth:2.0:metadata"
+                  xmlns:resource="urn:mace:shibboleth:2.0:resource"
+                  xmlns:security="urn:mace:shibboleth:2.0:security"
+                  xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd
+                        urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd
+                        urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd
+                        urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd">
 
     <!-- ========================================================================================== -->
     <!--                             Metadata Configuration                                         -->
@@ -14,31 +23,48 @@
     <!--                                                                                            -->
     <!-- ========================================================================================== -->
 
-    <!-- Example HTTP metadata provider.  Use this if you want to download
-         the metadata from a remote service.
+    <!--
+    Example HTTP metadata provider.  Use this if you want to download the metadata
+    from a remote source.
 
-         You *MUST*  provider the SignatureValidationFilter in order to function securely.
-         Get the PubLic key, and validate it via some out of band mechanism, from the
-         party publishing the metadata
+    You *MUST* provide the SignatureValidationFilter in order to function securely.
+    Get the public key from the party publishing the metadata, and validate it
+    with them via some out of band mechanism.
 
-         The EntityRoleWhiteList saves memory by only loading metadata from entity types
-         that you will interoperate with.
+    The EntityRoleWhiteList saves memory by only loading metadata from SAML roles
+    that the IdP needs to interoperate with.
+    -->
 
-Provider xsi:type="md:FilesystemMetadataProvider" xmlns="urn:mace:Shibboleth:2.0:metadata" id="frontend1.hyvis.fi" metadataFile="/opt/shibboleth-idp/metadata/sp-frontend1.hyvis.fi-metadata.xml">
-   </MetadataProvider>
+    <!--
+    <MetadataProvider id="HTTPMetadata"
+                      xsi:type="FileBackedHTTPMetadataProvider"
+                      backingFile="%{idp.home}/metadata/localCopyFromXYZHTTP.xml"
+                      metadataURL="http://WHATEVER">
 
--->
+        <MetadataFilter xsi:type="SignatureValidation" requireSignedRoot="true">
+            <PublicKey>
+                MIIBI.....
+            </PublicKey>
+        </MetadataFilter>
+        <MetadataFilter xsi:type="RequiredValidUntil" maxValidityInterval="P30D"/>
+        <MetadataFilter xsi:type="EntityRoleWhiteList">
+            <RetainedRole>md:SPSSODescriptor</RetainedRole>
+        </MetadataFilter>
+    </MetadataProvider>
+    -->
 
-<!-- Example file metadata provider.  Use this if you want to load metadata
- from a local file.  You might use this if you have some local SPs
- which are not "federated" but you wish to offer a service to.
+    <!--
+    Example file metadata provider.  Use this if you want to load metadata
+    from a local file.  You might use this if you have some local SPs
+    which are not "federated" but you wish to offer a service to.
 
- If you do not provide a SignatureValidation filter then you *have*
- to know that the file is valid.
+    If you do not provide a SignatureValidation filter, then you have the responsibility to
+    ensure that the contents are trustworthy.
+    -->
 
-
-<MetadataProvider id="LocalMetadata"  xsi:type="FilesystemMetadataProvider" metadataFile="PATH_TO_YOUR_METADATA"/>
-
--->
+    <!--
+    <MetadataProvider id="LocalMetadata"  xsi:type="FilesystemMetadataProvider" metadataFile="PATH_TO_YOUR_METADATA"/>
+    -->
+    <MetadataProvider id="LocalMetadata"  xsi:type="FilesystemMetadataProvider" metadataFile="/opt/shibboleth-idp/metadata/sp-metadata.xml"/>
 
 </MetadataProvider>

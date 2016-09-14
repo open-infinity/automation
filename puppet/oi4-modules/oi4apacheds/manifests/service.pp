@@ -1,8 +1,9 @@
 class oi4apacheds::service{
-  require oi4apacheds::config
   require oi4apacheds::params
+  $toas_apacheds_version = "${oi4apacheds::params::toas_apacheds_version}"
 
-  $apacheds_version=hiera("toas::apacheds::version", "2.0.0_M17")
-
-
+  service { "apacheds-${toas_apacheds_version}-default":
+    ensure  => running,
+    enable  => true,
+  }
 }
