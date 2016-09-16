@@ -4,6 +4,14 @@ class oi4apacheds::postinstall{
 
   $toas_apacheds_version = "${oi4apacheds::params::toas_apacheds_version}"
 
+  exec { "change_password":
+    command   => "/opt/openinfinity/scripts/set-admin-pwd.sh",
+    user      => "root",
+    timeout   => "3600",
+    logoutput => true,
+    require   => Exec["chkconfig_add"],
+  }
+
 # NOTE: Partiion for replication can not be created from CLI.
 # For that reason it is not possible to automatically create replication,
 # since replication is based on partition.

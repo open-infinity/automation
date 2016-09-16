@@ -21,7 +21,7 @@ class oi4idp::params {
 
   # Static
   $java_home='/usr/lib/jvm/jre'
-  $idp_install_path="'/opt/shibboleth-idp/'"
+  $idp_install_path="/opt/shibboleth-idp/"
   $idp_rpm="oi4-idp-${idp_shibboleth_version}"
   $idp_install_home="/opt/shibboleth-idp/bin/"
   $idp_install_script="/root/shibboleth-idp/bin/build.xml"

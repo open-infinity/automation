@@ -1,5 +1,5 @@
 class oi4idp::config {
-  require oi4idp::params
+  require oi4idp::install
 
   $java_home="${oi4idp::params::java_home}"
   $idp_install_path="${oi4idp::params::idp_install_path}"
@@ -20,8 +20,6 @@ class oi4idp::config {
   $authn_LDAP_dnFormat="${oi4idp::params::authn_LDAP_dnFormat}"
   $authn_LDAP_ldapURL="${oi4idp::params::authn_LDAP_ldapURL}"
   $authn_LDAP_groupBaseDN="${oi4idp::params::authn_LDAP_groupBaseDN}"
-
-
 
   file {"${idp_install_script}":
     content => template("oi4idp/build.xml.erb"),
@@ -94,12 +92,15 @@ class oi4idp::config {
     group  => "oiuser",
     mode   => 755,
   } ->
-  file { "/opt/openinfinity/log/tomcat":
-    ensure => directory,
-    owner  => "oiuser",
-    group  => "oiuser",
-    mode   => 755,
-  } ->
+
+# already done by bas
+#  file { "/opt/openinfinity/log/tomcat":
+#    ensure => directory,
+#    owner  => "oiuser",
+#    group  => "oiuser",
+#    mode   => 755,
+#  } ->
+
   file { "/opt/openinfinity/scripts/setscriptpermissions.sh":
     ensure => present,
     owner  => 'root',

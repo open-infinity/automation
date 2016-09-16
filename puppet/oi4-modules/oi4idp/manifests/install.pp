@@ -5,11 +5,11 @@ class oi4idp::install{
 
   if ($requires_ntp == true){
     package { "ntp":
-      ensure => 'installed',
+      ensure => "installed",
     }
   }
-  package { "${$idp_rpm}":
-    ensure => installed,
+  package { "oi4-idp":
+    ensure => "installed",
   }
   package { "wget":
     ensure => 'installed',
