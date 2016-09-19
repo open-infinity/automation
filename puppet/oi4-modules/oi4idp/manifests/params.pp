@@ -6,6 +6,7 @@ class oi4idp::params {
   $idp_bas_connector_type=hiera('toas::idp::bas_connector_type')
   $requires_ntp=hiera('toas::idp::requires_ntp', false)
   $toas_bas_ajp_jvm_route=hiera('toas::bas::ajp::jvm_route')
+  $clustermember_addresses=hiera('toas::idp::clustermember_addresses')
   $authn_LDAP_useStartTLS=hiera('toas::idp::authn_LDAP_useStartTLS', "false")
   $authn_LDAP_useSSL=hiera('toas::idp::authn_LDAP_useSSL', "false")
   $authn_LDAP_trustCertificates=hiera('toas::idp::authn_LDAP_trustCertificates', "%{idp.home}/credentials/ldap-server.crt")
@@ -16,7 +17,7 @@ class oi4idp::params {
   $authn_LDAP_bindDN=hiera('toas::idp::authn_LDAP_bindDN', "uid=admin,ou=system")
   $authn_LDAP_bindDNCredential=hiera('toas::idp::authn_LDAP_bindDNCredential')
   $authn_LDAP_dnFormat=hiera('toas::idp::authn_LDAP_dnFormat', "uid=%s,ou=users,o=toas")
-  $authn_LDAP_ldapURL=hiera('toas::idp::authn_LDAP_ldapURL', "ldap://localhost:10389")
+  $authn_LDAP_ldapURL=hiera('toas::idp::authn_LDAP_ldapURL')
   $authn_LDAP_groupBaseDN=hiera('toas::idp::authn_LDAP_groupBaseDN')
 
   # Static

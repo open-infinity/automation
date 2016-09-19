@@ -8,6 +8,7 @@ class oi4idp::config {
   $idp_hostname="${oi4idp::params::idp_hostname}"
   $idp_keystore_password= "${oi4idp::params::idp_keystore_password}"
   $idp_bas_server_xml_template="${oi4idp::params::idp_bas_server_xml_template}"
+  $clustermember_addresses="${oi4idp::params::clustermember_addresses}"
   $authn_LDAP_useStartTLS="${oi4idp::params::authn_LDAP_useStartTLS}"
   $authn_LDAP_useSSL="${oi4idp::params::authn_LDAP_useSSL}"
   $authn_LDAP_trustCertificates="${oi4idp::params::authn_LDAP_trustCertificates}"
@@ -156,5 +157,25 @@ class oi4idp::config {
     owner   => "oiuser",
     group   => "root",
     mode    => 0644,
+  } ->
+  file { "/opt/shibboleth-idp/conf/global.xml":
+    content => template("oi4idp/global.xml.erb"),
+    ensure  => present,
+    replace => true,
+    owner   => "oiuser",
+    group   => "root",
+    mode    => 0644,
+  } ->
+  file_line { "memcahced for attributes":
+    path  => "/opt/shibboleth-idp/conf/idp.properties",
+    ensure  => present,
+    line    => "idp.artifact.StorageService = shibboleth.MemcachedStorageService",
+    match   => "#idp.artifact.StorageService = shibboleth.StorageService"
+  } ->
+  file_line { "memcahced for consent":
+    path  => "/opt/shibboleth-idp/conf/idp.properties",
+    ensure  => present,
+    line    => "idp.consent.StorageService = shibboleth.MemcachedStorageService",
+    match   => "#idp.consent.StorageService = shibboleth.ClientPersistentStorageService",
   }
 }

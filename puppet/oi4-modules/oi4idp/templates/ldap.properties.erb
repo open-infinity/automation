@@ -4,7 +4,8 @@
 idp.authn.LDAP.authenticator                   = bindSearchAuthenticator
 
 ## Connection properties ##
-idp.authn.LDAP.ldapURL                          = <%= @authn_LDAP_ldapURL %>
+#idp.authn.LDAP.ldapURL                          = <%= @authn_LDAP_ldapURL %>
+idp.authn.LDAP.ldapURL                          = <% authn_LDAP_ldapURL.each do |authn_LDAP_ldapURL| %><%= authn_LDAP_ldapURL %>:10389<% end %>
 idp.authn.LDAP.useStartTLS                      = <%= @authn_LDAP_useStartTLS %>
 #idp.authn.LDAP.useSSL                          = <%= @authn_LDAP_useSSL %>
 #idp.authn.LDAP.connectTimeout                  = 3000
