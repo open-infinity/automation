@@ -4,7 +4,10 @@ class oi4idp::params {
   # Hiera
   $idp_shibboleth_version=hiera('toas::idp::idp_shibboleth_version')
   $idp_bas_connector_type=hiera('toas::idp::bas_connector_type')
+  $idp_fqdn=hiera('toas::idp::fqdn',"${::hostname}.${::domain}")
   $requires_ntp=hiera('toas::idp::requires_ntp', false)
+  $has_attribute_resolver=hiera('toas::idp::has_attribute_resolver', true)
+  $use_special_filters=hiera('toas::idp::use_special_filters', false)
   $toas_bas_ajp_jvm_route=hiera('toas::bas::ajp::jvm_route')
   $clustermember_addresses=hiera('toas::idp::clustermember_addresses')
   $authn_LDAP_useStartTLS=hiera('toas::idp::authn_LDAP_useStartTLS', "false")
@@ -26,7 +29,6 @@ class oi4idp::params {
   $idp_rpm="oi4-idp-${idp_shibboleth_version}"
   $idp_install_home="/opt/shibboleth-idp/bin/"
   $idp_install_script="/root/shibboleth-idp/bin/build.xml"
-  $idp_hostname="${::hostname}.${::domain}"
 
   # Dynamic
   if ($idp_bas_connector_type=="ajp"){

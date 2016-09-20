@@ -54,7 +54,7 @@
           c:timeout="2">
         <constructor-arg name="client">
             <bean class="net.spy.memcached.spring.MemcachedClientFactoryBean"
-                  p:servers="<% clustermember_addresses.each do |clustermember_address| %><%= clustermember_address %>,<% end %>"
+                  p:servers="<% clustermember_addresses.each do |clustermember_address| %><%= clustermember_address %>:11211,<% end %>"
                   p:protocol="BINARY"
                   p:locatorType="CONSISTENT"
                   p:failureMode="Redistribute">

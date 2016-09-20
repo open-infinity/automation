@@ -11,9 +11,6 @@ class oi4idp::install{
   package { "oi4-idp":
     ensure => "installed",
   }
-  package { "wget":
-    ensure => 'installed',
-  }
 }
 
 
