@@ -11,6 +11,9 @@ class oi4idp::install{
   package { "oi4-idp":
     ensure => "installed",
   }
+  package { "memcached":
+    ensure => "installed",
+  }
 }
 
 

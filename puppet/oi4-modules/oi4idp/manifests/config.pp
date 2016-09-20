@@ -24,7 +24,7 @@ class oi4idp::config {
   $authn_LDAP_ldapURL="${oi4idp::params::authn_LDAP_ldapURL}"
   $authn_LDAP_groupBaseDN="${oi4idp::params::authn_LDAP_groupBaseDN}"
 
-  file {"${idp_install_script}":
+  file { "${idp_install_script}":
     content => template("oi4idp/build.xml.erb"),
     ensure  => present,
     replace => true,
@@ -46,7 +46,7 @@ class oi4idp::config {
     cwd         => "/root/shibboleth-idp/bin/",
     environment => "JAVA_HOME=${java_home}",
     creates     => "$idp_install_path/war/idp.war",
-    require => File["/opt/openinfinity/tomcat/conf/server.xml"]
+    require     => File["/opt/openinfinity/tomcat/conf/server.xml"]
   }
   file { "${idp_install_path}":
     ensure  => directory,
@@ -101,14 +101,12 @@ class oi4idp::config {
     mode   => 755,
   }
   file { "/opt/openinfinity/scripts/setscriptpermissions.sh":
-    ensure => present,
-    owner  => 'root',
-    group  => 'root',
-    mode   => 0700,
-    source => "puppet:///modules/oi4idp/setscriptpermissions.sh",
-    require => Exec["install_idp"],
-    require => File["/opt/openinfinity/scripts"],
-    notify => Service["oi-tomcat"]
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => 0700,
+    source  => "puppet:///modules/oi4idp/setscriptpermissions.sh",
+    require => [File["$idp_install_home"],File["/opt/openinfinity/scripts"]],
   }
   exec { "/opt/openinfinity/scripts/setscriptpermissions.sh":
     command => "/opt/openinfinity/scripts/setscriptpermissions.sh",
@@ -120,15 +118,6 @@ class oi4idp::config {
     group  => "root",
     mode   => 755,
   }
-  file { "/opt/shibboleth-idp/conf/metadata-providers.xml":
-    ensure => present,
-    owner  => 'oiuser',
-    group  => 'root',
-    mode   => 0640,
-    source => "puppet:///modules/oi4idp/metadata_providers.xml",
-    require => Exec["install_idp"],
-    notify => Service["oi-tomcat"]
-  }
   if ($has_attribute_resolver == true){
     file { "/opt/shibboleth-idp/conf/attribute-resolver.xml":
       content => template("oi4idp/attribute-resolver.xml.erb"),
@@ -137,8 +126,8 @@ class oi4idp::config {
       owner   => "oiuser",
       group   => "root",
       mode    => 0644,
-      require => Exec["install_idp"],
-      notify => Service["oi-tomcat"]
+      require => File["$idp_install_home"],
+      notify  => Service["oi-tomcat"]
     }
   }
   file { "/opt/shibboleth-idp/conf/attribute-filter.xml":
@@ -148,8 +137,8 @@ class oi4idp::config {
     owner   => "oiuser",
     group   => "root",
     mode    => 0644,
-    require => Exec["install_idp"],
-    notify => Service["oi-tomcat"]
+    require => File["$idp_install_home"],
+    notify  => Service["oi-tomcat"]
   }
   file { "/opt/shibboleth-idp/conf/ldap.properties":
     content => template("oi4idp/ldap.properties.erb"),
@@ -158,8 +147,8 @@ class oi4idp::config {
     owner   => "oiuser",
     group   => "root",
     mode    => 0644,
-    require => Exec["install_idp"],
-    notify => Service["oi-tomcat"]
+    require => File["$idp_install_home"],
+    notify  => Service["oi-tomcat"]
   }
   file { "/opt/shibboleth-idp/conf/authn/jaas.config":
     content => template("oi4idp/jaas.config.erb"),
@@ -168,8 +157,8 @@ class oi4idp::config {
     owner   => "oiuser",
     group   => "root",
     mode    => 0644,
-    require => Exec["install_idp"],
-    notify => Service["oi-tomcat"]
+    require => File["$idp_install_home"],
+    notify  => Service["oi-tomcat"]
   }
   file { "/opt/shibboleth-idp/conf/global.xml":
     content => template("oi4idp/global.xml.erb"),
@@ -178,31 +167,73 @@ class oi4idp::config {
     owner   => "oiuser",
     group   => "root",
     mode    => 0644,
-    require => Exec["install_idp"],
-    notify => Service["oi-tomcat"]
+    require => File["$idp_install_home"],
+    notify  => Service["oi-tomcat"]
   }
   file_line { "memcahced for attributes":
-    path  => "/opt/shibboleth-idp/conf/idp.properties",
+    path    => "/opt/shibboleth-idp/conf/idp.properties",
     ensure  => present,
     line    => "idp.artifact.StorageService = shibboleth.MemcachedStorageService",
     match   => "#idp.artifact.StorageService = shibboleth.StorageService",
-    require => Exec["install_idp"],
-    notify => Service["oi-tomcat"]
+    require => File["$idp_install_home"],
+    notify  => Service["oi-tomcat"]
   }
   file_line { "memcahced for consent":
-    path  => "/opt/shibboleth-idp/conf/idp.properties",
+    path    => "/opt/shibboleth-idp/conf/idp.properties",
     ensure  => present,
     line    => "idp.consent.StorageService = shibboleth.MemcachedStorageService",
     match   => "#idp.consent.StorageService = shibboleth.ClientPersistentStorageService",
-    require => Exec["install_idp"],
-    notify => Service["oi-tomcat"]
+    require => File["$idp_install_home"],
+    notify  => Service["oi-tomcat"]
   }
   file_line { "memcahced for message replay":
-    path  => "/opt/shibboleth-idp/conf/idp.properties",
+    path    => "/opt/shibboleth-idp/conf/idp.properties",
     ensure  => present,
     line    => "idp.replayCache.StorageService = shibboleth.MemcachedStorageService",
     match   => "#idp.replayCache.StorageService = shibboleth.StorageService",
-    require => Exec["install_idp"],
-    notify => Service["oi-tomcat"]
+    require => File["$idp_install_home"],
+    notify  => Service["oi-tomcat"]
+  }
+}
+
+#class oi4idp::config::jstl{
+#  wget::fetch { "download jstl":
+#    source      => "http://tecdevpm1.dev.teco.local//modules/op/4.5/jbossliferaypatching/files/${$liferay_patchingtool_filename}",
+#    destination => "${platform_home}/${$liferay_patchingtool_filename}",
+#    timeout     => 0,
+#    verbose     => false,
+#    require     => Class["jbossliferayportal_ee::config"],
+#  }
+#  file { "jstl":
+#    path    => "/opt/shibboleth-idp/edit-webapp/WEB/lib/jstl-1.2.jar",
+#    source  => "puppet:///modules/oi4idp/metadata_providers.xml",
+#    ensure  => present,
+#    owner   => 'oiuser',
+#    group   => 'root',
+#    mode    => 0640,
+#    require => File["$idp_install_home"],
+#  } ->
+#  exec { "rebuild war with jstl":
+#    command => "/opt/shibboleth-idp/bin/build.sh",
+#  } ->
+#  file { "new war owners":
+#    path    => "/opt/shibboleth-idp/war/idp.war",
+#    source  => "puppet:///modules/oi4idp/metadata_providers.xml",
+#    ensure  => present,
+#    owner   => 'oiuser',
+#    group   => 'root',
+#    mode    => 0600,
+#  }
+#}
+#
+class oi4idp::config::sp{
+  file { "/opt/shibboleth-idp/conf/metadata-providers.xml":
+    ensure  => present,
+    owner   => 'oiuser',
+    group   => 'root',
+    mode    => 0640,
+    source  => "puppet:///modules/oi4idp/metadata_providers.xml",
+    require => File["$idp_install_home"],
+    notify  => Service["oi-tomcat"]
   }
 }
