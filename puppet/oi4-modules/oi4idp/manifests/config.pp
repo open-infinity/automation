@@ -53,7 +53,7 @@ class oi4idp::config {
     recurse => true,
     owner   => "oiuser",
     mode    => 0644,
-    require => File["install_idp"]
+    require => Exec["install_idp"]
   }
   file { "/opt/openinfinity/tomcat/conf/Catalina/":
     ensure => directory,
@@ -84,7 +84,7 @@ class oi4idp::config {
       group   => 'oiuser',
       mode    => 0644,
       source  => "puppet:///modules/oi4idp/web.xml",
-      require => File["install_idp"],
+      require => Exec["install_idp"],
       notify  => Service["oi-tomcat"]
     }
   }
@@ -106,8 +106,9 @@ class oi4idp::config {
     group  => 'root',
     mode   => 0700,
     source => "puppet:///modules/oi4idp/setscriptpermissions.sh",
-    notify => Service["oi-tomcat"],
-    require => File["/opt/openinfinity/scripts"]
+    require => Exec["install_idp"],
+    require => File["/opt/openinfinity/scripts"],
+    notify => Service["oi-tomcat"]
   }
   exec { "/opt/openinfinity/scripts/setscriptpermissions.sh":
     command => "/opt/openinfinity/scripts/setscriptpermissions.sh",
@@ -124,8 +125,9 @@ class oi4idp::config {
     owner  => 'oiuser',
     group  => 'root',
     mode   => 0640,
-    require => File["install_idp"],
     source => "puppet:///modules/oi4idp/metadata_providers.xml",
+    require => Exec["install_idp"],
+    notify => Service["oi-tomcat"]
   }
   if ($has_attribute_resolver == true){
     file { "/opt/shibboleth-idp/conf/attribute-resolver.xml":
@@ -135,7 +137,8 @@ class oi4idp::config {
       owner   => "oiuser",
       group   => "root",
       mode    => 0644,
-      require => File["install_idp"],
+      require => Exec["install_idp"],
+      notify => Service["oi-tomcat"]
     }
   }
   file { "/opt/shibboleth-idp/conf/attribute-filter.xml":
@@ -145,7 +148,8 @@ class oi4idp::config {
     owner   => "oiuser",
     group   => "root",
     mode    => 0644,
-    require => File["install_idp"],
+    require => Exec["install_idp"],
+    notify => Service["oi-tomcat"]
   }
   file { "/opt/shibboleth-idp/conf/ldap.properties":
     content => template("oi4idp/ldap.properties.erb"),
@@ -154,7 +158,8 @@ class oi4idp::config {
     owner   => "oiuser",
     group   => "root",
     mode    => 0644,
-    require => File["install_idp"],
+    require => Exec["install_idp"],
+    notify => Service["oi-tomcat"]
   }
   file { "/opt/shibboleth-idp/conf/authn/jaas.config":
     content => template("oi4idp/jaas.config.erb"),
@@ -163,7 +168,8 @@ class oi4idp::config {
     owner   => "oiuser",
     group   => "root",
     mode    => 0644,
-    require => File["install_idp"],
+    require => Exec["install_idp"],
+    notify => Service["oi-tomcat"]
   }
   file { "/opt/shibboleth-idp/conf/global.xml":
     content => template("oi4idp/global.xml.erb"),
@@ -172,27 +178,31 @@ class oi4idp::config {
     owner   => "oiuser",
     group   => "root",
     mode    => 0644,
-    require => File["install_idp"],
+    require => Exec["install_idp"],
+    notify => Service["oi-tomcat"]
   }
   file_line { "memcahced for attributes":
     path  => "/opt/shibboleth-idp/conf/idp.properties",
     ensure  => present,
     line    => "idp.artifact.StorageService = shibboleth.MemcachedStorageService",
     match   => "#idp.artifact.StorageService = shibboleth.StorageService",
-    require => File["install_idp"],
+    require => Exec["install_idp"],
+    notify => Service["oi-tomcat"]
   }
   file_line { "memcahced for consent":
     path  => "/opt/shibboleth-idp/conf/idp.properties",
     ensure  => present,
     line    => "idp.consent.StorageService = shibboleth.MemcachedStorageService",
     match   => "#idp.consent.StorageService = shibboleth.ClientPersistentStorageService",
-    require => File["install_idp"],
+    require => Exec["install_idp"],
+    notify => Service["oi-tomcat"]
   }
   file_line { "memcahced for message replay":
     path  => "/opt/shibboleth-idp/conf/idp.properties",
     ensure  => present,
     line    => "idp.replayCache.StorageService = shibboleth.MemcachedStorageService",
     match   => "#idp.replayCache.StorageService = shibboleth.StorageService",
-    require => File["install_idp"],
+    require => Exec["install_idp"],
+    notify => Service["oi-tomcat"]
   }
 }
