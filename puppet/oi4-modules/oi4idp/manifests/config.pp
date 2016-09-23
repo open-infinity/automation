@@ -194,6 +194,14 @@ class oi4idp::config {
     require => File["$idp_install_path"],
     notify  => Service["oi-tomcat"]
   }
+  file { "/opt/openinfinity/common/shibboleth-idp/add-sp.py":
+    ensure  => present,
+    owner   => 'oiuser',
+    group   => 'root',
+    mode    => 0700,
+    source  => "puppet:///modules/oi4idp/add-sp.py",
+    require => File["${idp_install_path}"]
+  }
 }
 
 #class oi4idp::config::jstl{

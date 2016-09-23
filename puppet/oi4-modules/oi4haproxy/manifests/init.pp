@@ -16,7 +16,7 @@ class oi4haproxy($backend_addresses=["127.0.0.1"], $srv_timeout="30000", $cli_ti
 	}
 
   file { "/etc/haproxy/haproxy.cfg":
-	  content => template("oi4haproxy/haproxy_$toas_haproxy_mode.cfg.erb"),
+	  content => template("oi4haproxy/haproxy.cfg.erb"),
 		require => Package["haproxy"],
 		notify => Exec['reload-haproxy'],
   }
