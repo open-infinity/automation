@@ -5,8 +5,8 @@ LoadModule proxy_ajp_module modules/mod_proxy_ajp.so
 ProxyPass / balancer://oicluster/ stickysession=JSESSIONID|jsessionid
 ProxyPassReverse / balancer://oicluster/
 <Proxy balancer://oicluster>
-	<% portal_addresses.each do |portal_address| %>
-	BalancerMember ajp://<%= portal_address %>:8009
+	<% backend_addresses.each do |backend_address| %>
+	BalancerMember ajp://<%= backend_address %>:8009 <%= jvm_route_id %>
 	<% end %>
 </Proxy>
 

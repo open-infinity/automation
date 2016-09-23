@@ -2,6 +2,7 @@
 class oi4httpd::config_lb (
 	$apacheConfPath = undef
 ) {
+
 	# Load balancer for a cluster
 	file { "${apacheConfPath}oi4-loadbalancer.conf":
 		content => template("oi4httpd/lb/oi4-loadbalancer.conf.erb"),

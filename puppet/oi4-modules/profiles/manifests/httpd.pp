@@ -1,4 +1,4 @@
-class profiles::httpd {
+class profiles::httpd ($backend_addresses = undef) {
   $apachePackageName = hiera('toas::httpd::apachePackageName')
   $apacheServiceName = hiera('toas::httpd::apacheServiceName')
   $use_lb =  hiera('toas::httpd::use_lb', false)
@@ -22,6 +22,7 @@ class profiles::httpd {
 			apachePackageName => $apachePackageName,
 			apacheConfPath => $apacheConfPath,
 			apacheServiceName => $apacheServiceName,
+	    backend_addresses => $backend_addresses,
 	}-> class {'oi4httpd::config_ssl': 
 			apachePackageName => $apachePackageName,
 			apacheServiceName => $apacheServiceName,

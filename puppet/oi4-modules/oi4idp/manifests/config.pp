@@ -8,6 +8,8 @@ class oi4idp::config {
   $idp_fqdn="${oi4idp::params::idp_fqdn}"
   $idp_keystore_password= "${oi4idp::params::idp_keystore_password}"
   $idp_bas_server_xml_template="${oi4idp::params::idp_bas_server_xml_template}"
+  $idp_master_ip="${oi4idp::params::idp_master_ip}"
+  $ajp_jvm_route="${oi4idp::params::ajp_jvm_route}"
   $clustermember_addresses="${oi4idp::params::clustermember_addresses}"
   $has_attribute_resolver="${oi4idp::params::has_attribute_resolver}"
   $use_special_filters="${oi4idp::params::use_special_filters}"
@@ -23,6 +25,8 @@ class oi4idp::config {
   $authn_LDAP_dnFormat="${oi4idp::params::authn_LDAP_dnFormat}"
   $authn_LDAP_ldapURL="${oi4idp::params::authn_LDAP_ldapURL}"
   $authn_LDAP_groupBaseDN="${oi4idp::params::authn_LDAP_groupBaseDN}"
+  $authn_LDAP_validateDN="${oi4idp::params::authn_LDAP_validateDN}"
+  $authn_LDAP_validateFilter="${oi4idp::params::authn_LDAP_validateFilter}"
 
   file { "${idp_install_script}":
     content => template("oi4idp/build.xml.erb"),
@@ -202,6 +206,19 @@ class oi4idp::config {
     source  => "puppet:///modules/oi4idp/add-sp.py",
     require => File["${idp_install_path}"]
   }
+
+  if ($idp_master_ip != $::ipaddress_eth2){
+    # Copy all configuration data from master
+    # TODO optimize:
+    #   - minimalize list of files to transfer
+    #   - don't configure files by puppet if they will be overwritten by rsync
+    exec { "copy_master_metadata":
+      command     => "/root/shibboleth-idp/bin/install.sh",
+      cwd         => "rsync -v -a /opt/shibboleth-idp/metadata/ root@$idp_master_ip:/opt/shibboleth-idp/metadata/",
+      require => File["${idp_install_path}"],
+      notify      => Service["oi-tomcat"]
+    }
+  }
 }
 
 #class oi4idp::config::jstl{
@@ -233,7 +250,7 @@ class oi4idp::config {
 #    mode    => 0600,
 #  }
 #}
-#
+
 class oi4idp::config::sp{
   file { "/opt/shibboleth-idp/conf/metadata-providers.xml":
     ensure  => present,

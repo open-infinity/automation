@@ -120,6 +120,24 @@ urn:mace:shibboleth:2.0:security classpath:/schema/shibboleth-2.0-security.xsd">
                 %{idp.attribute.resolver.LDAP.searchFilter}
          ]]>
         </dc:FilterTemplate>
+        <dc:ReturnAttributes>%{idp.attribute.resolver.LDAP.returnAttributes}</dc:ReturnAttributes>
+        <dc:StartTLSTrustCredential id="LDAPtoIdPCredential" xsi:type="sec:X509ResourceBacked">
+            <sec:Certificate>%{idp.attribute.resolver.LDAP.trustCertificates}</sec:Certificate>
+        </dc:StartTLSTrustCredential>
+        <!--
+        LDAP connection pool is configured to check connections to defined LDAP servers.
+        In case of LDAP server fail, the conenctions are recreated so that alive LDAP server is used.
+        -->
+        <dc:ConnectionPool
+            minPoolSize="0"
+            maxPoolSize="10"
+            blockWaitTime="PT5S"
+            expirationTime="PT10M"
+            validatePeriodically="true"
+            validateTimerPeriod="PT5S"
+            validateDN=<%= @authn_LDAP_validateDN %>
+            validateFilter=<%= @authn_LDAP_validateFileter %>
+            failFastInitialize="false" />
         <!--<dc:StartTLSTrustCredential id="LDAPtoIdPCredential" xsi:type="sec:X509ResourceBacked">
         <sec:Certificate>%{idp.attribute.resolver.LDAP.trustCertificates}</sec:Certificate>
         </dc:StartTLSTrustCredential>-->

@@ -14,11 +14,12 @@ class oi4httpd::install
     }
 }
 
-class oi4httpd::config 
+class oi4httpd::config
 (
   $apachePackageName = undef,
   $apacheConfPath = undef,
   $apacheServiceName = undef,
+  $backend_addresses = undef,
 ) {
     file { "/opt/openinfinity/common/httpd":
         ensure => directory,

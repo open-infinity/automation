@@ -14,6 +14,9 @@ class oi4idp::install{
   package { "memcached":
     ensure => "installed",
   }
+  package { "rsync":
+    ensure => "installed",
+  }
 }
 
 
