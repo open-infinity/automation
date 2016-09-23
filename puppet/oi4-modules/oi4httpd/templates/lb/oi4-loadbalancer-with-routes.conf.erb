@@ -6,7 +6,7 @@ ProxyPass / balancer://oicluster/ stickysession=JSESSIONID|jsessionid
 ProxyPassReverse / balancer://oicluster/
 <Proxy balancer://oicluster>
   <% (1..backend_addresses.length).each do |i| -%>
-	BalancerMember ajp://<%= backend_address[i] %>:8009 <%= jvm_route[i] %>
+	BalancerMember ajp://<%= backend_address[i] %>:8009 route=jvm_<%= jvm_route[i] %>
 	<% end %>
 </Proxy>
 
