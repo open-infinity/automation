@@ -1,2 +1,5 @@
 #!/bin/bash
-/usr/bin/ldapmodify -h localhost -p 10389 -D "uid=admin,ou=system" -w secret -a -f /opt/openinfinity/conf/admin-pwd.ldif
+/usr/bin/ldapmodify -h localhost -p 10389 -D "uid=admin,ou=system" -w secret -a -f /opt/openinfinity/conf/admin-pwd.ldif &&
+cat <<EOT >> /opt/openinfinity/conf/admin_pwd.txt
+<%= @toas_apacheds_admin_pwd %>
+EOT

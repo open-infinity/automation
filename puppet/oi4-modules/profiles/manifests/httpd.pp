@@ -4,48 +4,50 @@ class profiles::httpd ($backend_addresses = undef, $jvm_routes = undef) {
   $use_lb =  hiera('toas::httpd::use_lb', false)
   $apacheConfPath = hiera('toas::httpd::apacheConfPath', undef)
   $httpd_domain_name = hiera('toas::httpd::domain_name')
-	$httpd_clustermember_fqdn = hiera('toas::httpd::clustermember_fqdn', undef)
+  $httpd_clustermember_fqdn = hiera('toas::httpd::clustermember_fqdn', undef)
   $httpd_selfsigned_certificate = hiera('toas::httpd::selfsigned_certificate', true)
-	$httpd_ss_ca_name = hiera('toas::httpd::ss_ca_name', undef)
+  $httpd_ss_ca_name = hiera('toas::httpd::ss_ca_name', undef)
 
   if $httpd_selfsigned_certificate {
-	$httpd_serverkey_password = hiera('toas::httpd::serverkey_password')
+    $httpd_serverkey_password = hiera('toas::httpd::serverkey_password')
   }
-  
+
   $httpd_domain_certificate = hiera('toas::httpd::domain_certificate', undef)
-  $httpd_ssl_key = hiera('toas::httpd::ssl_key', undef)			
-  $httpd_ca_certificate = hiera('toas::httpd::ca_certificate', undef)	
+  $httpd_ssl_key = hiera('toas::httpd::ssl_key', undef)
+  $httpd_ca_certificate = hiera('toas::httpd::ca_certificate', undef)
 
-	class {'oi4httpd::install':
-			apachePackageName => $apachePackageName
-	}-> class {'oi4httpd::config': 
-			apachePackageName => $apachePackageName,
-			apacheConfPath => $apacheConfPath,
-			apacheServiceName => $apacheServiceName,
-	    backend_addresses => $backend_addresses,
-			jvm_routes				=> $jvm_routes,
-	}-> class {'oi4httpd::config_ssl': 
-			apachePackageName => $apachePackageName,
-			apacheServiceName => $apacheServiceName,
-			httpd_domain_name => $httpd_domain_name,
-			httpd_clustermember_fqdn => $httpd_clustermember_fqdn,
-			httpd_selfsigned_certificate => $httpd_selfsigned_certificate,
-			httpd_serverkey_password => $httpd_serverkey_password, 
-			httpd_domain_certificate => $httpd_domain_certificate, 
-			httpd_ssl_key => $httpd_ssl_key, 
-			httpd_ca_certificate => $httpd_ca_certificate,
-			httpd_ss_ca_name => $httpd_ss_ca_name
+  class { 'oi4httpd::install':
+    apachePackageName => $apachePackageName
+  }-> class { 'oi4httpd::config':
+    apachePackageName => $apachePackageName,
+    apacheConfPath    => $apacheConfPath,
+    apacheServiceName => $apacheServiceName,
+  }-> class { 'oi4httpd::config_ssl':
+    apachePackageName            => $apachePackageName,
+    apacheServiceName            => $apacheServiceName,
+    httpd_domain_name            => $httpd_domain_name,
+    httpd_clustermember_fqdn     => $httpd_clustermember_fqdn,
+    httpd_selfsigned_certificate => $httpd_selfsigned_certificate,
+    httpd_serverkey_password     => $httpd_serverkey_password,
+    httpd_domain_certificate     => $httpd_domain_certificate,
+    httpd_ssl_key                => $httpd_ssl_key,
+    httpd_ca_certificate         => $httpd_ca_certificate,
+    httpd_ss_ca_name             => $httpd_ss_ca_name
 
-	}-> class {'oi4httpd::service':
-			apachePackageName => $apachePackageName,
-			apacheServiceName => $apacheServiceName
-	}
-	if $use_lb {
-		class {'oi4httpd::config_lb': 
-			require => Class["oi4httpd::config_ssl"], 
-			apacheConfPath => $apacheConfPath
-		}
-	}
+  }-> class { 'oi4httpd::service':
+    apachePackageName => $apachePackageName,
+    apacheServiceName => $apacheServiceName
+  }
+  if $use_lb {
+    class { 'oi4httpd::config_lb':
+      require           => Class["oi4httpd::config_ssl"],
+      jvm_routes        => $jvm_routes,
+      backend_addresses => $backend_addresses,
+      apacheServiceName => $apacheServiceName,
+      apachePackageName => $apachePackageName,
+      apacheConfPath    => $apacheConfPath,
+    }
+  }
 }
 
 

@@ -1,9 +1,12 @@
 
 class oi4httpd::config_lb (
-	$apacheConfPath = undef,
 	$jvm_routes = undef,
+	$backend_addresses = undef,
+	$apacheServiceName= undef,
+	$apachePackageName = undef,
+	$apacheConfPath = undef,
 ) {
-
+  require oi4httpd::install
 	# Use $jvm_routes for load balancing. Tomcat must set up cookies with the same name
 	#	Route name should be unique for each balanced machine
 	if ($jvm_routes == undef){

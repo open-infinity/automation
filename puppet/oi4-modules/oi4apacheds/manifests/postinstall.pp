@@ -6,9 +6,9 @@ class oi4apacheds::postinstall{
   $toas_apacheds_master_ip_address="${oi4apacheds::params::toas_apacheds_master_ip_address}"
   $toas_apacheds_node_ip_address="${oi4apacheds::params::toas_apacheds_node_ip_address}"
 
-
   exec { "change_password":
     command   => "/opt/openinfinity/conf/set-admin-pwd.sh",
+    creates   => "/opt/openinfinity/conf/admin_pwd.txt",
     user      => "root",
     timeout   => "3600",
     logoutput => true,

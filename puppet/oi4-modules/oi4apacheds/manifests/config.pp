@@ -35,14 +35,14 @@ class oi4apacheds::config{
     mode    => 0700,
   }
   file { "/opt/openinfinity/conf/replication.ldif.erb":
-    content => template("oi4apacheds/replication.ldif.erb}"),
+    content => template("oi4apacheds/replication.ldif.erb"),
     ensure  => present,
     owner   => "apacheds",
     group   => "apacheds",
     mode    => 0600,
   }
   file { "/opt/openinfinity/conf/set-replication.sh.erb":
-    content => template("oi4apacheds/set-replication.sh.erb}"),
+    content => template("oi4apacheds/set-replication.sh.erb"),
     ensure  => present,
     owner   => "apacheds",
     group   => "apacheds",

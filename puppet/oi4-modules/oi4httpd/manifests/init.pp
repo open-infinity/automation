@@ -19,8 +19,8 @@ class oi4httpd::config
   $apachePackageName = undef,
   $apacheConfPath = undef,
   $apacheServiceName = undef,
-  $backend_addresses = undef,
 ) {
+    require oi4httpd::install
     file { "/opt/openinfinity/common/httpd":
         ensure => directory,
         owner => 'apache',
