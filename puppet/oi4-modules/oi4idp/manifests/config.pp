@@ -8,7 +8,8 @@ class oi4idp::config {
   $idp_fqdn="${oi4idp::params::idp_fqdn}"
   $idp_keystore_password= "${oi4idp::params::idp_keystore_password}"
   $idp_bas_server_xml_template="${oi4idp::params::idp_bas_server_xml_template}"
-  $idp_master_ip="${oi4idp::params::idp_master_ip}"
+  $idp_master_ip_address="${oi4idp::params::idp_master_ip_address}"
+  $idp_node_ip_address="${oi4idp::params::idp_node_ip_address}"
   $ajp_jvm_route="${oi4idp::params::ajp_jvm_route}"
   $clustermember_addresses="${oi4idp::params::clustermember_addresses}"
   $has_attribute_resolver="${oi4idp::params::has_attribute_resolver}"
@@ -207,14 +208,14 @@ class oi4idp::config {
     require => File["${idp_install_path}"]
   }
 
-  if ($idp_master_ip != $::ipaddress_eth2){
+  if ($idp_master_ip_address != $idp_node_ip_address){
     # Copy all configuration data from master
     # TODO optimize:
     #   - minimalize list of files to transfer
     #   - don't configure files by puppet if they will be overwritten by rsync
     exec { "copy_master_metadata":
       command     => "/root/shibboleth-idp/bin/install.sh",
-      cwd         => "rsync -v -a /opt/shibboleth-idp/metadata/ root@$idp_master_ip:/opt/shibboleth-idp/metadata/",
+      cwd         => "rsync -v -a /opt/shibboleth-idp/metadata/ root@$idp_master_ip_address:/opt/shibboleth-idp/metadata/",
       require => File["${idp_install_path}"],
       notify      => Service["oi-tomcat"]
     }

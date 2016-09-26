@@ -2,10 +2,10 @@ class oi4apacheds::config{
   require oi4apacheds::params
   require oi4apacheds::install
 
-  $toas_apacheds_version = "${oi4apacheds::params::toas_apacheds_version}"
-  $toas_apacheds_servicename = "${oi4apacheds::params::toas_apacheds_servicename}"
+  $toas_apacheds_version="${oi4apacheds::params::toas_apacheds_version}"
+  $toas_apacheds_servicename="${oi4apacheds::params::toas_apacheds_servicename}"
   $toas_apacheds_admin_pwd="${oi4apacheds::params::toas_apacheds_admin_pwd}"
-  $toas_apacheds_master_ip="${oi4apacheds::params::toas_apacheds_master_ip}"
+  $toas_apacheds_master_ip_address="${oi4apacheds::params::toas_apacheds_master_ip_address}"
 
   exec { "chkconfig_add":
     command   => "/sbin/chkconfig --add $toas_apacheds_servicename",
@@ -34,21 +34,18 @@ class oi4apacheds::config{
     group   => "root",
     mode    => 0700,
   }
-
-  # NOTE: See postinstall.pp for explanation why lines below are commented out.
-
-  #  file { "/opt/openinfinity/conf/replication.ldif.erb":
-  #    content => template("oi4apacheds/replication.ldif.erb}"),
-  #    ensure  => present,
-  #    owner   => "apacheds",
-  #    group   => "apacheds",
-  #    mode    => 0600,
-  #  }
-  #  file { "/opt/openinfinity/conf/set-replication.sh.erb":
-  #    content => template("oi4apacheds/set-replication.sh.erb}"),
-  #    ensure  => present,
-  #    owner   => "apacheds",
-  #    group   => "apacheds",
-  #    mode    => 0700,
-  #  }
+  file { "/opt/openinfinity/conf/replication.ldif.erb":
+    content => template("oi4apacheds/replication.ldif.erb}"),
+    ensure  => present,
+    owner   => "apacheds",
+    group   => "apacheds",
+    mode    => 0600,
+  }
+  file { "/opt/openinfinity/conf/set-replication.sh.erb":
+    content => template("oi4apacheds/set-replication.sh.erb}"),
+    ensure  => present,
+    owner   => "apacheds",
+    group   => "apacheds",
+    mode    => 0700,
+  }
 }

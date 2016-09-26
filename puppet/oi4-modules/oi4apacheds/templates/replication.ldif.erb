@@ -10,7 +10,7 @@ ads-replrefreshinterval: 60000
 ads-repluserpassword: <%= @toas_apacheds_admin_pwd %>
 ads-repluserdn: uid=admin,ou=system
 ads-replprovport: 10389
-ads-replprovhostname: <%= @toas_apacheds_master_ip %>
+ads-replprovhostname: <%= @toas_apacheds_master_ip_address %>
 ads-replrefreshnpersist: TRUE
 ads-replsearchscope: sub
 ads-searchbasedn: <%= @toas_apacheds_replication_base_dn %>
