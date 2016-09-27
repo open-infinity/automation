@@ -32,7 +32,6 @@ class oi4httpd_sp::install($requires_ntp = false) inherits oi4variables {
 
 class oi4httpd_sp::config inherits oi4variables {
   $httpd_domain_name=hiera('toas::sp::httpd_domain_name')
-  $httpd_domain_full_name=hiera('toas::httpd::domain_name')
   $backend_addresses = hiera('toas::httpd::backend_addresses')
 
   # Service Provider (Shibboleth)
@@ -44,7 +43,7 @@ class oi4httpd_sp::config inherits oi4variables {
   }
 
   file { "${apacheConfPath}oi4-shibboleth-proxy.conf":
-    source  => "puppet:///modules/oi4httpd_sp/oi4-shibboleth-proxy.conf",
+    content => template("oi4httpd_sp/sp/oi4-shibboleth-proxy.conf"),
     replace => true,
     owner   => "root",
     group   => "root",

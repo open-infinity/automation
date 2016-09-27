@@ -12,7 +12,6 @@ class oi4idp::config {
   $idp_node_ip_address="${oi4idp::params::idp_node_ip_address}"
   $ajp_jvm_route="${oi4idp::params::ajp_jvm_route}"
   $clustermember_addresses="${oi4idp::params::clustermember_addresses}"
-  $has_attribute_resolver="${oi4idp::params::has_attribute_resolver}"
   $use_special_filters="${oi4idp::params::use_special_filters}"
   $authn_LDAP_useStartTLS="${oi4idp::params::authn_LDAP_useStartTLS}"
   $authn_LDAP_useSSL="${oi4idp::params::authn_LDAP_useSSL}"
@@ -123,18 +122,17 @@ class oi4idp::config {
     group  => "root",
     mode   => 755,
   }
-  if ($has_attribute_resolver == true){
-    file { "/opt/shibboleth-idp/conf/attribute-resolver.xml":
-      content => template("oi4idp/attribute-resolver.xml.erb"),
-      ensure  => present,
-      replace => true,
-      owner   => "oiuser",
-      group   => "root",
-      mode    => 0644,
-      require => File["$idp_install_path"],
-      notify  => Service["oi-tomcat"]
-    }
+  file { "/opt/shibboleth-idp/conf/attribute-resolver-ldap.xml":
+    content => template("oi4idp/attribute-resolver-ldap.xml.erb"),
+    ensure  => present,
+    replace => true,
+    owner   => "oiuser",
+    group   => "root",
+    mode    => 0644,
+    require => File["$idp_install_path"],
+    notify  => Service["oi-tomcat"]
   }
+
   file { "/opt/shibboleth-idp/conf/attribute-filter.xml":
     source  => "puppet:///modules/oi4idp/attribute-filter.xml",
     ensure  => present,

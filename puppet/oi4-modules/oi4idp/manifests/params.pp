@@ -8,7 +8,6 @@ class oi4idp::params {
   $idp_master_ip_address=hiera('toas::idp::idp_master_ip_address')
   $idp_node_ip_address=hiera('toas::idp::idp_node_ip_address')
   $requires_ntp=hiera('toas::idp::requires_ntp', false)
-  $has_attribute_resolver=hiera('toas::idp::has_attribute_resolver', true)
   $use_special_filters=hiera('toas::idp::use_special_filters', false)
   $ajp_jvm_route=hiera('toas::bas::ajp::jvm_route')
   $clustermember_addresses=hiera('toas::idp::clustermember_addresses')
