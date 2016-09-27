@@ -3,7 +3,7 @@ LoadModule ssl_module modules/mod_ssl.so
 
 Listen 443 
 
-<VirtualHost <%=httpd_clustermember_fqdn%>:443>
+<VirtualHost _default_:443>
 DocumentRoot /var/www/html
 ServerName <%=httpd_clustermember_fqdn%>
 SSLEngine on

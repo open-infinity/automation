@@ -2,6 +2,7 @@ class profiles::httpd ($backend_addresses = undef, $jvm_routes = undef) {
   $apachePackageName = hiera('toas::httpd::apachePackageName')
   $apacheServiceName = hiera('toas::httpd::apacheServiceName')
   $use_lb =  hiera('toas::httpd::use_lb', false)
+  $use_ajp_proxy =  hiera('toas::httpd::use_ajp_proxy', true)
   $apacheConfPath = hiera('toas::httpd::apacheConfPath', undef)
   $httpd_domain_name = hiera('toas::httpd::domain_name')
   $httpd_clustermember_fqdn = hiera('toas::httpd::clustermember_fqdn', undef)
@@ -22,6 +23,7 @@ class profiles::httpd ($backend_addresses = undef, $jvm_routes = undef) {
     apachePackageName => $apachePackageName,
     apacheConfPath    => $apacheConfPath,
     apacheServiceName => $apacheServiceName,
+    use_ajp_proxy => $use_ajp_proxy,
   }-> class { 'oi4httpd::config_ssl':
     apachePackageName            => $apachePackageName,
     apacheServiceName            => $apacheServiceName,
