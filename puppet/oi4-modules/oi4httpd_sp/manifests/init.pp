@@ -54,6 +54,9 @@ class oi4httpd_sp::config($backend_addresses) inherits oi4variables {
   $shibboleth_idp_master_ip_address=hiera('toas::sp::shibboleth_idp_master_ip_address')
   $shibboleth_sp_id=hiera('toas::sp::shibboleth_sp_id')
   $shibboleth_sp_metadata_url=hiera('toas::sp::shibboleth_sp_metadata_url')
+  $is_automatic_provisioning=hiera('toas::sp::$is_automatic_provisioning', false)
+  $sp_root_rsa_key_public=hiera('toas::sp::sp_root_rsa_key_public')
+  $sp_root_rsa_key_private=hiera('toas::sp::sp_root_rsa_key_private')
 
   file { "/etc/shibboleth/shibboleth2.xml":
     content => template("oi4httpd_sp/sp/shibboleth2.xml.erb"),
@@ -83,89 +86,90 @@ class oi4httpd_sp::config($backend_addresses) inherits oi4variables {
     require => File["/opt/openinfinity/common"],
   }
 
-  file { "/opt/openinfinity/common/shibboleth-sp/configure-sp.sh":
-    content => template("oi4httpd_sp/sp/configure-sp.sh.erb"),
-    replace => true,
-    owner   => "root",
-    group   => "root",
-    mode    => 0744,
-    require => File["/opt/openinfinity/common/shibboleth-sp"],
-  }
+  if ($is_automatic_provisioning == true){
+    file { "/opt/openinfinity/common/shibboleth-sp/configure-sp.sh":
+      content => template("oi4httpd_sp/sp/configure-sp.sh.erb"),
+      replace => true,
+      owner   => "root",
+      group   => "root",
+      mode    => 0744,
+      require => File["/opt/openinfinity/common/shibboleth-sp"],
+    }
 
-  exec { "configure-sp.sh":
-    command   => "/opt/openinfinity/common/shibboleth-sp/configure-sp.sh",
-    user      => "root",
-    timeout   => "3600",
-    logoutput => true,
-    require   => [
-      File["/opt/openinfinity/common/shibboleth-sp/configure-sp.sh"],
-      Package["shibboleth"],
-      File["/root/.ssh/id_rsa"]
-    ],
-  }
+    exec { "configure-sp.sh":
+      command   => "/opt/openinfinity/common/shibboleth-sp/configure-sp.sh",
+      user      => "root",
+      timeout   => "3600",
+      logoutput => true,
+      require   => [
+        File["/opt/openinfinity/common/shibboleth-sp/configure-sp.sh"],
+        Package["shibboleth"],
+        File["/root/.ssh/id_rsa"]
+      ],
+    }
 
-  file { "/root/.ssh":
-    ensure => directory,
-    owner  => 'root',
-    group  => 'root',
-    mode   => 700,
-  }
+    file { "/root/.ssh":
+      ensure => directory,
+      owner  => 'root',
+      group  => 'root',
+      mode   => 700,
+    }
 
-  $sp_root_rsa_key_public=hiera('toas::sp::sp_root_rsa_key_public')
-  #$httpd_domain_name=hiera('toas::sp::httpd_domain_name')
-  $sp_root_rsa_key_private=hiera('toas::sp::sp_root_rsa_key_private')
-  #$sp_root_rsa_key_private = PSON.parse(hiera('toas::sp::sp_root_rsa_key_private'))
+    # RSA key for accessing IdP machine
+    file { "/root/.ssh/id_rsa":
+      content => template("oi4httpd_sp/sp/root-id_rsa.erb"),
+      replace => true,
+      owner   => 'root',
+      group   => 'root',
+      mode    => 600,
+      require => File["/root/.ssh"],
+    }
 
-  # RSA key for accessing IdP machine
-  file { "/root/.ssh/id_rsa":
-    content => template("oi4httpd_sp/sp/root-id_rsa.erb"),
-    replace => true,
-    owner   => 'root',
-    group   => 'root',
-    mode    => 600,
-    require => File["/root/.ssh"],
-  }
+    # RSA key for accessing IdP machine
+    file { "/root/.ssh/id_rsa.pub":
+      content => template("oi4httpd_sp/sp/root-id_rsa.pub.erb"),
+      replace => true,
+      owner   => 'root',
+      group   => 'root',
+      mode    => 600,
+      require => File["/root/.ssh"],
+    }
 
-  # RSA key for accessing IdP machine
-  file { "/root/.ssh/id_rsa.pub":
-    content => template("oi4httpd_sp/sp/root-id_rsa.pub.erb"),
-    replace => true,
-    owner   => 'root',
-    group   => 'root',
-    mode    => 600,
-    require => File["/root/.ssh"],
-  }
+    file { "/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh":
+      content => template("oi4httpd_sp/sp/post-configure-sp.sh.erb"),
+      replace => true,
+      owner   => "root",
+      group   => "root",
+      mode    => 0744,
+      require => File["/opt/openinfinity/common/shibboleth-sp"],
+    }
 
-  file { "/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh":
-    content => template("oi4httpd_sp/sp/post-configure-sp.sh.erb"),
-    replace => true,
-    owner   => "root",
-    group   => "root",
-    mode    => 0744,
-    require => File["/opt/openinfinity/common/shibboleth-sp"],
-  }
-
-  # This should be run after the configure phase and service (re)start
-  exec { "post-configure-sp.sh":
-    command   => "/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh",
-    user      => "root",
-    timeout   => "3600",
-    logoutput => true,
-    require   => [
-      File["/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh"],
-      Service["shibd"],
-    ],
+    # This should be run after the configure phase and service (re)start
+    exec { "post-configure-sp.sh":
+      command   => "/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh",
+      user      => "root",
+      timeout   => "3600",
+      logoutput => true,
+      require   => [
+        File["/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh"],
+        Service["shibd"],
+      ],
+    }
   }
 }
 
 class oi4httpd_sp::service inherits oi4variables {
-  service { "shibd":
-    ensure  => running,
-    enable  => true,
-    require => [
-      Package["shibboleth"],
-      Exec["configure-sp.sh"],
-    ]
+  $is_automatic_provisioning=hiera('toas::sp::$is_automatic_provisioning', false)
+
+  if ($is_automatic_provisioning == true){
+    service { "shibd":
+      ensure  => running,
+      enable  => true,
+      require => [
+        Package["shibboleth"],
+        Exec["configure-sp.sh"],
+      ]
+    }
   }
 }
 
