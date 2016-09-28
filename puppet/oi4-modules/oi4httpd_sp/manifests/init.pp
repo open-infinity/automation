@@ -50,11 +50,11 @@ class oi4httpd_sp::config($backend_addresses) inherits oi4variables {
 
   $shibboleth_idp_entityid_url=hiera('toas::sp::shibboleth_entity_url')
   $shibboleth_sp_entityid_url=hiera('toas::sp::shibboleth_sp_entityid_url')
-  $shibboleth_idp_hostname=hiera('toas::sp::shibboleth_idp_hostname')
+  $shibboleth_idp_hostname=hiera('toas::sp::shibboleth_idp_hostname', undef)
   $shibboleth_idp_master_ip_address=hiera('toas::sp::shibboleth_idp_master_ip_address')
   $shibboleth_sp_id=hiera('toas::sp::shibboleth_sp_id')
   $shibboleth_sp_metadata_url=hiera('toas::sp::shibboleth_sp_metadata_url')
-  $is_automatic_provisioning=hiera('toas::sp::$is_automatic_provisioning', false)
+  $is_automatic_provisioning=hiera('toas::sp::is_automatic_provisioning', false)
   $sp_root_rsa_key_public=hiera('toas::sp::sp_root_rsa_key_public')
   $sp_root_rsa_key_private=hiera('toas::sp::sp_root_rsa_key_private')
 
@@ -150,26 +150,20 @@ class oi4httpd_sp::config($backend_addresses) inherits oi4variables {
       user      => "root",
       timeout   => "3600",
       logoutput => true,
-      require   => [
-        File["/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh"],
-        Service["shibd"],
-      ],
+      require   => File["/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh"],
+      notify    => Service["shibd"],
     }
   }
 }
 
 class oi4httpd_sp::service inherits oi4variables {
-  $is_automatic_provisioning=hiera('toas::sp::$is_automatic_provisioning', false)
-
-  if ($is_automatic_provisioning == true){
-    service { "shibd":
-      ensure  => running,
-      enable  => true,
-      require => [
-        Package["shibboleth"],
-        Exec["configure-sp.sh"],
-      ]
-    }
+  service { "shibd":
+    ensure  => running,
+    enable  => true,
+    require => [
+      Package["shibboleth"],
+      Exec["configure-sp.sh"],
+    ]
   }
 }
 
