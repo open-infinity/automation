@@ -30,9 +30,8 @@ class oi4httpd_sp::install($requires_ntp = false) inherits oi4variables {
 }
 
 
-class oi4httpd_sp::config inherits oi4variables {
+class oi4httpd_sp::config($backend_addresses) inherits oi4variables {
   $httpd_domain_name=hiera('toas::sp::httpd_domain_name')
-  $backend_addresses = hiera('toas::httpd::backend_addresses')
 
   # Service Provider (Shibboleth)
   file { "/etc/shibboleth":
@@ -55,6 +54,7 @@ class oi4httpd_sp::config inherits oi4variables {
   $shibboleth_idp_entityid_url=hiera('toas::sp::shibboleth_entity_url')
   $shibboleth_sp_entityid_url=hiera('toas::sp::shibboleth_sp_entityid_url')
   $shibboleth_idp_hostname=hiera('toas::sp::shibboleth_idp_hostname')
+  $shibboleth_idp_master_ip_address=hiera('toas::sp::shibboleth_idp_master_ip_address')
   $shibboleth_sp_id=hiera('toas::sp::shibboleth_sp_id')
   $shibboleth_sp_metadata_url=hiera('toas::sp::shibboleth_sp_metadata_url')
 
