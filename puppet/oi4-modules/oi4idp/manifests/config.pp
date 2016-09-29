@@ -15,7 +15,6 @@ class oi4idp::config(
   $idp_master_ip_address="${oi4idp::params::idp_master_ip_address}"
   $idp_node_ip_address="${oi4idp::params::idp_node_ip_address}"
   $ajp_jvm_route="${oi4idp::params::ajp_jvm_route}"
-  $clustermember_addresses="${oi4idp::params::clustermember_addresses}"
   $use_special_filters="${oi4idp::params::use_special_filters}"
   $authn_LDAP_useStartTLS="${oi4idp::params::authn_LDAP_useStartTLS}"
   $authn_LDAP_useSSL="${oi4idp::params::authn_LDAP_useSSL}"
