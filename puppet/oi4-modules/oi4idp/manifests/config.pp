@@ -1,4 +1,8 @@
-class oi4idp::config {
+class oi4idp::config(
+  $clustermember_addresses = [""],
+  $authn_LDAP_ldapURL = [""]
+)
+{
   require oi4idp::install
 
   $java_home="${oi4idp::params::java_home}"
@@ -23,7 +27,6 @@ class oi4idp::config {
   $authn_LDAP_bindDN="${oi4idp::params::authn_LDAP_bindDN}"
   $authn_LDAP_bindDNCredential="${oi4idp::params::authn_LDAP_bindDNCredential}"
   $authn_LDAP_dnFormat="${oi4idp::params::authn_LDAP_dnFormat}"
-  $authn_LDAP_ldapURL="${oi4idp::params::authn_LDAP_ldapURL}"
   $authn_LDAP_groupBaseDN="${oi4idp::params::authn_LDAP_groupBaseDN}"
   $authn_LDAP_validateDN="${oi4idp::params::authn_LDAP_validateDN}"
   $authn_LDAP_validateFilter="${oi4idp::params::authn_LDAP_validateFilter}"
@@ -205,6 +208,15 @@ class oi4idp::config {
     source  => "puppet:///modules/oi4idp/add-sp.py",
     require => File["${idp_install_path}"]
   }
+  file { "/opt/shibboleth-idp/conf/metadata-providers.xml":
+    ensure  => present,
+    owner   => 'oiuser',
+    group   => 'root',
+    mode    => 0640,
+    source  => "puppet:///modules/oi4idp/metadata_providers.xml",
+    require => File["$idp_install_path"],
+    notify  => Service["oi-tomcat"]
+  }
 
   if ($idp_master_ip_address != $idp_node_ip_address){
     # Copy all configuration data from master
@@ -250,14 +262,14 @@ class oi4idp::config {
 #  }
 #}
 
-class oi4idp::config::sp{
-  file { "/opt/shibboleth-idp/conf/metadata-providers.xml":
-    ensure  => present,
-    owner   => 'oiuser',
-    group   => 'root',
-    mode    => 0640,
-    source  => "puppet:///modules/oi4idp/metadata_providers.xml",
-    require => File["$idp_install_path"],
-    notify  => Service["oi-tomcat"]
-  }
-}
+# class oi4idp::config::sp{
+#   file { "/opt/shibboleth-idp/conf/metadata-providers.xml":
+#     ensure  => present,
+#     owner   => 'oiuser',
+#     group   => 'root',
+#     mode    => 0640,
+#     source  => "puppet:///modules/oi4idp/metadata_providers.xml",
+#     require => File["$idp_install_path"],
+#     notify  => Service["oi-tomcat"]
+#   }
+
