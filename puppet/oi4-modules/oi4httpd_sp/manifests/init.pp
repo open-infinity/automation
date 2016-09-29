@@ -104,8 +104,9 @@ class oi4httpd_sp::config($backend_addresses) inherits oi4variables {
       require   => [
         File["/opt/openinfinity/common/shibboleth-sp/configure-sp.sh"],
         Package["shibboleth"],
-        File["/root/.ssh/id_rsa"]
+        File["/root/.ssh/id_rsa"],
       ],
+      notify    => Service["shibd"],
     }
 
     file { "/root/.ssh":
@@ -150,8 +151,10 @@ class oi4httpd_sp::config($backend_addresses) inherits oi4variables {
       user      => "root",
       timeout   => "3600",
       logoutput => true,
-      require   => File["/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh"],
-      notify    => Service["shibd"],
+      require   => [
+        File["/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh"],
+        Service["shibd"]
+      ]
     }
   }
 }
