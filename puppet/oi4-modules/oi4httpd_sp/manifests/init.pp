@@ -87,75 +87,77 @@ class oi4httpd_sp::config($backend_addresses) inherits oi4variables {
   }
 
   if ($is_automatic_provisioning == true){
-    file { "/opt/openinfinity/common/shibboleth-sp/configure-sp.sh":
-      content => template("oi4httpd_sp/sp/configure-sp.sh.erb"),
-      replace => true,
-      owner   => "root",
-      group   => "root",
-      mode    => 0744,
-      require => File["/opt/openinfinity/common/shibboleth-sp"],
-    }
 
-    exec { "configure-sp.sh":
-      command   => "/opt/openinfinity/common/shibboleth-sp/configure-sp.sh",
-      user      => "root",
-      timeout   => "3600",
-      logoutput => true,
-      require   => [
-        File["/opt/openinfinity/common/shibboleth-sp/configure-sp.sh"],
-        Package["shibboleth"],
-        File["/root/.ssh/id_rsa"],
-      ],
-      notify    => Service["shibd"],
-    }
 
-    file { "/root/.ssh":
-      ensure => directory,
-      owner  => 'root',
-      group  => 'root',
-      mode   => 700,
-    }
-
-    # RSA key for accessing IdP machine
-    file { "/root/.ssh/id_rsa":
-      content => template("oi4httpd_sp/sp/root-id_rsa.erb"),
-      replace => true,
-      owner   => 'root',
-      group   => 'root',
-      mode    => 600,
-      require => File["/root/.ssh"],
-    }
-
-    # RSA key for accessing IdP machine
-    file { "/root/.ssh/id_rsa.pub":
-      content => template("oi4httpd_sp/sp/root-id_rsa.pub.erb"),
-      replace => true,
-      owner   => 'root',
-      group   => 'root',
-      mode    => 600,
-      require => File["/root/.ssh"],
-    }
-
-    file { "/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh":
-      content => template("oi4httpd_sp/sp/post-configure-sp.sh.erb"),
-      replace => true,
-      owner   => "root",
-      group   => "root",
-      mode    => 0744,
-      require => File["/opt/openinfinity/common/shibboleth-sp"],
-    }
-
-    # This should be run after the configure phase and service (re)start
-    exec { "post-configure-sp.sh":
-      command   => "/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh",
-      user      => "root",
-      timeout   => "3600",
-      logoutput => true,
-      require   => [
-        File["/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh"],
-        Service["shibd"]
-      ]
-    }
+    # file { "/opt/openinfinity/common/shibboleth-sp/configure-sp.sh":
+    #   content => template("oi4httpd_sp/sp/configure-sp.sh.erb"),
+    #   replace => true,
+    #   owner   => "root",
+    #   group   => "root",
+    #   mode    => 0744,
+    #   require => File["/opt/openinfinity/common/shibboleth-sp"],
+    # }
+    #
+    # exec { "configure-sp.sh":
+    #   command   => "/opt/openinfinity/common/shibboleth-sp/configure-sp.sh",
+    #   user      => "root",
+    #   timeout   => "3600",
+    #   logoutput => true,
+    #   require   => [
+    #     File["/opt/openinfinity/common/shibboleth-sp/configure-sp.sh"],
+    #     Package["shibboleth"],
+    #     File["/root/.ssh/id_rsa"],
+    #   ],
+    #   notify    => Service["shibd"],
+    # }
+    #
+    # file { "/root/.ssh":
+    #   ensure => directory,
+    #   owner  => 'root',
+    #   group  => 'root',
+    #   mode   => 700,
+    # }
+    #
+    # # RSA key for accessing IdP machine
+    # file { "/root/.ssh/id_rsa":
+    #   content => template("oi4httpd_sp/sp/root-id_rsa.erb"),
+    #   replace => true,
+    #   owner   => 'root',
+    #   group   => 'root',
+    #   mode    => 600,
+    #   require => File["/root/.ssh"],
+    # }
+    #
+    # # RSA key for accessing IdP machine
+    # file { "/root/.ssh/id_rsa.pub":
+    #   content => template("oi4httpd_sp/sp/root-id_rsa.pub.erb"),
+    #   replace => true,
+    #   owner   => 'root',
+    #   group   => 'root',
+    #   mode    => 600,
+    #   require => File["/root/.ssh"],
+    # }
+    #
+    # file { "/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh":
+    #   content => template("oi4httpd_sp/sp/post-configure-sp.sh.erb"),
+    #   replace => true,
+    #   owner   => "root",
+    #   group   => "root",
+    #   mode    => 0744,
+    #   require => File["/opt/openinfinity/common/shibboleth-sp"],
+    # }
+    #
+    # # This should be run after the configure phase and service (re)start
+    # exec { "post-configure-sp.sh":
+    #   command   => "/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh",
+    #   user      => "root",
+    #   timeout   => "3600",
+    #   logoutput => true,
+    #   require   => [
+    #     File["/opt/openinfinity/common/shibboleth-sp/post-configure-sp.sh"],
+    #     Service["shibd"]
+    #   ]
+    # }
   }
 }
 

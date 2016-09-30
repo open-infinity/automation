@@ -16,6 +16,7 @@ class oi4idp::config(
   $idp_node_ip_address="${oi4idp::params::idp_node_ip_address}"
   $ajp_jvm_route="${oi4idp::params::ajp_jvm_route}"
   $use_special_filters="${oi4idp::params::use_special_filters}"
+  $is_automatic_provisioning="${oi4idp::params::is_automatic_provisioning}"
   $authn_LDAP_useStartTLS="${oi4idp::params::authn_LDAP_useStartTLS}"
   $authn_LDAP_useSSL="${oi4idp::params::authn_LDAP_useSSL}"
   $authn_LDAP_trustCertificates="${oi4idp::params::authn_LDAP_trustCertificates}"
@@ -134,7 +135,6 @@ class oi4idp::config(
     require => File["$idp_install_path"],
     notify  => Service["oi-tomcat"]
   }
-
   file { "/opt/shibboleth-idp/conf/attribute-filter.xml":
     source  => "puppet:///modules/oi4idp/attribute-filter.xml",
     ensure  => present,
@@ -199,14 +199,6 @@ class oi4idp::config(
     require => File["$idp_install_path"],
     notify  => Service["oi-tomcat"]
   }
-  file { "/opt/openinfinity/common/shibboleth-idp/add-sp.py":
-    ensure  => present,
-    owner   => 'oiuser',
-    group   => 'root',
-    mode    => 0700,
-    source  => "puppet:///modules/oi4idp/add-sp.py",
-    require => File["${idp_install_path}"]
-  }
   file { "/opt/shibboleth-idp/conf/metadata-providers.xml":
     ensure  => present,
     owner   => 'oiuser',
@@ -216,19 +208,30 @@ class oi4idp::config(
     require => File["$idp_install_path"],
     notify  => Service["oi-tomcat"]
   }
-
-  if ($idp_master_ip_address != $idp_node_ip_address){
-    # Copy all configuration data from master
-    # TODO optimize:
-    #   - minimalize list of files to transfer
-    #   - don't configure files by puppet if they will be overwritten by rsync
-    exec { "copy_master_metadata":
-      command     => "/root/shibboleth-idp/bin/install.sh",
-      cwd         => "rsync -v -a /opt/shibboleth-idp/metadata/ root@$idp_master_ip_address:/opt/shibboleth-idp/metadata/",
-      require => File["${idp_install_path}"],
-      notify      => Service["oi-tomcat"]
-    }
+  file { "/opt/openinfinity/tomcat/webapps/idp":
+    owner => 'oiuser',
+    group => root,
+    source => "opt/shibboleth-idp/metadata/idp-metadata.xml",
   }
+  file { "/opt/shibboleth-idp":
+    owner => 'oiuser',
+    group => root,
+    source => "opt/shibboleth-idp/metadata/idp-metadata.xml",
+  }
+
+
+  # if ($idp_master_ip_address != $idp_node_ip_address){
+  #   # Copy all configuration data from master
+  #   # TODO optimize:
+  #   #   - minimalize list of files to transfer
+  #   #   - don't configure files by puppet if they will be overwritten by rsync
+  #   exec { "copy_master_metadata":
+  #     command     => "/root/shibboleth-idp/bin/install.sh",
+  #     cwd         => "rsync -v -a /opt/shibboleth-idp/metadata/ root@$idp_master_ip_address:/opt/shibboleth-idp/metadata/",
+  #     require => File["${idp_install_path}"],
+  #     notify      => Service["oi-tomcat"]
+  #   }
+  # }
 }
 
 #class oi4idp::config::jstl{
